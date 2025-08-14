@@ -7,6 +7,9 @@ export function initWater(save){
   onChange = save || (()=>{});
   $('#incWater').addEventListener('click', ()=> setWaterCount(getWaterCount()+1));
   $('#decWater').addEventListener('click', ()=> setWaterCount(getWaterCount()-1));
+  const incTarget = $('#incTarget'); const decTarget = $('#decTarget');
+  if(incTarget) incTarget.addEventListener('click', ()=>{ state.target = clamp(state.target+1,1,24); $('#waterTarget').value = String(state.target); rebuildGlasses(); onChange(); });
+  if(decTarget) decTarget.addEventListener('click', ()=>{ state.target = clamp(state.target-1,1,24); $('#waterTarget').value = String(state.target); rebuildGlasses(); onChange(); });
   // update on target change or typing
   const targetEl = $('#waterTarget');
   targetEl.addEventListener('input', ()=>{ state.target = clamp(parseInt(targetEl.value||'8',10),1,24); rebuildGlasses(); onChange(); });

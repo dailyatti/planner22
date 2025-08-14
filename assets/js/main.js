@@ -137,6 +137,13 @@ window.addEventListener('DOMContentLoaded', () => {
   $('#btnPdf').addEventListener('click', () => savePDF('plannerContent'));
   $('#btnSave').addEventListener('click', saveToStorage);
   $('#btnReset').addEventListener('click', () => { localStorage.removeItem(storageKey()); restoreFromStorage(true); });
+  $('#btnResetAll').addEventListener('click', () => {
+    if(!confirm('Reset all saved data? This clears day data and global settings.')) return;
+    const keys = Object.keys(localStorage);
+    keys.forEach(k=>{ if(k.startsWith('cherryPlanner_')||k==='cherry_globals'||k==='cherry_cycle'||k==='cherry_cycle_log') localStorage.removeItem(k); });
+    restoreFromStorage(true);
+    showToast('All data reset');
+  });
 
   $('#plannerDate').addEventListener('change', () => { updateDayOfWeek(); restoreFromStorage(true); });
 

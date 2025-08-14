@@ -38,6 +38,7 @@
           <button class="btn" id="btnPrint" type="button" aria-label="Print"><i class="fa-solid fa-print"></i><span>Print</span></button>
           <button class="btn" id="btnSave" type="button" aria-label="Save"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
           <button class="btn" id="btnReset" type="button" aria-label="Reset"><i class="fa-solid fa-rotate"></i><span>Reset (today)</span></button>
+          <button class="btn" id="btnResetAll" type="button" aria-label="Reset all"><i class="fa-solid fa-broom"></i><span>Reset (all)</span></button>
         </div>
       </div>
     </div>
@@ -101,8 +102,8 @@
           <h2 id="h-water" class="card-title">💧 Water Tracker</h2>
           <div class="water-wrap">
             <div class="water-controls">
-              <div class="field"><label for="waterTarget">Goal</label><input id="waterTarget" type="number" min="1" max="24" step="1" value="8" aria-label="Daily water goal in glasses" /></div>
-              <div class="field"><label for="waterCount">Drank</label><button id="decWater" title="-1" aria-label="Decrease water">−</button><input id="waterCount" type="number" min="0" max="24" step="1" value="0" aria-label="Glasses consumed" /><button id="incWater" title="+1" aria-label="Increase water">+</button></div>
+              <div class="field"><label for="waterTarget">Goal</label><button id="decTarget" title="-1" aria-label="Decrease goal">−</button><input id="waterTarget" type="number" min="1" max="24" step="1" value="8" aria-label="Daily water goal in glasses" /><button id="incTarget" title="+1" aria-label="Increase goal">+</button></div>
+              <div class="field tight"><label for="waterCount">Drank</label><button id="decWater" title="-1" aria-label="Decrease water">−</button><input id="waterCount" type="number" min="0" max="24" step="1" value="0" aria-label="Glasses consumed" /><button id="incWater" title="+1" aria-label="Increase water">+</button></div>
             </div>
             <div class="water" id="water" role="group" aria-label="Water Tracker"></div>
             <div class="water-progress" aria-hidden="true"><span id="waterBar"></span></div>
