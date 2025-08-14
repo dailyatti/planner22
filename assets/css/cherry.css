@@ -129,9 +129,32 @@ body{margin:0;font-family:'Quicksand',system-ui,-apple-system,Segoe UI,Roboto,He
   .menu{min-width:92vw;right:4vw}
   .planner-grid{grid-template-columns:1fr}
   .notes-area{min-height:240px}
-  .cal-grid{gap:4px}
-  .day{height:36px;border-radius:10px}
-  .cycle-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  
+  /* Enhanced mobile calendar */
+  .cal-grid{gap:3px;font-size:12px}
+  .day{height:40px;min-height:40px;border-radius:8px;padding:2px;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+  .day.today{font-weight:700;transform:none}
+  .day.actual{background:var(--primary);color:#fff;border-color:var(--primary)}
+  
+  /* Mobile cycle controls */
+  .cycle-controls{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+  .cycle-controls .field{padding:8px;font-size:14px}
+  .cycle-controls input{font-size:14px}
+  
+  /* Mobile cycle stats */
+  .cycle-stats{grid-template-columns:1fr 1fr;gap:8px;font-size:13px}
+  .stat{padding:8px}
+  
+  /* Mobile cycle predictions */
+  .predictions{font-size:13px;padding:10px}
+  .pred-item{margin-bottom:6px}
+}
+
+@media (max-width:480px){
+  .cal-grid{gap:2px}
+  .day{height:35px;min-height:35px;font-size:11px}
+  .cycle-controls{grid-template-columns:1fr;gap:8px}
+  .cycle-stats{grid-template-columns:1fr;gap:6px}
 }
 @media print{body{background:#fff!important}.navbar,.menu,.toast,.backdrop{display:none!important}.container{max-width:100%!important}.planner-grid{grid-template-columns:repeat(2,1fr)!important;gap:14px!important}.card{box-shadow:none!important;border:1px solid #ddd!important}.card::before,.cherry{display:none!important}@page{margin:1cm;size:A4}}
 

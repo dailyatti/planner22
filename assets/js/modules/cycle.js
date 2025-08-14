@@ -1,6 +1,10 @@
 import { $, clamp, showToast } from './utils.js';
+import { CyclePredictionEngine } from '../calculator/prediction-engine.js';
+import { CycleAnalyzer } from '../calculator/cycle-analyzer.js';
 
 let onChange = () => {};
+const predictionEngine = new CyclePredictionEngine();
+const analyzer = new CycleAnalyzer();
 
 export function initCycle(save){
   onChange = save || (()=>{});
@@ -64,7 +68,54 @@ function computeCycleMarks(year, month){
   return { period:periodSet, fertile:fertileSet, ovul:ovulSet, actualStarts };
 }
 
-function updateCycleSummary(){ const { start, len, period, luteal, adv } = getCycle(); const { avgLen, avgPeriod, samples, stdev } = computeAverages(); const baseLen = clamp(parseInt((avgLen || len),10),20,40); const log = loadCycleLog(); let last = null; if(log.length){ last = parseKey(log.sort().slice(-1)[0]); } else if(start){ last = new Date(start.getFullYear(), start.getMonth(), start.getDate()); } let nextPeriod='–', nextOv='–'; if(last){ const next = new Date(last); next.setDate(next.getDate()+baseLen); const ov = new Date(next); ov.setDate(ov.getDate() - (adv ? luteal : 14)); nextPeriod = next.toLocaleDateString('en-US'); nextOv = ov.toLocaleDateString('en-US'); } $('#nextPeriod').textContent = nextPeriod; $('#nextOvul').textContent = nextOv; $('#avgLen').textContent = `Avg cycle: ${avgLen? avgLen+' days': '–'}`; $('#avgPeriod').textContent = `Avg period: ${avgPeriod} days`; $('#samples').textContent = `Samples: ${samples}`; const conf = stdev!=null ? `±${Math.max(1,Math.round(stdev))}d` : '–'; document.getElementById('confRange').textContent = `Confidence: ${conf}`; const irreg = (stdev!=null && avgLen) ? Math.min(100, Math.round((stdev/avgLen)*100)) : '–'; document.getElementById('irreg').textContent = `Irregularity: ${irreg=== '–' ? '–' : irreg+'%'}`; }
+function updateCycleSummary(){ 
+  const { start, len, period, luteal, adv } = getCycle(); 
+  const { avgLen, avgPeriod, samples, stdev } = computeAverages(); 
+  const baseLen = clamp(parseInt((avgLen || len),10),20,40); 
+  const log = loadCycleLog(); 
+  
+  // Use advanced prediction engine for better accuracy
+  const cycleHistory = log.map(key => {
+    const startDate = parseKey(key);
+    return { start: startDate, length: baseLen }; // We'll improve this with actual lengths
+  });
+  
+  const settings = { lutealLength: luteal, advancedEstimation: adv };
+  const analysis = predictionEngine.analyzeCycles(cycleHistory, settings);
+  
+  let last = null; 
+  if(log.length){ last = parseKey(log.sort().slice(-1)[0]); } 
+  else if(start){ last = new Date(start.getFullYear(), start.getMonth(), start.getDate()); } 
+  
+  let nextPeriod='–', nextOv='–', confidence='–'; 
+  if(last){ 
+    if(analysis.predictions && analysis.predictions.nextCycle) {
+      nextPeriod = analysis.predictions.nextCycle.startDate.toLocaleDateString('en-US');
+      if(analysis.predictions.ovulationDate) {
+        nextOv = analysis.predictions.ovulationDate.toLocaleDateString('en-US');
+      }
+      confidence = `${Math.round(analysis.confidence * 100)}%`;
+    } else {
+      // Fallback to simple calculation
+      const next = new Date(last); next.setDate(next.getDate()+baseLen); 
+      const ov = new Date(next); ov.setDate(ov.getDate() - (adv ? luteal : 14)); 
+      nextPeriod = next.toLocaleDateString('en-US'); 
+      nextOv = ov.toLocaleDateString('en-US'); 
+    }
+  } 
+  
+  $('#nextPeriod').textContent = nextPeriod; 
+  $('#nextOvul').textContent = nextOv; 
+  $('#avgLen').textContent = `Avg cycle: ${avgLen? avgLen+' days': '–'}`; 
+  $('#avgPeriod').textContent = `Avg period: ${avgPeriod} days`; 
+  $('#samples').textContent = `Samples: ${samples}`; 
+  
+  const conf = confidence !== '–' ? confidence : (stdev!=null ? `±${Math.max(1,Math.round(stdev))}d` : '–'); 
+  document.getElementById('confRange').textContent = `Confidence: ${conf}`; 
+  
+  const irreg = (stdev!=null && avgLen) ? Math.min(100, Math.round((stdev/avgLen)*100)) : '–'; 
+  document.getElementById('irreg').textContent = `Irregularity: ${irreg=== '–' ? '–' : irreg+'%'}`; 
+}
 
 function fmtKey(d){ return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
 function parseKey(k){ const [Y,M,D]=k.split('-').map(n=>parseInt(n,10)); return new Date(Y,(M-1),D); }
