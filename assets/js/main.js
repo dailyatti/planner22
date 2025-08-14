@@ -2,7 +2,7 @@ import { $, $$, clamp, debounce, showToast, escapeHtml } from './modules/utils.j
 import { saveImage, savePDF } from './modules/exporter.js';
 import { initTodos, getTodos, setTodos } from './modules/todos.js';
 import { initWater, getWaterState, setWaterState, rebuildGlasses } from './modules/water.js';
-import { initMood, getMoodState, setMoodState } from './modules/mood.js';
+import { initMood, getMoodState, setMoodState, resetMoods } from './modules/mood.js';
 import { initNotes, getNotesState, setNotesState } from './modules/notes.js';
 import { initCycle, getCycleGlobals, setCycleGlobals, exportCycleCSV } from './modules/cycle.js';
 
@@ -38,7 +38,8 @@ function collectData(){
     notes,
     // Extra data to ensure completeness
     waterTarget: water.target,
-    moodScore: mood.score,
+    moodValues: mood.moods, // New multi-mood values
+    moodScore: mood.score || 5, // Legacy compatibility
     moodNotes: mood.notes,
     notesText: notes.text
   };
@@ -61,8 +62,13 @@ function restoreData(data){
   const waterData = data.water || { count: data.waterCount || 0, target: data.waterTarget || 8 };
   setWaterState(waterData); rebuildGlasses();
   
-  // Restore mood with enhanced fallback
-  const moodData = data.mood || { mood: '', score: data.moodScore || 5, notes: data.moodNotes || '' };
+  // Restore mood with enhanced fallback (support both old and new formats)
+  const moodData = data.mood || { 
+    moods: data.moodValues || null, // New multi-mood format
+    mood: data.moodType || '', // Legacy single mood
+    score: data.moodScore || 5, // Legacy score
+    notes: data.moodNotes || '' 
+  };
   setMoodState(moodData);
   
   // Restore notes with enhanced fallback
@@ -141,6 +147,8 @@ window.addEventListener('DOMContentLoaded', () => {
     if(!confirm('Reset all saved data? This clears day data and global settings.')) return;
     const keys = Object.keys(localStorage);
     keys.forEach(k=>{ if(k.startsWith('cherryPlanner_')||k==='cherry_globals'||k==='cherry_cycle'||k==='cherry_cycle_log') localStorage.removeItem(k); });
+    // Reset moods to default (5) for current day
+    resetMoods();
     restoreFromStorage(true);
     showToast('All data reset');
   });

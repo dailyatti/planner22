@@ -114,13 +114,9 @@
         <!-- Mood -->
         <article class="card" aria-labelledby="h-mood">
           <h2 id="h-mood" class="card-title">💭 Today's Mood</h2>
-          <p style="text-align:center;color:var(--muted);margin-bottom:8px">How do you feel today?</p>
+          <p style="text-align:center;color:var(--muted);margin-bottom:8px">Rate each mood separately (1-10)</p>
           <div class="mood-wrap">
-            <div id="moodChips" class="mood-chips" role="radiogroup" aria-label="Mood"></div>
-            <div class="mood-scale">
-              <input id="moodRange" class="range" type="range" min="1" max="10" step="1" value="5" aria-label="Mood intensity (1–10)" />
-              <div id="moodBubble" class="bubble">5/10</div>
-            </div>
+            <div id="moodMultiSliders" class="mood-multi-sliders"></div>
             <div class="slot"><label for="moodNotes">What influences your mood?</label><textarea id="moodNotes" class="mood-notes" data-key="moodNotes" placeholder="Thoughts, energy, triggers…"></textarea></div>
           </div>
         </article>
