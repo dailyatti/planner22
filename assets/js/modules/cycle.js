@@ -9,9 +9,13 @@ export function initCycle(save){
   if(cfg.start) $('#cycleStart').value = cfg.start;
   if(cfg.len) $('#cycleLen').value = cfg.len;
   if(cfg.period) $('#periodLen').value = cfg.period;
+  if(cfg.luteal) $('#lutealLen').value = cfg.luteal;
+  if(typeof cfg.adv === 'boolean') $('#advEst').checked = cfg.adv;
   buildCalendar();
   updateCycleSummary();
   $('#saveCycle').addEventListener('click', ()=>{ persistCycle(); buildCalendar(); updateCycleSummary(); showToast('Cycle saved'); });
+  // autosave on change
+  ['#cycleStart','#cycleLen','#periodLen','#lutealLen','#advEst'].forEach(sel=>{ const el=$(sel); if(!el)return; el.addEventListener('input', ()=>{ persistCycle(); onChange(); updateCycleSummary(); }); el.addEventListener('change', ()=>{ persistCycle(); onChange(); updateCycleSummary(); }); });
   $('#calPrev').addEventListener('click', ()=>{ calMonth.setMonth(calMonth.getMonth()-1); buildCalendar(); });
   $('#calNext').addEventListener('click', ()=>{ calMonth.setMonth(calMonth.getMonth()+1); buildCalendar(); });
   const exp = document.getElementById('exportCycle'); if(exp) exp.addEventListener('click', exportCycleCSV);

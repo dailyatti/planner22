@@ -5,6 +5,8 @@ let onChange = () => {};
 export function initTodos(save){
   onChange = save || (()=>{});
   $('#addTodo').addEventListener('click', () => addTodoItem(''));
+  // autosave existing static inputs (if any loaded initially)
+  $$('#todoList').forEach(()=> onChange());
 }
 
 export function addTodoItem(text='', completed=false){
@@ -22,7 +24,15 @@ export function addTodoItem(text='', completed=false){
   const input = li.querySelector('.todo-input');
   const [btnClone, btnDelete] = li.querySelectorAll('.icon-btn');
   checkbox.addEventListener('change', () => { input.classList.toggle('completed', checkbox.checked); onChange(); });
-  input.addEventListener('input', debounce(onChange, 300));
+  input.addEventListener('input', debounce(onChange, 250));
+  input.addEventListener('blur', onChange);
+  input.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter'){
+      e.preventDefault();
+      addTodoItem('');
+      onChange();
+    }
+  });
   btnDelete.addEventListener('click', () => { li.remove(); onChange(); });
   btnClone.addEventListener('click', () => { addTodoItem(input.value, checkbox.checked); });
   list.appendChild(li); input.focus();
