@@ -54,8 +54,39 @@ function restoreData(data){
   $('#grat3').value = data.grat3 || '';
 }
 
-function saveToStorage(){ localStorage.setItem(storageKey(), JSON.stringify(collectData())); showToast('Saved automatically!'); }
-function restoreFromStorage(showMsg=false){ const raw = localStorage.getItem(storageKey()); if(raw){ try{ restoreData(JSON.parse(raw)); if(showMsg) showToast('Loaded.'); }catch(e){ console.error(e); } } else { setTodos([]); setWaterState({count:0,target:8}); setMoodState({mood:'',score:5,notes:''}); setNotesState({text:''}); ['prio1','prio2','prio3','morn','noon','eve','meal_b','meal_l','meal_d','meal_s','grat1','grat2','grat3'].forEach(id=>{ const el=$("#"+id); if(el) el.value=''; }); } }
+let saveTimer;
+function saveToStorage(){
+  // Debounced autosave to reduce write bursts
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{
+    localStorage.setItem(storageKey(), JSON.stringify(collectData()));
+    // also persist global preferences
+    const cycle = getCycleGlobals();
+    localStorage.setItem('cherry_globals', JSON.stringify({
+      cycle,
+      water: getWaterState(),
+      mood: getMoodState()
+    }));
+    showToast('Saved automatically!');
+  }, 250);
+}
+function restoreFromStorage(showMsg=false){
+  // restore global preferences first
+  try{
+    const g = JSON.parse(localStorage.getItem('cherry_globals')||'{}');
+    if(g.water) setWaterState(g.water);
+    if(g.mood) setMoodState(g.mood);
+    if(g.cycle) setCycleGlobals(g.cycle);
+  }catch{}
+  const raw = localStorage.getItem(storageKey());
+  if(raw){
+    try{ restoreData(JSON.parse(raw)); if(showMsg) showToast('Loaded.'); }
+    catch(e){ console.error(e); }
+  } else {
+    setTodos([]); setWaterState({count:0,target:8}); setMoodState({mood:'',score:5,notes:''}); setNotesState({text:''});
+    ['prio1','prio2','prio3','morn','noon','eve','meal_b','meal_l','meal_d','meal_s','grat1','grat2','grat3'].forEach(id=>{ const el=$("#"+id); if(el) el.value=''; });
+  }
+}
 
 function updateDayOfWeek(){ const d = new Date($('#plannerDate').value || Date.now()); const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']; $('#dayOfWeek').textContent = days[d.getDay()]; }
 

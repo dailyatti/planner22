@@ -7,7 +7,7 @@ export function initNotes(save){
   onChange = save || (()=>{});
   const area = $('#notes'); const meta = $('#notesMeta');
   function autosize(){ area.style.height='auto'; area.style.height = Math.min(area.scrollHeight, window.innerHeight*0.6) + 'px'; }
-  function updateMeta(){ const text = area.value.trim(); const words = text ? text.split(/\s+/).length : 0; const chars = text.length; meta.textContent = `${words} words • ${chars} chars`; }
+  function updateMeta(){ const text = area.value.trim(); const words = text ? text.split(/\s+/).length : 0; const chars = text.length; meta.textContent = `${words} words • ${chars} characters`; }
   area.addEventListener('input', ()=>{ state.text = area.value; autosize(); updateMeta(); onChange(); });
   $$('.tool-btn[data-ins]').forEach(btn=> btn.addEventListener('click', ()=> insertAtCursor(area, btn.dataset.ins)));
   const boldBtn = $('.tool-btn[data-format="**"]'); if(boldBtn) boldBtn.addEventListener('click', ()=> wrapSelection(area, '**'));
