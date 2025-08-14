@@ -189,6 +189,18 @@
   <div id="toast" class="toast" role="status" aria-live="polite">Saved successfully!</div>
 
   <script type="module" src="assets/js/main.js"></script>
+  
+  <!-- Cherry Premium Features -->
+  <script type="module">
+    // Load premium features asynchronously
+    import('./assets/cherry-premium/js/premium.js')
+      .then(module => {
+        console.log('🍒 Premium features loaded');
+      })
+      .catch(error => {
+        console.log('Premium features not available:', error.message);
+      });
+  </script>
 </body>
 </html>
 

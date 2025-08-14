@@ -1,0 +1,252 @@
+[
+  {
+    "id": 1,
+    "text": "A legnagyobb dicsőség nem abban van, hogy soha nem bukunk el, hanem hogy minden bukás után felkelünk.",
+    "author": "Konfuciusz"
+  },
+  {
+    "id": 2,
+    "text": "Az élet olyan, mint a biciklizés. Az egyensúly megtartásához mozgásban kell maradni.",
+    "author": "Albert Einstein"
+  },
+  {
+    "id": 3,
+    "text": "Minden nap új lehetőség arra, hogy jobbá tedd magad.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 4,
+    "text": "A boldogság nem a körülményeken múlik, hanem a hozzáálláson.",
+    "author": "Hugh Downs"
+  },
+  {
+    "id": 5,
+    "text": "Ne hagyd, hogy a tegnap túl sokat foglalkoztasson a mából.",
+    "author": "Will Rogers"
+  },
+  {
+    "id": 6,
+    "text": "A siker nem végleges, a kudarc nem halálos: a folytatáshoz szükséges bátorság az, ami számít.",
+    "author": "Winston Churchill"
+  },
+  {
+    "id": 7,
+    "text": "Minden nehézség közepén ott rejtőzik a lehetőség.",
+    "author": "Albert Einstein"
+  },
+  {
+    "id": 8,
+    "text": "Az egyetlen lehetetlen utazás az, amelyet el sem kezdünk.",
+    "author": "Tony Robbins"
+  },
+  {
+    "id": 9,
+    "text": "Légy te magad a változás, amit a világban látni szeretnél.",
+    "author": "Mahatma Gandhi"
+  },
+  {
+    "id": 10,
+    "text": "A ma a tegnap álmainak eredménye és a holnap reményeinek forrása.",
+    "author": "Khalil Gibran"
+  },
+  {
+    "id": 11,
+    "text": "Nem az számít, milyen lassan haladsz, amíg nem állsz meg.",
+    "author": "Konfuciusz"
+  },
+  {
+    "id": 12,
+    "text": "A boldogság belülről fakad, nem kívülről.",
+    "author": "Buddha"
+  },
+  {
+    "id": 13,
+    "text": "Minden új kezdet valamilyen más kezdet végéből származik.",
+    "author": "Seneca"
+  },
+  {
+    "id": 14,
+    "text": "Az optimista látja a lehetőséget minden nehézségben.",
+    "author": "Winston Churchill"
+  },
+  {
+    "id": 15,
+    "text": "A kitartás a siker anyja.",
+    "author": "Napoleon Hill"
+  },
+  {
+    "id": 16,
+    "text": "Soha ne add fel az álmaidat, mert azok irányítják a jövődet.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 17,
+    "text": "A szépség mindenütt körülöttünk van, csak észre kell vennünk.",
+    "author": "Auguste Rodin"
+  },
+  {
+    "id": 18,
+    "text": "Az élet túl rövid ahhoz, hogy szomorúak legyünk.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 19,
+    "text": "A türelem minden ajtót kinyit.",
+    "author": "Török közmondás"
+  },
+  {
+    "id": 20,
+    "text": "Csak azok a napok számlálnak, amelyeken mosolygunk.",
+    "author": "Charlie Chaplin"
+  },
+  {
+    "id": 21,
+    "text": "A szeretet a lélek tápláléka.",
+    "author": "Szent Ágoston"
+  },
+  {
+    "id": 22,
+    "text": "Minden reggel újjászületünk. Amit ma teszünk, az a legfontosabb.",
+    "author": "Buddha"
+  },
+  {
+    "id": 23,
+    "text": "A hála a boldogság forrása.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 24,
+    "text": "Ne számold a napokat, tedd értelmessé a napokat.",
+    "author": "Muhammad Ali"
+  },
+  {
+    "id": 25,
+    "text": "A remény az a dolog tollakkal, amely a lélekben lakozik.",
+    "author": "Emily Dickinson"
+  },
+  {
+    "id": 26,
+    "text": "Minden nap egy új oldal a te történetedben.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 27,
+    "text": "A béke belső munka. Ne kívülről várd.",
+    "author": "Pema Chödrön"
+  },
+  {
+    "id": 28,
+    "text": "Az erő nem a fizikai képességből fakad. A legyőzhetetlen akaratból származik.",
+    "author": "Mahatma Gandhi"
+  },
+  {
+    "id": 29,
+    "text": "A boldogság nem cél, hanem életmód.",
+    "author": "Dalai Lama"
+  },
+  {
+    "id": 30,
+    "text": "Minden vihar után kisüt a nap.",
+    "author": "Magyar közmondás"
+  },
+  {
+    "id": 31,
+    "text": "A jóság nyelve, amelyet a süket is hall és a vak is lát.",
+    "author": "Mark Twain"
+  },
+  {
+    "id": 32,
+    "text": "Ne izgulj a jövő miatt, élj a jelenben.",
+    "author": "Lao Ce"
+  },
+  {
+    "id": 33,
+    "text": "A mosoly a legszebb ruha, amit viselhetsz.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 34,
+    "text": "Minden akadály mögött egy új út kezdődik.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 35,
+    "text": "A változás az élet egyetlen állandó eleme.",
+    "author": "Héraklitosz"
+  },
+  {
+    "id": 36,
+    "text": "Légy kedves, mert mindenki küzd valamilyen csatát.",
+    "author": "Platón"
+  },
+  {
+    "id": 37,
+    "text": "A szeretet az egyetlen erő, amely képes ellenséget baráttá változtatni.",
+    "author": "Martin Luther King Jr."
+  },
+  {
+    "id": 38,
+    "text": "Ne feledd: a legfényesebb csillagok a legsötétebb éjszakában ragyognak.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 39,
+    "text": "Az életben nem arról van szó, hogy kivárjuk a vihart, hanem hogy megtanuljunk táncolni az esőben.",
+    "author": "Vivian Greene"
+  },
+  {
+    "id": 40,
+    "text": "A hit nem látni, mi lehetséges, hanem hinni a lehetetlenben.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 41,
+    "text": "Minden út, amelyet szívből választasz, a helyes út.",
+    "author": "Oprah Winfrey"
+  },
+  {
+    "id": 42,
+    "text": "A kedvesség olyan nyelv, amelyet a vak is lát és a süket is hall.",
+    "author": "Helen Keller"
+  },
+  {
+    "id": 43,
+    "text": "Ne hagyd, hogy mások véleménye elnyomja a belső hangodat.",
+    "author": "Steve Jobs"
+  },
+  {
+    "id": 44,
+    "text": "A legnagyobb kalandok akkor kezdődnek, amikor kilépünk a komfortzónánkból.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 45,
+    "text": "Az igazi gazdagság nem abban rejlik, amit birtokolsz, hanem abban, amire nincs szükséged.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 46,
+    "text": "Minden nap új esély arra, hogy újraírd a történeted.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 47,
+    "text": "A hála minden más érzést átalakít.",
+    "author": "Oprah Winfrey"
+  },
+  {
+    "id": 48,
+    "text": "Ne a tökéletes pillanatra várj, fogd meg a pillanatot és tedd tökéletessé.",
+    "author": "Ismeretlen"
+  },
+  {
+    "id": 49,
+    "text": "Az élet 10% abból áll, ami történik veled, és 90% abból, hogyan reagálsz rá.",
+    "author": "Charles R. Swindoll"
+  },
+  {
+    "id": 50,
+    "text": "A legszebb dolog, amit adhatsz valakinek, a figyelmed és a szereteted.",
+    "author": "Thich Nhat Hanh"
+  }
+]

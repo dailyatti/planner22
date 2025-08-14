@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "text": "Igyál egy nagy pohár hideg vizet",
+    "category": "physical",
+    "description": "A víz segít feltölteni az energiákat és javítja a koncentrációt."
+  },
+  {
+    "id": 2,
+    "text": "Sétálj 5 percet a friss levegőn",
+    "category": "physical",
+    "description": "A mozgás és a természet közelség csökkenti a stresszt."
+  },
+  {
+    "id": 3,
+    "text": "Lélegezz 4-7-8 módszerrel (4 be, 7 tartsd, 8 ki)",
+    "category": "breathing",
+    "description": "Ez a légzési technika aktiválja a nyugtató idegrendszert."
+  },
+  {
+    "id": 4,
+    "text": "Egyél egy kis kedvenc snacket vagy fagyit",
+    "category": "comfort",
+    "description": "Kis öröm a mindennapi stresszoldásért."
+  },
+  {
+    "id": 5,
+    "text": "Írj le 3 dolgot, amiért hálás vagy ma",
+    "category": "gratitude",
+    "description": "A hála gyakorlása javítja a hangulatot és a pozitív szemléletet."
+  },
+  {
+    "id": 6,
+    "text": "Hallgass egy kedvenc zeneszámot",
+    "category": "entertainment",
+    "description": "A zene közvetlenül hat az érzelmi állapotunkra."
+  },
+  {
+    "id": 7,
+    "text": "Nyújtózz vagy csinálj 3 egyszerű jóga mozdulatot",
+    "category": "physical",
+    "description": "A nyújtás oldja a testtartásból eredő feszültséget."
+  },
+  {
+    "id": 8,
+    "text": "Hívj fel egy barátot vagy családtagot",
+    "category": "social",
+    "description": "A kapcsolatok erősítése javítja a közérzetet."
+  },
+  {
+    "id": 9,
+    "text": "Nézz ki az ablakon és figyelj 2 percig a természetet",
+    "category": "mindfulness",
+    "description": "A természetszemlélet megnyugtatja az elmét."
+  },
+  {
+    "id": 10,
+    "text": "Mosd meg az arcodat hideg vízzel",
+    "category": "physical",
+    "description": "Az arca frissítő hatású és segít lecsillapodni."
+  },
+  {
+    "id": 11,
+    "text": "Írj le 1 pozitív dolgot a mai napról",
+    "category": "reflection",
+    "description": "A pozitív emlékek tudatos rögzítése javítja az általános hangulatot."
+  },
+  {
+    "id": 12,
+    "text": "Csinálj 10 mélylégzést",
+    "category": "breathing",
+    "description": "Az egyszerű légzési gyakorlat gyorsan csökkenti a stresszt."
+  },
+  {
+    "id": 13,
+    "text": "Rendezd el a környezetedet 5 percig",
+    "category": "environment",
+    "description": "A rendezett környezet nyugalmat ad az elmének is."
+  },
+  {
+    "id": 14,
+    "text": "Öleld meg valaki kedves személyt",
+    "category": "social",
+    "description": "A fizikai közelség oxitocint termel, ami javítja a kedvet."
+  },
+  {
+    "id": 15,
+    "text": "Nézz meg egy vicces videót vagy meme-et",
+    "category": "entertainment",
+    "description": "A nevetés természetes hangulatemelő."
+  },
+  {
+    "id": 16,
+    "text": "Csukd be a szemed és képzelj el egy nyugodt helyet",
+    "category": "mindfulness",
+    "description": "A vizualizáció segít kikapcsolni a negatív gondolatokat."
+  },
+  {
+    "id": 17,
+    "text": "Igyál egy csésze meleg teát vagy kávét",
+    "category": "comfort",
+    "description": "A meleg ital és a rituálé megnyugtató hatású."
+  },
+  {
+    "id": 18,
+    "text": "Írj le egy rövid pozitív affirmációt magadról",
+    "category": "self-love",
+    "description": "Az önelfogadás gyakorlása erősíti az önbizalmat."
+  },
+  {
+    "id": 19,
+    "text": "Csinálj 1 percig valamit, ami örömet okoz",
+    "category": "joy",
+    "description": "Kis örömök halmozása javítja a nap színvonalát."
+  },
+  {
+    "id": 20,
+    "text": "Tervezz meg valamit, amire várhatsz",
+    "category": "planning",
+    "description": "A várakozás és tervezés pozitív jövőképet ad."
+  }
+]
