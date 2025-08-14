@@ -8,9 +8,7 @@ let state = {
     '😔': 5, // Sad
     '😴': 5, // Tired
     '🥰': 5, // Loved
-    '😎': 5, // Confident
     '😤': 5, // Frustrated
-    '😰': 5, // Anxious
     '🙏': 5  // Grateful
   },
   notes: '' 
@@ -22,9 +20,7 @@ const moodLabels = {
   '😔': 'Sad',
   '😴': 'Tired',
   '🥰': 'Loved',
-  '😎': 'Confident',
   '😤': 'Frustrated',
-  '😰': 'Anxious',
   '🙏': 'Grateful'
 };
 
@@ -43,9 +39,9 @@ export function initMood(save){
       <div class="mood-emoji">${emoji}</div>
       <div class="mood-slider-controls">
         <div class="mood-slider-label">${moodLabels[emoji]}</div>
-        <input type="range" min="1" max="10" step="1" value="${state.moods[emoji]}" 
+        <input type="range" min="0" max="10" step="1" value="${state.moods[emoji]}" 
                class="mood-individual-range" data-mood="${emoji}" 
-               aria-label="${moodLabels[emoji]} intensity (1-10)" />
+               aria-label="${moodLabels[emoji]} intensity (0-10)" />
         <div class="mood-value-display">${state.moods[emoji]}/10</div>
       </div>
     `;
@@ -129,9 +125,7 @@ export function selectMood(key) {
     'sad': '😔',
     'tired': '😴',
     'loved': '🥰',
-    'cool': '😎',
     'frustrated': '😤',
-    'anxious': '😰',
     'grateful': '🙏'
   };
   
