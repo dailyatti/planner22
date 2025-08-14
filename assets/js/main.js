@@ -30,7 +30,12 @@ function collectData(){
     grat1: $('#grat1').value || '',
     grat2: $('#grat2').value || '',
     grat3: $('#grat3').value || '',
-    notes
+    notes,
+    // Extra data to ensure completeness
+    waterTarget: water.target,
+    moodScore: mood.score,
+    moodNotes: mood.notes,
+    notesText: notes.text
   };
 }
 
@@ -46,9 +51,19 @@ function restoreData(data){
   $('#meal_l').value = data.meal_lunch || '';
   $('#meal_d').value = data.meal_dinner || '';
   $('#meal_s').value = data.meal_snacks || '';
-  setWaterState(data.water || { count:0, target:8 }); rebuildGlasses();
-  setMoodState(data.mood || { mood:'', score:5, notes:'' });
-  setNotesState(data.notes || { text:'' });
+  
+  // Restore water with enhanced fallback
+  const waterData = data.water || { count: data.waterCount || 0, target: data.waterTarget || 8 };
+  setWaterState(waterData); rebuildGlasses();
+  
+  // Restore mood with enhanced fallback
+  const moodData = data.mood || { mood: '', score: data.moodScore || 5, notes: data.moodNotes || '' };
+  setMoodState(moodData);
+  
+  // Restore notes with enhanced fallback
+  const notesData = data.notes || { text: data.notesText || '' };
+  setNotesState(notesData);
+  
   $('#grat1').value = data.grat1 || '';
   $('#grat2').value = data.grat2 || '';
   $('#grat3').value = data.grat3 || '';
@@ -116,6 +131,17 @@ window.addEventListener('DOMContentLoaded', () => {
   $('#btnReset').addEventListener('click', () => { localStorage.removeItem(storageKey()); restoreFromStorage(true); });
 
   $('#plannerDate').addEventListener('change', () => { updateDayOfWeek(); restoreFromStorage(true); });
+
+  // Auto-save for all input fields
+  $$('input[data-key], textarea[data-key]').forEach(el => {
+    el.addEventListener('input', debounce(saveToStorage, 250));
+  });
+  
+  // Auto-save for specific non-data-key fields
+  ['#prio1', '#prio2', '#prio3', '#morn', '#noon', '#eve', '#meal_b', '#meal_l', '#meal_d', '#meal_s', '#grat1', '#grat2', '#grat3'].forEach(sel => {
+    const el = $(sel);
+    if(el) el.addEventListener('input', debounce(saveToStorage, 250));
+  });
 });
 
 

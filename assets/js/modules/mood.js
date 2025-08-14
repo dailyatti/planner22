@@ -20,7 +20,7 @@ export function initMood(save){
   const wrap = $('#moodChips'); wrap.innerHTML='';
   MOODS.forEach(m => { const b = document.createElement('button'); b.type='button'; b.className='chip'; b.dataset.mood=m.key; b.textContent=m.label; b.title=m.title; b.setAttribute('aria-pressed','false'); b.addEventListener('click', ()=>{ selectMood(m.key); onChange(); }); wrap.appendChild(b); });
   const r = $('#moodRange'); const bub = $('#moodBubble'); const updateBubble = ()=>{ bub.textContent = `${r.value}/10`; }; updateBubble(); r.addEventListener('input', ()=>{ state.score = clamp(parseInt(r.value||'5',10),1,10); updateBubble(); onChange(); });
-  $('#moodNotes').addEventListener('input', ()=>{ state.notes = $('#moodNotes').value; onChange(); });
+  const notesEl = $('#moodNotes'); if(notesEl) notesEl.addEventListener('input', ()=>{ state.notes = notesEl.value; onChange(); });
 }
 
 export function selectMood(key){ $$('#moodChips .chip').forEach(b => { const on = b.dataset.mood === key; b.setAttribute('aria-pressed', on?'true':'false'); b.style.transform = on ? 'translateY(-2px) scale(1.06)' : ''; }); state.mood = key; }
