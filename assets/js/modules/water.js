@@ -7,7 +7,16 @@ export function initWater(save){
   onChange = save || (()=>{});
   $('#incWater').addEventListener('click', ()=> setWaterCount(getWaterCount()+1));
   $('#decWater').addEventListener('click', ()=> setWaterCount(getWaterCount()-1));
-  $('#waterTarget').addEventListener('change', ()=>{ state.target = clamp(parseInt($('#waterTarget').value||'8',10),1,24); rebuildGlasses(); onChange(); });
+  // update on target change or typing
+  const targetEl = $('#waterTarget');
+  targetEl.addEventListener('input', ()=>{ state.target = clamp(parseInt(targetEl.value||'8',10),1,24); rebuildGlasses(); onChange(); });
+  // allow manual typing of consumed glasses
+  const countEl = $('#waterCount');
+  countEl.addEventListener('input', ()=>{ const n = clamp(parseInt(countEl.value||'0',10),0,state.target); setWaterCount(n); });
+  countEl.addEventListener('keydown', (e)=>{
+    if(e.key==='ArrowUp'){ e.preventDefault(); setWaterCount(getWaterCount()+1); }
+    if(e.key==='ArrowDown'){ e.preventDefault(); setWaterCount(getWaterCount()-1); }
+  });
   rebuildGlasses();
 }
 

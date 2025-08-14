@@ -74,8 +74,8 @@ body{margin:0;font-family:'Quicksand',system-ui,-apple-system,Segoe UI,Roboto,He
 .field button:active{transform:translateY(1px)}
 .water{display:grid;grid-template-columns:repeat(auto-fit,minmax(42px,1fr));gap:10px;justify-content:center;margin-top:10px;max-width:520px;margin-left:auto;margin-right:auto}
 .glass{position:relative;width:100%;height:58px;border:2px solid var(--primary);border-radius:10px 10px 12px 12px;overflow:hidden;background:var(--paper);cursor:pointer;transition:transform .15s ease, box-shadow .2s, border-color .2s}
-.glass:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,.08)}
-.glass:focus-visible{outline:3px solid var(--cherry-300);outline-offset:2px}
+.glass:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,.08);border-color:var(--primary-2)}
+.glass:focus-visible{outline:none;border-color:var(--primary-2);box-shadow:0 0 0 3px rgba(214,51,132,.2)}
 .glass .fill{position:absolute;left:0;bottom:0;width:100%;height:0;background:linear-gradient(180deg,#60a5fa,#3b82f6);transition:height .35s ease}
 .glass .shine{position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.6),transparent 30%);mix-blend-mode:screen;pointer-events:none}
 .glass.filled{border-color:var(--primary-2)}
