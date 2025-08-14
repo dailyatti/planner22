@@ -8,6 +8,11 @@ import { initCycle, getCycleGlobals, setCycleGlobals, exportCycleCSV } from './m
 
 function storageKey(){ return `cherryPlanner_${$('#plannerDate').value}`; }
 
+function storageAvailable(){
+  try{ const t='__cherry_test__'; localStorage.setItem(t,'1'); localStorage.removeItem(t); return true; }
+  catch(e){ console.warn('LocalStorage unavailable:', e?.message||e); return false; }
+}
+
 function collectData(){
   const mood = getMoodState();
   const water = getWaterState();
@@ -74,6 +79,7 @@ function saveToStorage(){
   // Debounced autosave to reduce write bursts
   clearTimeout(saveTimer);
   saveTimer = setTimeout(()=>{
+    if(!storageAvailable()) return;
     localStorage.setItem(storageKey(), JSON.stringify(collectData()));
     // also persist global preferences
     const cycle = getCycleGlobals();
@@ -86,6 +92,7 @@ function saveToStorage(){
   }, 250);
 }
 function restoreFromStorage(showMsg=false){
+  if(!storageAvailable()) { console.warn('Storage disabled - skipping restore'); return; }
   // restore global preferences first
   try{
     const g = JSON.parse(localStorage.getItem('cherry_globals')||'{}');
@@ -123,6 +130,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initCycle(saveToStorage);
 
   restoreFromStorage();
+  if(!storageAvailable()) showToast('Warning: LocalStorage is disabled in this context. Data will not persist.');
 
   $('#btnPrint').addEventListener('click', () => window.print());
   $('#btnPng').addEventListener('click', () => saveImage('plannerContent'));
