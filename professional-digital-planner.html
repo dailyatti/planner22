@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Professional Digital Planner 2025 - Advanced productivity system with mood tracking, calendar integration, analytics, and premium features">
+  <meta name="theme-color" content="#6366f1">
+  <title>Digital Planner Pro 2025 🌟</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Export libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+
+  <style>
+    /* ========= CSS Variables & Root Styles ========= */
+    :root {
+      /* Color Palette - Professional & Modern */
+      --primary-50: #eef2ff;
+      --primary-100: #e0e7ff;
+      --primary-200: #c7d2fe;
+      --primary-300: #a5b4fc;
+      --primary-400: #818cf8;
+      --primary-500: #6366f1;
+      --primary-600: #4f46e5;
+      --primary-700: #4338ca;
+      --primary-800: #3730a3;
+      --primary-900: #312e81;
+      
+      --secondary-50: #f0fdf4;
+      --secondary-100: #dcfce7;
+      --secondary-200: #bbf7d0;
+      --secondary-300: #86efac;
+      --secondary-400: #4ade80;
+      --secondary-500: #22c55e;
+      --secondary-600: #16a34a;
+      --secondary-700: #15803d;
+      --secondary-800: #166534;
+      --secondary-900: #14532d;
+      
+      --accent-50: #fef3c7;
+      --accent-100: #fde68a;
+      --accent-200: #fcd34d;
+      --accent-300: #fbbf24;
+      --accent-400: #f59e0b;
+      --accent-500: #d97706;
+      --accent-600: #b45309;
+      --accent-700: #92400e;
+      --accent-800: #78350f;
+      --accent-900: #451a03;
+
+      /* Neutrals */
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+
+      /* System Colors */
+      --success: var(--secondary-500);
+      --warning: var(--accent-500);
+      --error: #ef4444;
+      --info: var(--primary-500);
+
+      /* Spacing & Layout */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+
+      /* Border Radius */
+      --radius-sm: 0.375rem;
+      --radius: 0.5rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1rem;
+      --radius-xl: 1.5rem;
+      --radius-2xl: 2rem;
+      --radius-full: 9999px;
+
+      /* Shadows */
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+      --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+      /* Transitions */
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+      /* Typography */
+      --font-family-display: 'Playfair Display', serif;
+      --font-family-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+      /* Background Gradients */
+      --gradient-primary: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+      --gradient-secondary: linear-gradient(135deg, var(--secondary-500) 0%, var(--secondary-700) 100%);
+      --gradient-accent: linear-gradient(135deg, var(--accent-400) 0%, var(--accent-600) 100%);
+      --gradient-bg: linear-gradient(135deg, var(--gray-50) 0%, var(--primary-50) 100%);
+      --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+    }
+
+    /* ========= Base Styles ========= */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-family-body);
+      line-height: 1.6;
+      color: var(--gray-800);
+      background: var(--gradient-bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ========= Navigation ========= */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px) saturate(160%);
+      border-bottom: 1px solid var(--gray-200);
+      transition: var(--transition);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: var(--space-4) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      text-decoration: none;
+    }
+
+    .nav-logo {
+      width: 48px;
+      height: 48px;
+      background: var(--gradient-primary);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition);
+    }
+
+    .nav-logo:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .nav-title {
+      font-family: var(--font-family-display);
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--primary-700);
+      letter-spacing: -0.025em;
+    }
+
+    .nav-subtitle {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+      font-weight: 500;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .nav-toggle {
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: var(--space-3) var(--space-5);
+      border-radius: var(--radius-lg);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .nav-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: calc(100% + var(--space-2));
+      right: var(--space-6);
+      background: white;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-2xl);
+      padding: var(--space-6);
+      min-width: 320px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: var(--transition);
+      border: 1px solid var(--gray-200);
+    }
+
+    .nav-menu.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+    }
+
+    .menu-item {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .menu-item:hover {
+      background: var(--primary-50);
+      border-color: var(--primary-300);
+      transform: translateY(-2px);
+    }
+
+    /* ========= Main Layout ========= */
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+    }
+
+    .hero-section {
+      text-align: center;
+      margin-bottom: var(--space-12);
+      position: relative;
+    }
+
+    .hero-title {
+      font-family: var(--font-family-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      color: var(--primary-700);
+      margin-bottom: var(--space-4);
+      letter-spacing: -0.025em;
+      position: relative;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--gray-600);
+      font-weight: 500;
+      margin-bottom: var(--space-8);
+    }
+
+    .date-selector {
+      background: white;
+      border-radius: var(--radius-2xl);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-lg);
+      margin-bottom: var(--space-10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-6);
+      flex-wrap: wrap;
+      border: 1px solid var(--gray-200);
+    }
+
+    .date-input-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .date-input {
+      padding: var(--space-3) var(--space-4);
+      border: 2px solid var(--gray-300);
+      border-radius: var(--radius-lg);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      transition: var(--transition);
+      min-width: 160px;
+    }
+
+    .date-input:focus {
+      outline: none;
+      border-color: var(--primary-500);
+      box-shadow: 0 0 0 3px var(--primary-100);
+      background: white;
+    }
+
+    .date-display {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--primary-700);
+      padding: var(--space-3) var(--space-5);
+      background: var(--primary-100);
+      border-radius: var(--radius-lg);
+    }
+
+    /* ========= Grid Layout ========= */
+    .planner-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: var(--space-8);
+      margin-bottom: var(--space-12);
+    }
+
+    .card {
+      background: var(--gradient-card);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+      opacity: 0.7;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-2xl);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--gradient-primary);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.125rem;
+    }
+
+    .card-badge {
+      background: var(--primary-100);
+      color: var(--primary-700);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* ========= Form Elements ========= */
+    .input-group {
+      margin-bottom: var(--space-5);
+    }
+
+    .input-label {
+      display: block;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: var(--space-2);
+      font-size: 0.875rem;
+    }
+
+    .input {
+      width: 100%;
+      padding: var(--space-4);
+      border: 2px solid var(--gray-300);
+      border-radius: var(--radius-lg);
+      font-size: 1rem;
+      transition: var(--transition);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--primary-500);
+      box-shadow: 0 0 0 3px var(--primary-100);
+      background: white;
+    }
+
+    .textarea {
+      min-height: 120px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      border: none;
+      border-radius: var(--radius-lg);
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: var(--gray-100);
+      color: var(--gray-700);
+      border: 1px solid var(--gray-300);
+    }
+
+    .btn-secondary:hover {
+      background: var(--gray-200);
+      transform: translateY(-1px);
+    }
+
+    .btn-sm {
+      padding: var(--space-2) var(--space-3);
+      font-size: 0.75rem;
+    }
+
+    .btn-lg {
+      padding: var(--space-4) var(--space-8);
+      font-size: 1rem;
+    }
+
+    /* ========= Todo List ========= */
+    .todo-list {
+      list-style: none;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4);
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-3);
+      border: 1px solid var(--gray-200);
+      transition: var(--transition);
+    }
+
+    .todo-item:hover {
+      background: rgba(255, 255, 255, 0.9);
+      transform: translateX(4px);
+    }
+
+    .todo-checkbox {
+      width: 20px;
+      height: 20px;
+      border-radius: var(--radius);
+      border: 2px solid var(--gray-400);
+      background: white;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .todo-checkbox:checked {
+      background: var(--primary-500);
+      border-color: var(--primary-500);
+    }
+
+    .todo-checkbox:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .todo-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      color: var(--gray-800);
+      outline: none;
+    }
+
+    .todo-input.completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    .todo-actions {
+      display: flex;
+      gap: var(--space-2);
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: var(--space-2);
+      border-radius: var(--radius);
+      color: var(--gray-500);
+      transition: var(--transition);
+    }
+
+    .icon-btn:hover {
+      background: var(--gray-100);
+      color: var(--gray-700);
+    }
+
+    /* ========= Priority Cards ========= */
+    .priority-item {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-bottom: var(--space-3);
+      border-left: 4px solid var(--gray-300);
+      transition: var(--transition);
+    }
+
+    .priority-item.high { border-left-color: var(--error); }
+    .priority-item.medium { border-left-color: var(--warning); }
+    .priority-item.low { border-left-color: var(--success); }
+
+    .priority-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-2);
+    }
+
+    .priority-label.high { color: var(--error); }
+    .priority-label.medium { color: var(--warning); }
+    .priority-label.low { color: var(--success); }
+
+    /* ========= Water Tracker ========= */
+    .water-tracker {
+      text-align: center;
+    }
+
+    .water-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .water-control-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: rgba(255, 255, 255, 0.8);
+      padding: var(--space-3);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200);
+    }
+
+    .water-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+      gap: var(--space-3);
+      margin-bottom: var(--space-6);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .water-glass {
+      width: 50px;
+      height: 60px;
+      border: 3px solid var(--primary-400);
+      border-radius: 8px 8px 12px 12px;
+      position: relative;
+      cursor: pointer;
+      transition: var(--transition);
+      background: white;
+      overflow: hidden;
+    }
+
+    .water-glass:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .water-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 0;
+      background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+      transition: height 0.3s ease;
+    }
+
+    .water-glass.filled .water-fill {
+      height: 100%;
+    }
+
+    .water-progress {
+      background: var(--gray-200);
+      height: 12px;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-bottom: var(--space-4);
+    }
+
+    .water-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
+      transition: width 0.3s ease;
+      border-radius: var(--radius-full);
+    }
+
+    .water-stats {
+      color: var(--gray-600);
+      font-weight: 600;
+    }
+
+    /* ========= Mood Tracker ========= */
+    .mood-tracker {
+      text-align: center;
+    }
+
+    .mood-emotions {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .mood-emotion {
+      width: 60px;
+      height: 60px;
+      border: 3px solid var(--gray-300);
+      border-radius: var(--radius-xl);
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .mood-emotion:hover {
+      transform: scale(1.1);
+      border-color: var(--primary-400);
+    }
+
+    .mood-emotion.active {
+      border-color: var(--primary-500);
+      background: var(--primary-50);
+      transform: scale(1.15);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .mood-scale {
+      margin-bottom: var(--space-4);
+    }
+
+    .mood-slider {
+      width: 100%;
+      max-width: 400px;
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(90deg, #fecaca 0%, #fed7aa 25%, #fde68a 50%, #d9f99d 75%, #bbf7d0 100%);
+      outline: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .mood-slider::-webkit-slider-thumb {
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid var(--primary-500);
+      box-shadow: var(--shadow-lg);
+      cursor: pointer;
+    }
+
+    .mood-slider::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid var(--primary-500);
+      box-shadow: var(--shadow-lg);
+      cursor: pointer;
+    }
+
+    .mood-value {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--primary-700);
+      margin-top: var(--space-2);
+    }
+
+    /* ========= Calendar ========= */
+    .calendar-container {
+      background: white;
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow);
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .calendar-nav {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .calendar-nav:hover {
+      background: var(--gray-200);
+    }
+
+    .calendar-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: var(--space-1);
+    }
+
+    .calendar-day-header {
+      text-align: center;
+      font-weight: 600;
+      color: var(--gray-600);
+      padding: var(--space-2);
+      font-size: 0.875rem;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+      position: relative;
+      min-height: 40px;
+    }
+
+    .calendar-day:hover {
+      background: var(--gray-100);
+    }
+
+    .calendar-day.today {
+      background: var(--primary-500);
+      color: white;
+      font-weight: 700;
+    }
+
+    .calendar-day.selected {
+      background: var(--primary-100);
+      color: var(--primary-700);
+      font-weight: 700;
+    }
+
+    .calendar-day.other-month {
+      color: var(--gray-400);
+    }
+
+    .calendar-day.period {
+      background: #fecaca;
+      color: #dc2626;
+    }
+
+    .calendar-day.fertile {
+      background: #d9f99d;
+      color: #16a34a;
+    }
+
+    .calendar-day.ovulation {
+      background: #fde68a;
+      color: #d97706;
+    }
+
+    /* ========= Responsive Design ========= */
+    @media (max-width: 1024px) {
+      .planner-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: var(--space-6);
+      }
+      
+      .nav-container {
+        padding: var(--space-3) var(--space-4);
+      }
+      
+      .main-container {
+        padding: var(--space-6) var(--space-4);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .planner-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .date-selector {
+        flex-direction: column;
+        gap: var(--space-4);
+      }
+      
+      .nav-menu {
+        left: var(--space-4);
+        right: var(--space-4);
+        min-width: unset;
+      }
+      
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .water-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      .mood-emotions {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: var(--space-6);
+      }
+      
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .water-controls {
+        flex-direction: column;
+      }
+      
+      .calendar-day {
+        min-height: 35px;
+        font-size: 0.875rem;
+      }
+    }
+
+    /* ========= Print Styles ========= */
+    @media print {
+      body {
+        background: white !important;
+      }
+      
+      .navbar,
+      .nav-menu,
+      .btn,
+      .todo-actions,
+      .water-controls {
+        display: none !important;
+      }
+      
+      .card {
+        break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid var(--gray-300) !important;
+        background: white !important;
+      }
+      
+      .planner-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+
+    /* ========= Animation Classes ========= */
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .slide-up {
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* ========= Toast Notifications ========= */
+    .toast {
+      position: fixed;
+      bottom: var(--space-6);
+      right: var(--space-6);
+      background: var(--gradient-primary);
+      color: white;
+      padding: var(--space-4) var(--space-6);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-2xl);
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: var(--transition);
+      font-weight: 600;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    /* ========= Full Width Cards ========= */
+    .card-full {
+      grid-column: 1 / -1;
+    }
+
+    /* ========= Notes Section ========= */
+    .notes-toolbar {
+      display: flex;
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .notes-stats {
+      margin-top: var(--space-4);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+
+    /* ========= Cycle Tracker Enhancements ========= */
+    .cycle-controls {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .cycle-legend {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-4);
+      margin-top: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-300);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">
+        <div class="nav-logo">🌟</div>
+        <div>
+          <div class="nav-title">Digital Planner Pro</div>
+          <div class="nav-subtitle">Professional Productivity System</div>
+        </div>
+      </a>
+      
+      <div class="nav-actions">
+        <button class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+          <span>Menu</span>
+        </button>
+      </div>
+      
+      <div class="nav-menu" id="navMenu">
+        <div class="menu-grid">
+          <div class="menu-item" id="exportPDF">
+            <i class="fas fa-file-pdf" style="color: var(--error);"></i>
+            <span>Export PDF</span>
+          </div>
+          <div class="menu-item" id="exportPNG">
+            <i class="fas fa-image" style="color: var(--success);"></i>
+            <span>Save Image</span>
+          </div>
+          <div class="menu-item" id="printPlanner">
+            <i class="fas fa-print" style="color: var(--gray-600);"></i>
+            <span>Print</span>
+          </div>
+          <div class="menu-item" id="savePlanner">
+            <i class="fas fa-save" style="color: var(--primary-500);"></i>
+            <span>Save</span>
+          </div>
+          <div class="menu-item" id="resetPlanner">
+            <i class="fas fa-refresh" style="color: var(--warning);"></i>
+            <span>Reset</span>
+          </div>
+          <div class="menu-item" id="analytics">
+            <i class="fas fa-chart-line" style="color: var(--info);"></i>
+            <span>Analytics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-container" id="plannerContent">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <h1 class="hero-title">Your Perfect Day Planner</h1>
+      <p class="hero-subtitle">Design your ideal day with advanced productivity tools and insights</p>
+    </section>
+
+    <!-- Date Selection -->
+    <section class="date-selector">
+      <div class="date-input-group">
+        <label for="plannerDate" class="input-label">Select Date:</label>
+        <input type="date" id="plannerDate" class="date-input">
+      </div>
+      <div class="date-display" id="dateDisplay">Today</div>
+    </section>
+
+    <!-- Main Grid -->
+    <div class="planner-grid">
+      <!-- Daily Tasks -->
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <div class="card-icon"><i class="fas fa-tasks"></i></div>
+            Daily Tasks
+          </h2>
+          <div class="card-badge" id="todoProgress">0/0</div>
+        </div>
+        <ul class="todo-list" id="todoList"></ul>
+        <button class="btn btn-primary" id="addTodo">
+          <i class="fas fa-plus"></i>
+          Add Task
+        </button>
+      </article>
+
+      <!-- Top Priorities -->
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <div class="card-icon"><i class="fas fa-star"></i></div>
+            Top Priorities
+          </h2>
+        </div>
+        <div class="priority-item high">
+          <div class="priority-label high">High Priority</div>
+          <input type="text" class="input" id="priority1" placeholder="Most important task of the day" data-key="priority1">
+        </div>
+        <div class="priority-item medium">
+          <div class="priority-label medium">Medium Priority</div>
+          <input type="text" class="input" id="priority2" placeholder="Second most important task" data-key="priority2">
+        </div>
+        <div class="priority-item low">
+          <div class="priority-label low">Low Priority</div>
+          <input type="text" class="input" id="priority3" placeholder="Third most important task" data-key="priority3">
+        </div>
+      </article>
+
+      <!-- Daily Schedule -->
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <div class="card-icon"><i class="fas fa-clock"></i></div>
+            Daily Schedule
+          </h2>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Morning (6:00 - 12:00)</label>
+          <input type="text" class="input" id="morning" placeholder="Morning routine, breakfast, early tasks..." data-key="morning">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Afternoon (12:00 - 18:00)</label>
+          <input type="text" class="input" id="afternoon" placeholder="Work, lunch, main activities..." data-key="afternoon">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Evening (18:00 - 22:00)</label>
+          <input type="text" class="input" id="evening" placeholder="Dinner, relaxation, evening routine..." data-key="evening">
+        </div>
+      </article>
+
+      <!-- Meals Planner -->
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <div class="card-icon"><i class="fas fa-utensils"></i></div>
+            Meal Planning
+          </h2>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Breakfast</label>
+          <input type="text" class="input" id="breakfast" placeholder="What will you have for breakfast?" data-key="breakfast">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Lunch</label>
+          <input type="text" class="input" id="lunch" placeholder="What will you have for lunch?" data-key="lunch">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Dinner</label>
+          <input type="text" class="input" id="dinner" placeholder="What will you have for dinner?" data-key="dinner">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Snacks</label>
+          <input type="text" class="input" id="snacks" placeholder="Healthy snacks and treats" data-key="snacks">
+        </div>
+      </article>
+
+      <!-- Water Tracker -->
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <div class="card-icon"><i class="fas fa-tint"></i></div>
+            Hydration Tracker
+          </h2>
+          <div class="card-badge" id="waterProgress">0/8 glasses</div>
+        </div>
+        <div class="water-tracker">
+          <div class="water-controls">
+            <div class="water-control-group">
+              <label class="input-label">Daily Goal:</label>
+              <input type="number" id="waterTarget" min="1" max="20" value="8" class="input" style="width: 80px;">
+              <span>glasses</span>
+            </div>
+            <div class="water-control-group">
+              <button class="btn btn-secondary btn-sm" id="waterDecrease">-</button>
+              <span id="waterCurrent">0</span>
+              <button class="btn btn-primary btn-sm" id="waterIncrease">+</button>
+            </div>
+          </div>
+          <div class="water-grid" id="waterGrid"></div>
+          <div class="water-progress">
+            <div class="water-progress-bar" id="waterProgressBar"></div>
+          </div>
+          <div class="water-stats" id="waterStats">0 of 8 glasses completed</div>
+        </div>
+      </article>
+
+      <!-- Mood Tracker -->
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <div class="card-icon"><i class="fas fa-heart"></i></div>
+            Mood & Energy
+          </h2>
+        </div>
+        <div class="mood-tracker">
+          <p style="color: var(--gray-600); margin-bottom: var(--space-4);">How are you feeling today?</p>
+          <div class="mood-emotions" id="moodEmotions"></div>
+          <div class="mood-scale">
+            <input type="range" class="mood-slider" id="moodSlider" min="1" max="10" value="5">
+            <div class="mood-value" id="moodValue">5/10</div>
+          </div>
+          <div class="input-group">
+            <label class="input-label">What's influencing your mood today?</label>
+            <textarea class="input textarea" id="moodNotes" placeholder="Describe your feelings, energy levels, or what's affecting your mood..." data-key="moodNotes"></textarea>
+          </div>
+        </div>
+      </article>
+
+      <!-- Gratitude Journal -->
+      <article class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <div class="card-icon"><i class="fas fa-heart"></i></div>
+            Gratitude Journal
+          </h2>
+        </div>
+        <div class="input-group">
+          <label class="input-label">1. I'm grateful for...</label>
+          <input type="text" class="input" id="gratitude1" placeholder="Something you're thankful for today" data-key="gratitude1">
+        </div>
+        <div class="input-group">
+          <label class="input-label">2. I appreciate...</label>
+          <input type="text" class="input" id="gratitude2" placeholder="Another thing you appreciate" data-key="gratitude2">
+        </div>
+        <div class="input-group">
+          <label class="input-label">3. I'm blessed with...</label>
+          <input type="text" class="input" id="gratitude3" placeholder="A third thing you're grateful for" data-key="gratitude3">
+        </div>
+      </article>
+
+      <!-- Notes & Ideas -->
+      <article class="card card-full">
+        <div class="card-header">
+          <h2 class="card-title">
+            <div class="card-icon"><i class="fas fa-lightbulb"></i></div>
+            Notes & Ideas
+          </h2>
+        </div>
+        <div class="notes-toolbar">
+          <button class="btn btn-secondary btn-sm" data-format="- [ ] ">Checklist</button>
+          <button class="btn btn-secondary btn-sm" data-format="• ">Bullet Point</button>
+          <button class="btn btn-secondary btn-sm" data-format="# ">Heading</button>
+          <button class="btn btn-secondary btn-sm" data-format="**">Bold</button>
+          <button class="btn btn-secondary btn-sm" id="exportNotes">Export TXT</button>
+        </div>
+        <textarea class="input textarea" id="notes" placeholder="Write your thoughts, ideas, insights, or anything that comes to mind..." data-key="notes" style="min-height: 200px;"></textarea>
+        <div class="notes-stats">
+          <span id="wordCount">0 words</span>
+          <span id="charCount">0 characters</span>
+        </div>
+      </article>
+
+      <!-- Advanced Calendar with Cycle Tracking -->
+      <article class="card card-full">
+        <div class="card-header">
+          <h2 class="card-title">
+            <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+            Advanced Calendar & Cycle Tracking
+          </h2>
+        </div>
+        <div class="cycle-controls">
+          <div class="input-group" style="margin-bottom: 0;">
+            <label class="input-label">Last Period Start</label>
+            <input type="date" class="input" id="lastPeriod" style="width: auto;">
+          </div>
+          <div class="input-group" style="margin-bottom: 0;">
+            <label class="input-label">Cycle Length</label>
+            <input type="number" class="input" id="cycleLength" min="20" max="40" value="28" style="width: 80px;">
+            <span>days</span>
+          </div>
+          <div class="input-group" style="margin-bottom: 0;">
+            <label class="input-label">Period Length</label>
+            <input type="number" class="input" id="periodLength" min="1" max="10" value="5" style="width: 80px;">
+            <span>days</span>
+          </div>
+          <button class="btn btn-primary" id="updateCycle">Update Cycle</button>
+        </div>
+        
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <button class="calendar-nav" id="prevMonth">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <h3 class="calendar-title" id="calendarTitle">January 2025</h3>
+            <button class="calendar-nav" id="nextMonth">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="cycle-legend">
+            <div class="legend-item">
+              <div class="legend-color" style="background: #fecaca;"></div>
+              <span>Period Days</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: #d9f99d;"></div>
+              <span>Fertile Window</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: #fde68a;"></div>
+              <span>Ovulation</span>
+            </div>
+          </div>
+        </div>
+        <p style="color: var(--gray-500); font-size: 0.875rem; margin-top: var(--space-4); text-align: center;">
+          <em>Note: This is an estimation tool for educational purposes only. Consult healthcare professionals for medical advice.</em>
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">Changes saved successfully!</div>
+
+  <script>
+    // ========= Core Application Logic =========
+    class DigitalPlanner {
+      constructor() {
+        this.currentDate = new Date();
+        this.selectedDate = new Date();
+        this.currentMonth = new Date();
+        this.todos = [];
+        this.waterCount = 0;
+        this.waterTarget = 8;
+        this.moodData = { emotion: '', rating: 5 };
+        this.cycleData = { lastPeriod: null, cycleLength: 28, periodLength: 5 };
+        
+        this.init();
+      }
+
+      init() {
+        this.setupEventListeners();
+        this.setupDateInput();
+        this.buildWaterTracker();
+        this.buildMoodTracker();
+        this.buildCalendar();
+        this.loadData();
+        this.startAutosave();
+      }
+
+      setupEventListeners() {
+        // Navigation
+        document.getElementById('navToggle').addEventListener('click', this.toggleMenu.bind(this));
+        document.addEventListener('click', this.closeMenuOutside.bind(this));
+
+        // Menu actions
+        document.getElementById('exportPDF').addEventListener('click', this.exportPDF.bind(this));
+        document.getElementById('exportPNG').addEventListener('click', this.exportPNG.bind(this));
+        document.getElementById('printPlanner').addEventListener('click', () => window.print());
+        document.getElementById('savePlanner').addEventListener('click', this.saveData.bind(this));
+        document.getElementById('resetPlanner').addEventListener('click', this.resetData.bind(this));
+        document.getElementById('analytics').addEventListener('click', this.showAnalytics.bind(this));
+
+        // Date input
+        document.getElementById('plannerDate').addEventListener('change', this.onDateChange.bind(this));
+
+        // Todos
+        document.getElementById('addTodo').addEventListener('click', this.addTodo.bind(this));
+
+        // Water tracker
+        document.getElementById('waterIncrease').addEventListener('click', () => this.updateWaterCount(1));
+        document.getElementById('waterDecrease').addEventListener('click', () => this.updateWaterCount(-1));
+        document.getElementById('waterTarget').addEventListener('change', this.updateWaterTarget.bind(this));
+
+        // Mood tracker
+        document.getElementById('moodSlider').addEventListener('input', this.updateMoodRating.bind(this));
+
+        // Notes formatting
+        document.querySelectorAll('[data-format]').forEach(btn => {
+          btn.addEventListener('click', (e) => this.formatText(e.target.dataset.format));
+        });
+        document.getElementById('exportNotes').addEventListener('click', this.exportNotes.bind(this));
+        document.getElementById('notes').addEventListener('input', this.updateNotesStats.bind(this));
+
+        // Calendar
+        document.getElementById('prevMonth').addEventListener('click', () => this.navigateMonth(-1));
+        document.getElementById('nextMonth').addEventListener('click', () => this.navigateMonth(1));
+        document.getElementById('updateCycle').addEventListener('click', this.updateCycleData.bind(this));
+
+        // Auto-save on input changes
+        document.querySelectorAll('[data-key]').forEach(input => {
+          input.addEventListener('input', this.debounce(this.saveData.bind(this), 500));
+        });
+      }
+
+      setupDateInput() {
+        const dateInput = document.getElementById('plannerDate');
+        dateInput.valueAsDate = this.selectedDate;
+        this.updateDateDisplay();
+      }
+
+      onDateChange() {
+        const dateInput = document.getElementById('plannerDate');
+        this.selectedDate = new Date(dateInput.value);
+        this.updateDateDisplay();
+        this.loadData();
+      }
+
+      updateDateDisplay() {
+        const options = { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        };
+        document.getElementById('dateDisplay').textContent = 
+          this.selectedDate.toLocaleDateString('en-US', options);
+      }
+
+      // ========= Todo Management =========
+      addTodo(text = '', completed = false) {
+        const todoList = document.getElementById('todoList');
+        const li = document.createElement('li');
+        li.className = 'todo-item fade-in';
+        
+        const todoId = Date.now() + Math.random();
+        li.innerHTML = `
+          <input type="checkbox" class="todo-checkbox" ${completed ? 'checked' : ''} data-id="${todoId}">
+          <input type="text" class="todo-input ${completed ? 'completed' : ''}" 
+                 value="${this.escapeHtml(text)}" placeholder="Add a new task..." data-id="${todoId}">
+          <div class="todo-actions">
+            <button class="icon-btn" title="Duplicate" data-action="duplicate" data-id="${todoId}">
+              <i class="fas fa-copy"></i>
+            </button>
+            <button class="icon-btn" title="Delete" data-action="delete" data-id="${todoId}">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        `;
+
+        todoList.appendChild(li);
+        this.attachTodoListeners(li, todoId);
+        this.updateTodoProgress();
+        
+        // Focus on the input
+        li.querySelector('.todo-input').focus();
+      }
+
+      attachTodoListeners(li, todoId) {
+        const checkbox = li.querySelector('.todo-checkbox');
+        const input = li.querySelector('.todo-input');
+        const actions = li.querySelectorAll('[data-action]');
+
+        checkbox.addEventListener('change', () => {
+          input.classList.toggle('completed', checkbox.checked);
+          this.updateTodoProgress();
+          this.saveData();
+        });
+
+        input.addEventListener('input', this.debounce(this.saveData.bind(this), 300));
+
+        actions.forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const action = e.target.closest('[data-action]').dataset.action;
+            if (action === 'delete') {
+              li.remove();
+              this.updateTodoProgress();
+              this.saveData();
+            } else if (action === 'duplicate') {
+              this.addTodo(input.value, checkbox.checked);
+            }
+          });
+        });
+      }
+
+      updateTodoProgress() {
+        const todos = document.querySelectorAll('.todo-item');
+        const completed = document.querySelectorAll('.todo-checkbox:checked').length;
+        const total = todos.length;
+        document.getElementById('todoProgress').textContent = `${completed}/${total}`;
+      }
+
+      getTodos() {
+        return Array.from(document.querySelectorAll('.todo-item')).map(item => {
+          const checkbox = item.querySelector('.todo-checkbox');
+          const input = item.querySelector('.todo-input');
+          return {
+            text: input.value.trim(),
+            completed: checkbox.checked
+          };
+        }).filter(todo => todo.text !== '');
+      }
+
+      setTodos(todos) {
+        const todoList = document.getElementById('todoList');
+        todoList.innerHTML = '';
+        
+        if (!todos || !todos.length) {
+          this.addTodo('', false);
+          return;
+        }
+
+        todos.forEach(todo => {
+          this.addTodo(todo.text, todo.completed);
+        });
+      }
+
+      // ========= Water Tracker =========
+      buildWaterTracker() {
+        this.renderWaterGlasses();
+        this.updateWaterDisplay();
+      }
+
+      renderWaterGlasses() {
+        const grid = document.getElementById('waterGrid');
+        grid.innerHTML = '';
+        
+        for (let i = 0; i < this.waterTarget; i++) {
+          const glass = document.createElement('div');
+          glass.className = 'water-glass';
+          glass.innerHTML = '<div class="water-fill"></div>';
+          glass.addEventListener('click', () => this.setWaterCount(i + 1));
+          grid.appendChild(glass);
+        }
+        
+        this.updateWaterDisplay();
+      }
+
+      updateWaterCount(change) {
+        this.waterCount = Math.max(0, Math.min(this.waterTarget, this.waterCount + change));
+        this.updateWaterDisplay();
+        this.saveData();
+      }
+
+      setWaterCount(count) {
+        this.waterCount = Math.max(0, Math.min(this.waterTarget, count));
+        this.updateWaterDisplay();
+        this.saveData();
+      }
+
+      updateWaterTarget() {
+        const target = parseInt(document.getElementById('waterTarget').value);
+        this.waterTarget = Math.max(1, Math.min(20, target));
+        this.waterCount = Math.min(this.waterCount, this.waterTarget);
+        this.renderWaterGlasses();
+        this.saveData();
+      }
+
+      updateWaterDisplay() {
+        const glasses = document.querySelectorAll('.water-glass');
+        glasses.forEach((glass, index) => {
+          glass.classList.toggle('filled', index < this.waterCount);
+        });
+
+        const percentage = (this.waterCount / this.waterTarget) * 100;
+        document.getElementById('waterProgressBar').style.width = `${percentage}%`;
+        document.getElementById('waterCurrent').textContent = this.waterCount;
+        document.getElementById('waterProgress').textContent = `${this.waterCount}/${this.waterTarget} glasses`;
+        document.getElementById('waterStats').textContent = 
+          `${this.waterCount} of ${this.waterTarget} glasses completed`;
+      }
+
+      // ========= Mood Tracker =========
+      buildMoodTracker() {
+        const emotions = [
+          { emoji: '😊', name: 'Happy', value: 'happy' },
+          { emoji: '😌', name: 'Calm', value: 'calm' },
+          { emoji: '😢', name: 'Sad', value: 'sad' },
+          { emoji: '😴', name: 'Tired', value: 'tired' },
+          { emoji: '😤', name: 'Frustrated', value: 'frustrated' },
+          { emoji: '🤗', name: 'Loved', value: 'loved' },
+          { emoji: '😎', name: 'Confident', value: 'confident' },
+          { emoji: '😰', name: 'Anxious', value: 'anxious' }
+        ];
+
+        const container = document.getElementById('moodEmotions');
+        container.innerHTML = '';
+
+        emotions.forEach(emotion => {
+          const btn = document.createElement('button');
+          btn.className = 'mood-emotion';
+          btn.innerHTML = emotion.emoji;
+          btn.title = emotion.name;
+          btn.dataset.emotion = emotion.value;
+          btn.addEventListener('click', () => this.selectMoodEmotion(emotion.value));
+          container.appendChild(btn);
+        });
+
+        this.updateMoodDisplay();
+      }
+
+      selectMoodEmotion(emotion) {
+        document.querySelectorAll('.mood-emotion').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.emotion === emotion);
+        });
+        this.moodData.emotion = emotion;
+        this.saveData();
+      }
+
+      updateMoodRating() {
+        const slider = document.getElementById('moodSlider');
+        this.moodData.rating = parseInt(slider.value);
+        document.getElementById('moodValue').textContent = `${this.moodData.rating}/10`;
+        this.saveData();
+      }
+
+      updateMoodDisplay() {
+        document.getElementById('moodSlider').value = this.moodData.rating;
+        document.getElementById('moodValue').textContent = `${this.moodData.rating}/10`;
+        
+        if (this.moodData.emotion) {
+          document.querySelectorAll('.mood-emotion').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.emotion === this.moodData.emotion);
+          });
+        }
+      }
+
+      // ========= Calendar & Cycle Tracking =========
+      buildCalendar() {
+        const year = this.currentMonth.getFullYear();
+        const month = this.currentMonth.getMonth();
+        
+        document.getElementById('calendarTitle').textContent = 
+          this.currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+        const grid = document.getElementById('calendarGrid');
+        grid.innerHTML = '';
+
+        // Day headers
+        const dayHeaders = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        dayHeaders.forEach(day => {
+          const header = document.createElement('div');
+          header.className = 'calendar-day-header';
+          header.textContent = day;
+          grid.appendChild(header);
+        });
+
+        // Get first day of month and number of days
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startDay = (firstDay.getDay() + 6) % 7; // Make Monday = 0
+
+        // Add empty cells for days before month starts
+        for (let i = 0; i < startDay; i++) {
+          const emptyDay = document.createElement('div');
+          emptyDay.className = 'calendar-day other-month';
+          grid.appendChild(emptyDay);
+        }
+
+        // Add days of the month
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayElement = document.createElement('div');
+          dayElement.className = 'calendar-day';
+          dayElement.textContent = day;
+          
+          const currentDate = new Date(year, month, day);
+          
+          // Check if it's today
+          if (this.isSameDate(currentDate, new Date())) {
+            dayElement.classList.add('today');
+          }
+          
+          // Check if it's selected date
+          if (this.isSameDate(currentDate, this.selectedDate)) {
+            dayElement.classList.add('selected');
+          }
+
+          // Add cycle tracking classes
+          this.addCycleClasses(dayElement, currentDate);
+
+          // Add click listener
+          dayElement.addEventListener('click', () => {
+            this.selectedDate = new Date(currentDate);
+            document.getElementById('plannerDate').valueAsDate = this.selectedDate;
+            this.updateDateDisplay();
+            this.buildCalendar();
+            this.loadData();
+          });
+
+          grid.appendChild(dayElement);
+        }
+      }
+
+      addCycleClasses(dayElement, date) {
+        if (!this.cycleData.lastPeriod) return;
+
+        const lastPeriod = new Date(this.cycleData.lastPeriod);
+        const daysDiff = Math.floor((date - lastPeriod) / (1000 * 60 * 60 * 24));
+        const cycleDay = ((daysDiff % this.cycleData.cycleLength) + this.cycleData.cycleLength) % this.cycleData.cycleLength;
+
+        // Period days
+        if (cycleDay < this.cycleData.periodLength) {
+          dayElement.classList.add('period');
+        }
+        
+        // Fertile window (typically 5 days before ovulation + ovulation day)
+        const ovulationDay = this.cycleData.cycleLength - 14;
+        if (cycleDay >= ovulationDay - 5 && cycleDay <= ovulationDay + 1) {
+          dayElement.classList.add('fertile');
+        }
+        
+        // Ovulation day
+        if (cycleDay === ovulationDay) {
+          dayElement.classList.add('ovulation');
+        }
+      }
+
+      navigateMonth(direction) {
+        this.currentMonth.setMonth(this.currentMonth.getMonth() + direction);
+        this.buildCalendar();
+      }
+
+      updateCycleData() {
+        const lastPeriod = document.getElementById('lastPeriod').value;
+        const cycleLength = parseInt(document.getElementById('cycleLength').value);
+        const periodLength = parseInt(document.getElementById('periodLength').value);
+
+        this.cycleData = {
+          lastPeriod: lastPeriod ? new Date(lastPeriod) : null,
+          cycleLength: Math.max(20, Math.min(40, cycleLength || 28)),
+          periodLength: Math.max(1, Math.min(10, periodLength || 5))
+        };
+
+        this.buildCalendar();
+        this.saveData();
+        this.showToast('Cycle data updated successfully!');
+      }
+
+      // ========= Notes & Formatting =========
+      formatText(format) {
+        const textarea = document.getElementById('notes');
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const selectedText = textarea.value.substring(start, end);
+        
+        let newText;
+        if (format === '**') {
+          newText = `**${selectedText}**`;
+        } else {
+          newText = format + selectedText;
+        }
+        
+        textarea.value = textarea.value.substring(0, start) + newText + textarea.value.substring(end);
+        textarea.focus();
+        textarea.setSelectionRange(start + format.length, start + format.length + selectedText.length);
+        
+        this.updateNotesStats();
+        this.saveData();
+      }
+
+      updateNotesStats() {
+        const notes = document.getElementById('notes').value;
+        const wordCount = notes.trim() ? notes.trim().split(/\s+/).length : 0;
+        const charCount = notes.length;
+        
+        document.getElementById('wordCount').textContent = `${wordCount} words`;
+        document.getElementById('charCount').textContent = `${charCount} characters`;
+      }
+
+      exportNotes() {
+        const notes = document.getElementById('notes').value;
+        const blob = new Blob([notes], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `planner-notes-${this.formatDate(this.selectedDate)}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.showToast('Notes exported successfully!');
+      }
+
+      // ========= Data Management =========
+      getStorageKey() {
+        return `digitalPlanner_${this.formatDate(this.selectedDate)}`;
+      }
+
+      collectData() {
+        return {
+          date: this.formatDate(this.selectedDate),
+          todos: this.getTodos(),
+          priority1: document.getElementById('priority1').value,
+          priority2: document.getElementById('priority2').value,
+          priority3: document.getElementById('priority3').value,
+          morning: document.getElementById('morning').value,
+          afternoon: document.getElementById('afternoon').value,
+          evening: document.getElementById('evening').value,
+          breakfast: document.getElementById('breakfast').value,
+          lunch: document.getElementById('lunch').value,
+          dinner: document.getElementById('dinner').value,
+          snacks: document.getElementById('snacks').value,
+          waterCount: this.waterCount,
+          waterTarget: this.waterTarget,
+          moodData: this.moodData,
+          moodNotes: document.getElementById('moodNotes').value,
+          gratitude1: document.getElementById('gratitude1').value,
+          gratitude2: document.getElementById('gratitude2').value,
+          gratitude3: document.getElementById('gratitude3').value,
+          notes: document.getElementById('notes').value,
+          cycleData: this.cycleData
+        };
+      }
+
+      saveData() {
+        const data = this.collectData();
+        localStorage.setItem(this.getStorageKey(), JSON.stringify(data));
+        localStorage.setItem('digitalPlanner_global', JSON.stringify({
+          cycleData: this.cycleData,
+          waterTarget: this.waterTarget
+        }));
+        this.showToast('Data saved successfully!');
+      }
+
+      loadData() {
+        // Load global data first
+        const globalData = JSON.parse(localStorage.getItem('digitalPlanner_global') || '{}');
+        if (globalData.cycleData) {
+          this.cycleData = globalData.cycleData;
+          if (this.cycleData.lastPeriod) {
+            document.getElementById('lastPeriod').value = this.formatDate(new Date(this.cycleData.lastPeriod));
+          }
+          document.getElementById('cycleLength').value = this.cycleData.cycleLength;
+          document.getElementById('periodLength').value = this.cycleData.periodLength;
+        }
+        
+        if (globalData.waterTarget) {
+          this.waterTarget = globalData.waterTarget;
+          document.getElementById('waterTarget').value = this.waterTarget;
+          this.renderWaterGlasses();
+        }
+
+        // Load day-specific data
+        const data = JSON.parse(localStorage.getItem(this.getStorageKey()) || '{}');
+        
+        // Restore todos
+        this.setTodos(data.todos);
+        
+        // Restore form fields
+        const fields = [
+          'priority1', 'priority2', 'priority3',
+          'morning', 'afternoon', 'evening',
+          'breakfast', 'lunch', 'dinner', 'snacks',
+          'moodNotes', 'gratitude1', 'gratitude2', 'gratitude3', 'notes'
+        ];
+        
+        fields.forEach(field => {
+          const element = document.getElementById(field);
+          if (element && data[field]) {
+            element.value = data[field];
+          }
+        });
+        
+        // Restore water count
+        if (data.waterCount !== undefined) {
+          this.waterCount = data.waterCount;
+          this.updateWaterDisplay();
+        }
+        
+        // Restore mood data
+        if (data.moodData) {
+          this.moodData = data.moodData;
+          this.updateMoodDisplay();
+        }
+
+        this.updateNotesStats();
+        this.buildCalendar();
+      }
+
+      resetData() {
+        if (confirm('Are you sure you want to reset all data for this day? This action cannot be undone.')) {
+          localStorage.removeItem(this.getStorageKey());
+          
+          // Reset form fields
+          document.querySelectorAll('input[type="text"], textarea').forEach(field => {
+            field.value = '';
+          });
+          
+          // Reset todos
+          this.setTodos([]);
+          
+          // Reset water
+          this.waterCount = 0;
+          this.updateWaterDisplay();
+          
+          // Reset mood
+          this.moodData = { emotion: '', rating: 5 };
+          this.updateMoodDisplay();
+          
+          this.updateNotesStats();
+          this.showToast('Data reset successfully!');
+        }
+      }
+
+      startAutosave() {
+        setInterval(() => {
+          this.saveData();
+        }, 60000); // Auto-save every minute
+      }
+
+      // ========= Export Functions =========
+      async exportPDF() {
+        try {
+          const { jsPDF } = window.jspdf;
+          const content = document.getElementById('plannerContent');
+          
+          this.showToast('Generating PDF...');
+          
+          const canvas = await html2canvas(content, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff'
+          });
+          
+          const imgData = canvas.toDataURL('image/jpeg', 0.95);
+          const pdf = new jsPDF({
+            unit: 'pt',
+            format: 'a4',
+            orientation: 'portrait'
+          });
+          
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          const imgWidth = pageWidth - 40;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          
+          if (imgHeight <= pageHeight - 40) {
+            pdf.addImage(imgData, 'JPEG', 20, 20, imgWidth, imgHeight);
+          } else {
+            // Handle multi-page PDF
+            let position = 0;
+            const pageHeightUsable = pageHeight - 40;
+            
+            while (position < imgHeight) {
+              pdf.addImage(imgData, 'JPEG', 20, 20 - position, imgWidth, imgHeight);
+              position += pageHeightUsable;
+              
+              if (position < imgHeight) {
+                pdf.addPage();
+              }
+            }
+          }
+          
+          pdf.save(`digital-planner-${this.formatDate(this.selectedDate)}.pdf`);
+          this.showToast('PDF exported successfully!');
+        } catch (error) {
+          console.error('PDF export failed:', error);
+          this.showToast('PDF export failed. Please try again.');
+        }
+      }
+
+      async exportPNG() {
+        try {
+          const content = document.getElementById('plannerContent');
+          
+          this.showToast('Generating image...');
+          
+          const canvas = await html2canvas(content, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff'
+          });
+          
+          const link = document.createElement('a');
+          link.download = `digital-planner-${this.formatDate(this.selectedDate)}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          
+          this.showToast('Image exported successfully!');
+        } catch (error) {
+          console.error('Image export failed:', error);
+          this.showToast('Image export failed. Please try again.');
+        }
+      }
+
+      // ========= Analytics =========
+      showAnalytics() {
+        const allData = this.getAllStoredData();
+        const analytics = this.calculateAnalytics(allData);
+        
+        alert(`📊 Your Productivity Analytics\n\n` +
+              `📅 Days tracked: ${analytics.daysTracked}\n` +
+              `✅ Total tasks completed: ${analytics.totalTasksCompleted}\n` +
+              `💧 Average water intake: ${analytics.avgWater} glasses\n` +
+              `😊 Average mood rating: ${analytics.avgMood}/10\n` +
+              `📝 Total notes written: ${analytics.totalWords} words\n\n` +
+              `Keep up the great work!`);
+      }
+
+      getAllStoredData() {
+        const data = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith('digitalPlanner_') && key !== 'digitalPlanner_global') {
+            try {
+              const dayData = JSON.parse(localStorage.getItem(key));
+              data.push(dayData);
+            } catch (e) {
+              console.warn('Failed to parse data for key:', key);
+            }
+          }
+        }
+        return data;
+      }
+
+      calculateAnalytics(data) {
+        const analytics = {
+          daysTracked: data.length,
+          totalTasksCompleted: 0,
+          avgWater: 0,
+          avgMood: 0,
+          totalWords: 0
+        };
+
+        if (data.length === 0) return analytics;
+
+        let totalWater = 0;
+        let totalMood = 0;
+        let moodCount = 0;
+
+        data.forEach(day => {
+          if (day.todos) {
+            analytics.totalTasksCompleted += day.todos.filter(todo => todo.completed).length;
+          }
+          
+          if (day.waterCount) {
+            totalWater += day.waterCount;
+          }
+          
+          if (day.moodData && day.moodData.rating) {
+            totalMood += day.moodData.rating;
+            moodCount++;
+          }
+          
+          if (day.notes) {
+            analytics.totalWords += day.notes.trim().split(/\s+/).length;
+          }
+        });
+
+        analytics.avgWater = Math.round((totalWater / data.length) * 10) / 10;
+        analytics.avgMood = moodCount > 0 ? Math.round((totalMood / moodCount) * 10) / 10 : 0;
+
+        return analytics;
+      }
+
+      // ========= Utility Functions =========
+      toggleMenu() {
+        const menu = document.getElementById('navMenu');
+        menu.classList.toggle('active');
+      }
+
+      closeMenuOutside(e) {
+        const menu = document.getElementById('navMenu');
+        const toggle = document.getElementById('navToggle');
+        
+        if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+          menu.classList.remove('active');
+        }
+      }
+
+      showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }
+
+      formatDate(date) {
+        return date.toISOString().split('T')[0];
+      }
+
+      isSameDate(date1, date2) {
+        return date1.getFullYear() === date2.getFullYear() &&
+               date1.getMonth() === date2.getMonth() &&
+               date1.getDate() === date2.getDate();
+      }
+
+      escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
+      }
+    }
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', () => {
+      new DigitalPlanner();
+    });
+  </script>
+</body>
+</html>

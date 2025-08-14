@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Cherry Digital Planner – modular 2025 planner with mood, water, notes, PhD-level cycle tracker, PDF/PNG export & autosave." />
+  <meta name="theme-color" content="#FDE6F1" />
+  <title>Cherry Digital Planner 🍒 – Modular</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Export libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+
+  <link rel="stylesheet" href="assets/css/cherry.css" />
+</head>
+<body>
+  <div id="navBackdrop" class="backdrop" hidden></div>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo">🍒</div>
+        <div class="brand-title">Cherry Planner</div>
+      </div>
+      <div class="spacer"></div>
+      <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="menu">
+        <i class="fa-solid fa-bars"></i><span style="margin-left:6px">Menu</span>
+      </button>
+      <div id="menu" class="menu" role="menu" aria-hidden="true">
+        <div class="menu-grid">
+          <button class="btn" id="btnPdf" type="button" aria-label="Save as PDF"><i class="fa-solid fa-file-pdf"></i><span>PDF</span></button>
+          <button class="btn" id="btnPng" type="button" aria-label="Save as image"><i class="fa-solid fa-image"></i><span>Image</span></button>
+          <button class="btn" id="btnPrint" type="button" aria-label="Print"><i class="fa-solid fa-print"></i><span>Print</span></button>
+          <button class="btn" id="btnSave" type="button" aria-label="Save"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
+          <button class="btn" id="btnReset" type="button" aria-label="Reset"><i class="fa-solid fa-rotate"></i><span>Reset (today)</span></button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page">
+    <main class="container" id="plannerContent">
+      <header class="header">
+        <h1>
+          <span class="cherry left">🍒</span>
+          My Cherry Planner
+          <span class="cherry right">🍒</span>
+        </h1>
+        <p>Plan your perfect day with style!</p>
+      </header>
+
+      <section class="date-selector" aria-label="Select date">
+        <label for="plannerDate">Date:</label>
+        <input type="date" id="plannerDate" />
+        <strong id="dayOfWeek" aria-live="polite"></strong>
+      </section>
+
+      <section class="planner-grid" aria-label="Planner">
+        <!-- Todos -->
+        <article class="card" aria-labelledby="h-todos">
+          <h2 id="h-todos" class="card-title">📝 Daily Tasks</h2>
+          <ul id="todoList" class="todo-list"></ul>
+          <button class="btn" id="addTodo" type="button"><i class="fa-solid fa-plus"></i><span>Add task</span></button>
+        </article>
+
+        <!-- Priorities -->
+        <article class="card" aria-labelledby="h-prio">
+          <h2 id="h-prio" class="card-title">⭐ Top 3 Priorities</h2>
+          <div class="slot"><label for="prio1">#1 priority</label><input id="prio1" data-key="prio1" placeholder="Most important task" /></div>
+          <div style="margin-top:-6px;margin-bottom:8px"><span class="tag high">High</span></div>
+          <div class="slot"><label for="prio2">#2 priority</label><input id="prio2" data-key="prio2" placeholder="Second most important task" /></div>
+          <div style="margin-top:-6px;margin-bottom:8px"><span class="tag medium">Medium</span></div>
+          <div class="slot"><label for="prio3">#3 priority</label><input id="prio3" data-key="prio3" placeholder="Third most important task" /></div>
+          <div style="margin-top:-6px"><span class="tag low">Low</span></div>
+        </article>
+
+        <!-- Schedule -->
+        <article class="card" aria-labelledby="h-time">
+          <h2 id="h-time" class="card-title">⏰ Schedule</h2>
+          <div class="slot"><label for="morn">Morning (6:00–12:00)</label><input id="morn" data-key="time_morning" placeholder="Morning routine, breakfast…" /></div>
+          <div class="slot"><label for="noon">Afternoon (12:00–18:00)</label><input id="noon" data-key="time_noon" placeholder="Work, lunch…" /></div>
+          <div class="slot"><label for="eve">Evening (18:00–22:00)</label><input id="eve" data-key="time_evening" placeholder="Dinner, relaxation…" /></div>
+        </article>
+
+        <!-- Meals -->
+        <article class="card" aria-labelledby="h-meal">
+          <h2 id="h-meal" class="card-title">🍓 Meals</h2>
+          <div class="slot"><label for="meal_b">Breakfast</label><input id="meal_b" data-key="meal_breakfast" placeholder="What will I have for breakfast?" /></div>
+          <div class="slot"><label for="meal_l">Lunch</label><input id="meal_l" data-key="meal_lunch" placeholder="What will I have for lunch?" /></div>
+          <div class="slot"><label for="meal_d">Dinner</label><input id="meal_d" data-key="meal_dinner" placeholder="What will I have for dinner?" /></div>
+          <div class="slot"><label for="meal_s">Snacks</label><input id="meal_s" data-key="meal_snacks" placeholder="Healthy snacks" /></div>
+        </article>
+
+        <!-- Water -->
+        <article class="card" aria-labelledby="h-water">
+          <h2 id="h-water" class="card-title">💧 Water Tracker</h2>
+          <div class="water-wrap">
+            <div class="water-controls">
+              <div class="field"><label for="waterTarget">Goal</label><input id="waterTarget" type="number" min="1" max="24" step="1" value="8" aria-label="Daily water goal in glasses" /></div>
+              <div class="field"><label for="waterCount">Drank</label><button id="decWater" title="-1" aria-label="Decrease water">−</button><input id="waterCount" type="number" min="0" max="24" step="1" value="0" aria-label="Glasses consumed" /><button id="incWater" title="+1" aria-label="Increase water">+</button></div>
+            </div>
+            <div class="water" id="water" role="group" aria-label="Water Tracker"></div>
+            <div class="water-progress" aria-hidden="true"><span id="waterBar"></span></div>
+            <div class="water-meta"><span id="waterSummary">0 / 8 glasses</span><span style="margin:0 6px">·</span><span id="waterStats">0 of 8 glasses consumed</span></div>
+          </div>
+        </article>
+
+        <!-- Mood -->
+        <article class="card" aria-labelledby="h-mood">
+          <h2 id="h-mood" class="card-title">💭 Today's Mood</h2>
+          <p style="text-align:center;color:var(--muted);margin-bottom:8px">How do you feel today?</p>
+          <div class="mood-wrap">
+            <div id="moodChips" class="mood-chips" role="radiogroup" aria-label="Mood"></div>
+            <div class="mood-scale">
+              <input id="moodRange" class="range" type="range" min="1" max="10" step="1" value="5" aria-label="Mood intensity (1–10)" />
+              <div id="moodBubble" class="bubble">5/10</div>
+            </div>
+            <div class="slot"><label for="moodNotes">What influences your mood?</label><textarea id="moodNotes" data-key="moodNotes" placeholder="Thoughts, energy, triggers…" style="min-height:80px"></textarea></div>
+          </div>
+        </article>
+
+        <!-- Gratitude -->
+        <article class="card" aria-labelledby="h-grat">
+          <h2 id="h-grat" class="card-title">🌸 Gratitude</h2>
+          <div class="slot"><label for="grat1">1.</label><input id="grat1" data-key="grat1" placeholder="I am grateful for…" /></div>
+          <div class="slot"><label for="grat2">2.</label><input id="grat2" data-key="grat2" placeholder="I am grateful for…" /></div>
+          <div class="slot"><label for="grat3">3.</label><input id="grat3" data-key="grat3" placeholder="I am grateful for…" /></div>
+        </article>
+
+        <!-- Notes -->
+        <article class="card full" aria-labelledby="h-notes">
+          <h2 id="h-notes" class="card-title">📔 Notes & Ideas</h2>
+          <div class="notes-toolbar">
+            <button class="tool-btn" data-ins="- [ ] ">Checklist</button>
+            <button class="tool-btn" data-ins="• ">Bullet</button>
+            <button class="tool-btn" data-ins="# ">Heading</button>
+            <button class="tool-btn" data-format="**">Bold</button>
+            <button class="tool-btn" id="exportTxt">Export .txt</button>
+            <span class="notes-meta" id="notesMeta" style="margin-left:auto"></span>
+          </div>
+          <textarea id="notes" class="notes-area" placeholder="Write your thoughts, ideas and notes here…"></textarea>
+        </article>
+
+        <!-- Cycle Tracker -->
+        <article class="card full" aria-labelledby="h-cycle">
+          <h2 id="h-cycle" class="card-title">🌙 Cycle Tracker (Estimation)</h2>
+          <div class="cycle-grid">
+            <div class="cycle-controls">
+              <div class="field"><label for="cycleStart">Last start</label><input id="cycleStart" type="date" /></div>
+              <div class="field"><label for="cycleLen">Cycle</label><input id="cycleLen" type="number" min="20" max="40" step="1" value="28" /> days</div>
+              <div class="field"><label for="periodLen">Period</label><input id="periodLen" type="number" min="1" max="10" step="1" value="5" /> days</div>
+              <div class="field"><label for="lutealLen">Luteal</label><input id="lutealLen" type="number" min="8" max="18" step="1" value="14" /> days</div>
+              <div class="field"><label for="advEst">Advanced</label><input id="advEst" type="checkbox" checked /> estimation</div>
+              <button id="saveCycle" class="btn" type="button"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
+              <button id="exportCycle" class="btn" type="button" aria-label="Export cycle data"><i class="fa-solid fa-file-export"></i><span>Export</span></button>
+              <button id="clearCycle" class="btn" type="button" aria-label="Clear cycle history" style="background:linear-gradient(135deg,#ff9bb3,#ff6b6b)"><i class="fa-solid fa-broom"></i><span>Clear history</span></button>
+            </div>
+            <div id="cycleSummary" class="slot" aria-live="polite" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+              <div><strong>Next period (≈):</strong> <span id="nextPeriod">–</span> • <strong>Ovulation (≈):</strong> <span id="nextOvul">–</span></div>
+              <div style="color:var(--muted)"><span id="avgLen">Avg cycle: –</span> • <span id="avgPeriod">Avg period: –</span> • <span id="samples">Samples: 0</span> • <span id="confRange">Confidence: –</span> • <span id="irreg">Irregularity: –</span></div>
+            </div>
+            <div class="cycle-calendar">
+              <div class="cal-head">
+                <button class="tool-btn" id="calPrev" aria-label="Previous month">◀</button>
+                <strong id="calTitle"></strong>
+                <button class="tool-btn" id="calNext" aria-label="Next month">▶</button>
+              </div>
+              <div class="cal-grid" id="calGrid"></div>
+              <div class="legend">
+                <span><i class="chip-sm" style="background:#ffe7ee;border:1px solid #ffc6d7"></i> Period</span>
+                <span><i class="chip-sm" style="background:#e6fff5;border:1px solid #bff0dc"></i> Fertile</span>
+                <span><i class="chip-sm" style="background:#fff9d9;border:1px solid #ffeaa1"></i> Ovulation (≈)</span>
+                <span><i class="chip-sm" style="background:var(--primary)"></i> Actual start</span>
+              </div>
+              <small style="display:block;margin-top:8px;color:var(--muted)">Estimation only – not a medical tool. Click: toggle actual start • Shift+Click: toggle a period day.</small>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <footer class="footer" aria-label="Footer">
+        <p>Made with 💕 – Cherry Digital Planner © 2025</p>
+      </footer>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">Saved successfully!</div>
+
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
+
+
