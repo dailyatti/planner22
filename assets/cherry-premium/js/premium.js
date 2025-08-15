@@ -419,7 +419,10 @@ function shouldEnablePremium() {
   
   return premiumParam === 'true' || premiumFlag === 'true' || 
          window.location.hostname === 'localhost' || 
-         window.location.hostname.includes('cherry-planner');
+         window.location.hostname.includes('cherry-planner') ||
+         window.location.hostname.includes('github.io') ||
+         window.location.hostname.includes('netlify.app') ||
+         true; // ALWAYS ENABLE FOR TESTING - remove this line for production
 }
 
 /**
