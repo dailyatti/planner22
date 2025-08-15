@@ -153,6 +153,9 @@ window.addEventListener('DOMContentLoaded', () => {
     showToast('All data reset');
   });
 
+  // Initialize motivation system
+  initMotivationSystem();
+
   $('#plannerDate').addEventListener('change', () => { updateDayOfWeek(); restoreFromStorage(true); });
 
   // Auto-save for all input fields
@@ -166,5 +169,211 @@ window.addEventListener('DOMContentLoaded', () => {
     if(el) el.addEventListener('input', debounce(saveToStorage, 250));
   });
 });
+
+// ========= Motivation System =========
+const motivationData = {
+  quotes: [
+    "Every day is a new beginning. Take a deep breath and start again.",
+    "You are capable of amazing things. Believe in yourself.",
+    "Progress is progress, no matter how small.",
+    "Your strength is greater than any struggle.",
+    "Today is your day to shine.",
+    "You are stronger than you think.",
+    "Keep going, you're doing great!",
+    "Success is not final, failure is not fatal.",
+    "Believe you can and you're halfway there.",
+    "The future depends on what you do today.",
+    "Dream big and dare to fail.",
+    "Every expert was once a beginner.",
+    "The journey of a thousand miles begins with one step.",
+    "Success is walking from failure to failure.",
+    "The harder you work for something, the greater you'll feel when you achieve it.",
+    "Don't limit your challenges. Challenge your limits.",
+    "Your time is limited, don't waste it living someone else's life.",
+    "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+    "In the middle of difficulty lies opportunity.",
+    "The way to get started is to quit talking and begin doing.",
+    "It does not matter how slowly you go as long as you do not stop.",
+    "The only impossible journey is the one you never begin.",
+    "You are the only one who can limit your greatness.",
+    "The best revenge is massive success.",
+    "Don't be afraid to give up the good to go for the great.",
+    "The difference between ordinary and extraordinary is that little extra.",
+    "Your life does not get better by chance, it gets better by change.",
+    "The only way to achieve the impossible is to believe it is possible.",
+    "Success is not the key to happiness. Happiness is the key to success.",
+    "The greatest wealth is health.",
+    "The mind is everything. What you think you become.",
+    "The journey is the reward.",
+    "The best preparation for tomorrow is doing your best today.",
+    "The only person you should try to be better than is the person you were yesterday.",
+    "Your dreams don't have an expiration date. Take a deep breath and try again.",
+    "The only limit to our realization of tomorrow will be our doubts of today."
+  ],
+  psalms: [
+    "The Lord is my shepherd, I shall not want. He makes me lie down in green pastures, he leads me beside quiet waters, he refreshes my soul.",
+    "I lift up my eyes to the mountains—where does my help come from? My help comes from the Lord, the Maker of heaven and earth.",
+    "The Lord is my light and my salvation—whom shall I fear? The Lord is the stronghold of my life—of whom shall I be afraid?",
+    "Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.",
+    "I can do all this through him who gives me strength.",
+    "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.",
+    "Come to me, all you who are weary and burdened, and I will give you rest.",
+    "Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.",
+    "The Lord is close to the brokenhearted and saves those who are crushed in spirit.",
+    "Cast your cares on the Lord and he will sustain you; he will never let the righteous be shaken."
+  ],
+  tips: [
+    "Take deep breaths when feeling overwhelmed. Inhale for 4 counts, hold for 4, exhale for 4.",
+    "Break large tasks into smaller, manageable steps. Celebrate each small victory.",
+    "Practice gratitude by writing down 3 things you're thankful for each day.",
+    "Stay hydrated - even mild dehydration can affect your mood and energy.",
+    "Move your body daily, even if it's just a short walk around the block.",
+    "Connect with loved ones regularly. Social support is crucial for mental health.",
+    "Limit screen time before bed to improve sleep quality.",
+    "Practice self-compassion. Treat yourself as you would treat a good friend.",
+    "Learn to say no to things that don't align with your priorities.",
+    "Create a morning routine that sets a positive tone for your day.",
+    "Keep a journal to process your thoughts and feelings.",
+    "Learn something new every day, no matter how small.",
+    "Practice mindfulness by being fully present in the moment.",
+    "Set boundaries to protect your time and energy.",
+    "Remember that it's okay to ask for help when you need it.",
+    "Focus on progress, not perfection.",
+    "Take regular breaks throughout the day to recharge.",
+    "Practice positive self-talk and challenge negative thoughts.",
+    "Surround yourself with people who lift you up.",
+    "Remember that every day is a fresh start."
+  ]
+};
+
+// Enhanced Cycle Tracker with Fertility Predictions
+function updateCyclePredictions() {
+  const cycleData = JSON.parse(localStorage.getItem('cherry::cycle') || '{}');
+  const today = new Date();
+  
+  if (cycleData.lastPeriod && cycleData.cycleLength) {
+    const lastPeriod = new Date(cycleData.lastPeriod);
+    const cycleLength = parseInt(cycleData.cycleLength);
+    
+    // Calculate next period
+    const nextPeriod = new Date(lastPeriod);
+    nextPeriod.setDate(lastPeriod.getDate() + cycleLength);
+    
+    // Calculate fertile window (5 days before ovulation + ovulation day)
+    const ovulationDay = new Date(lastPeriod);
+    ovulationDay.setDate(lastPeriod.getDate() + (cycleLength - 14));
+    const fertileStart = new Date(ovulationDay);
+    fertileStart.setDate(ovulationDay.getDate() - 5);
+    const fertileEnd = new Date(ovulationDay);
+    fertileEnd.setDate(ovulationDay.getDate() + 1);
+    
+    // Update display
+    const predictionsDiv = document.getElementById('cyclePredictions');
+    if (predictionsDiv) {
+      predictionsDiv.innerHTML = `
+        <div class="prediction-card">
+          <h4>📅 Next Period</h4>
+          <p class="prediction-date">${nextPeriod.toLocaleDateString()}</p>
+          <p class="prediction-info">${Math.ceil((nextPeriod - today) / (1000 * 60 * 60 * 24))} days away</p>
+        </div>
+        <div class="prediction-card">
+          <h4>🥚 Fertile Window</h4>
+          <p class="prediction-date">${fertileStart.toLocaleDateString()} - ${fertileEnd.toLocaleDateString()}</p>
+          <p class="prediction-info">Peak: ${ovulationDay.toLocaleDateString()}</p>
+        </div>
+        <div class="prediction-card">
+          <h4>📊 Current Phase</h4>
+          <p class="prediction-date">${getCurrentPhase(today, lastPeriod, cycleLength)}</p>
+          <p class="prediction-info">${getPhaseDescription(today, lastPeriod, cycleLength)}</p>
+        </div>
+      `;
+    }
+  }
+}
+
+function getCurrentPhase(today, lastPeriod, cycleLength) {
+  const daysSincePeriod = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
+  const cycleDay = daysSincePeriod % cycleLength;
+  
+  if (cycleDay <= 5) return "Menstrual Phase";
+  if (cycleDay <= 14) return "Follicular Phase";
+  if (cycleDay <= 16) return "Ovulation Phase";
+  return "Luteal Phase";
+}
+
+function getPhaseDescription(today, lastPeriod, cycleLength) {
+  const daysSincePeriod = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
+  const cycleDay = daysSincePeriod % cycleLength;
+  
+  if (cycleDay <= 5) return "Rest and recovery time";
+  if (cycleDay <= 14) return "Building energy and creativity";
+  if (cycleDay <= 16) return "Peak fertility and vitality";
+  return "Preparing for next cycle";
+}
+
+// Show motivation based on cycle phase
+function showCycleBasedMotivation() {
+  const cycleData = JSON.parse(localStorage.getItem('cherry::cycle') || '{}');
+  if (!cycleData.lastPeriod || !cycleData.cycleLength) {
+    // If no cycle data, show random motivation
+    const randomType = Math.random() < 0.5 ? 'quote' : 'tip';
+    const message = randomType === 'quote' 
+      ? motivationData.quotes[Math.floor(Math.random() * motivationData.quotes.length)]
+      : motivationData.tips[Math.floor(Math.random() * motivationData.tips.length)];
+    showMotivationToast(message, randomType);
+    return;
+  }
+  
+  const today = new Date();
+  const lastPeriod = new Date(cycleData.lastPeriod);
+  const cycleLength = parseInt(cycleData.cycleLength);
+  const daysSincePeriod = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
+  const cycleDay = daysSincePeriod % cycleLength;
+  
+  let motivationType = 'quote';
+  let message = '';
+  
+  if (cycleDay <= 5) {
+    // Menstrual phase - gentle, supportive
+    motivationType = 'tip';
+    message = motivationData.tips[Math.floor(Math.random() * motivationData.tips.length)];
+  } else if (cycleDay <= 14) {
+    // Follicular phase - energetic, creative
+    motivationType = 'quote';
+    message = motivationData.quotes[Math.floor(Math.random() * motivationData.quotes.length)];
+  } else if (cycleDay <= 16) {
+    // Ovulation phase - powerful, confident
+    motivationType = 'psalm';
+    message = motivationData.psalms[Math.floor(Math.random() * motivationData.psalms.length)];
+  } else {
+    // Luteal phase - calming, reflective
+    motivationType = 'tip';
+    message = motivationData.tips[Math.floor(Math.random() * motivationData.tips.length)];
+  }
+  
+  showMotivationToast(message, motivationType);
+}
+
+function showMotivationToast(message, type) {
+  const toast = document.getElementById('toast');
+  const icon = type === 'quote' ? '💭' : type === 'psalm' ? '🙏' : '💡';
+  toast.textContent = `${icon} ${message}`;
+  toast.className = 'toast show';
+  
+  setTimeout(() => {
+    toast.className = 'toast';
+  }, 5000);
+}
+
+function initMotivationSystem() {
+  // Update cycle predictions
+  updateCyclePredictions();
+  
+  // Show motivation on period days
+  setTimeout(showCycleBasedMotivation, 2000);
+  
+  // Make showCycleBasedMotivation globally available
+  window.showCycleBasedMotivation = showCycleBasedMotivation;
+}
 
 
