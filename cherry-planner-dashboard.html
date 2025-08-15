@@ -794,6 +794,15 @@
       .insights-grid {
         grid-template-columns: 1fr;
       }
+      
+      /* Fertility calendar responsive */
+      #fertCalGrid {
+        gap: 4px !important;
+      }
+      
+      .fertility-calendar-container {
+        grid-template-columns: 1fr !important;
+      }
     }
   </style>
 </head>
@@ -960,6 +969,87 @@
           <div class="recommendation">
             <span class="priority-badge priority-low">Suggestion</span>
             Try 400mg magnesium glycinate before bed
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fertility Calendar Section -->
+    <div style="margin-top: 30px;">
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--cherry-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-calendar-heart"></i> Fertility & Cycle Tracker
+      </h2>
+      
+      <div class="fertility-calendar-container" style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+        <!-- Calendar -->
+        <div style="background: var(--white); padding: 30px; border-radius: 20px; box-shadow: var(--shadow-md);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h3 id="fertCalTitle" style="font-size: 1.3rem; font-weight: 600; color: var(--cherry-dark);">December 2024</h3>
+            <div style="display: flex; gap: 10px;">
+              <button onclick="fertPrevMonth()" style="width: 40px; height: 40px; border: 2px solid var(--cherry-light); background: var(--white); border-radius: 50%; cursor: pointer;">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button onclick="fertToday()" style="width: 40px; height: 40px; border: 2px solid var(--cherry-light); background: var(--white); border-radius: 50%; cursor: pointer;">
+                <i class="fas fa-calendar-day"></i>
+              </button>
+              <button onclick="fertNextMonth()" style="width: 40px; height: 40px; border: 2px solid var(--cherry-light); background: var(--white); border-radius: 50%; cursor: pointer;">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div id="fertCalGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;">
+            <!-- Calendar will be generated here -->
+          </div>
+          
+          <!-- Legend -->
+          <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; padding: 15px; background: var(--cream); border-radius: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #fee2e2, #fecaca); border-radius: 6px;"></div>
+              <span style="font-size: 0.85rem;">Period</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #fce7f3, #fbcfe8); border-radius: 6px;"></div>
+              <span style="font-size: 0.85rem;">Fertile</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 6px;"></div>
+              <span style="font-size: 0.85rem;">Ovulation</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Predictions -->
+        <div style="background: var(--white); padding: 30px; border-radius: 20px; box-shadow: var(--shadow-md);">
+          <h3 style="font-size: 1.2rem; font-weight: 600; color: var(--cherry-dark); margin-bottom: 20px;">🔮 Predictions</h3>
+          
+          <div style="background: var(--cream); padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid var(--cherry-pink);">
+            <div style="font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Next Period</div>
+            <div id="nextPeriodDate" style="font-size: 1.5rem; font-weight: 700; color: var(--cherry-dark); margin-bottom: 5px;">Jan 15, 2025</div>
+            <div id="nextPeriodDays" style="font-size: 0.9rem; color: var(--text-dark);">In 18 days</div>
+          </div>
+          
+          <div style="background: var(--cream); padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 4px solid: #fbbf24;">
+            <div style="font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Next Ovulation</div>
+            <div id="nextOvulDate" style="font-size: 1.5rem; font-weight: 700; color: var(--cherry-dark); margin-bottom: 5px;">Jan 1, 2025</div>
+            <div style="font-size: 0.9rem; color: var(--text-dark);">Peak fertility</div>
+          </div>
+          
+          <!-- Pregnancy Probability -->
+          <div style="background: linear-gradient(135deg, var(--cherry-light), var(--cherry-rose)); padding: 20px; border-radius: 15px;">
+            <div style="font-weight: 600; margin-bottom: 15px; color: var(--cherry-dark);">
+              <i class="fas fa-baby"></i> Pregnancy Chance Today
+            </div>
+            <div style="height: 30px; background: linear-gradient(90deg, #e0e7ff 0%, #ffc0cb 50%, #ff6b9d 100%); border-radius: 15px; position: relative;">
+              <div id="pregIndicator" style="position: absolute; top: -5px; left: 20%; width: 40px; height: 40px; background: white; border: 3px solid var(--cherry-dark); border-radius: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
+                20%
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.85rem; color: var(--text-dark);">
+              <span>Low</span>
+              <span>Medium</span>
+              <span>High</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1392,9 +1482,185 @@
       alert('Your data has been exported successfully!');
     }
 
+    // Fertility Calendar Functions
+    let fertCalMonth = new Date();
+    
+    function renderFertilityCalendar() {
+      const grid = document.getElementById('fertCalGrid');
+      const title = document.getElementById('fertCalTitle');
+      
+      const year = fertCalMonth.getFullYear();
+      const month = fertCalMonth.getMonth();
+      
+      title.textContent = fertCalMonth.toLocaleDateString('en-US', { 
+        month: 'long', 
+        year: 'numeric' 
+      });
+      
+      grid.innerHTML = '';
+      
+      // Day headers
+      const dayHeaders = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+      dayHeaders.forEach(day => {
+        const header = document.createElement('div');
+        header.style.cssText = 'text-align: center; font-weight: 600; color: var(--text-light); padding: 10px; font-size: 0.85rem;';
+        header.textContent = day;
+        grid.appendChild(header);
+      });
+      
+      // Get cycle data
+      const cycleData = JSON.parse(localStorage.getItem('cherry_cycle') || '{}');
+      const cycleLength = cycleData.len || 28;
+      const periodLength = cycleData.period || 5;
+      const lastPeriodStart = cycleData.start ? new Date(cycleData.start) : new Date(Date.now() - 10 * 24 * 60 * 60 * 1000);
+      
+      // Calculate phases
+      const ovulationDay = cycleLength - 14;
+      const fertileStart = ovulationDay - 5;
+      const fertileEnd = ovulationDay + 1;
+      
+      // Get first day of month
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const firstDayOfWeek = firstDay.getDay();
+      const daysInMonth = lastDay.getDate();
+      
+      // Empty cells for alignment
+      for (let i = 0; i < firstDayOfWeek; i++) {
+        const empty = document.createElement('div');
+        grid.appendChild(empty);
+      }
+      
+      // Current month days
+      const today = new Date();
+      
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayElement = document.createElement('div');
+        const currentDay = new Date(year, month, day);
+        
+        // Calculate day of cycle
+        const daysSincePeriod = Math.floor((currentDay - lastPeriodStart) / (1000 * 60 * 60 * 24));
+        const dayOfCycle = (daysSincePeriod % cycleLength) + 1;
+        
+        // Base styles
+        let bgColor = 'var(--white)';
+        let borderColor = '#f0f0f0';
+        let fontWeight = '400';
+        
+        // Apply phase colors
+        if (dayOfCycle >= 1 && dayOfCycle <= periodLength) {
+          bgColor = 'linear-gradient(135deg, #fee2e2, #fecaca)';
+          borderColor = '#dc2626';
+        } else if (dayOfCycle >= fertileStart && dayOfCycle <= fertileEnd) {
+          if (dayOfCycle === ovulationDay) {
+            bgColor = 'linear-gradient(135deg, #fef3c7, #fde68a)';
+            borderColor = '#fbbf24';
+            fontWeight = '600';
+          } else {
+            bgColor = 'linear-gradient(135deg, #fce7f3, #fbcfe8)';
+            borderColor = '#ff6b9d';
+          }
+        }
+        
+        // Today highlight
+        if (currentDay.toDateString() === today.toDateString()) {
+          borderColor = 'var(--cherry-dark)';
+          fontWeight = '700';
+          dayElement.style.borderWidth = '3px';
+        }
+        
+        dayElement.style.cssText = `
+          aspect-ratio: 1;
+          border: 2px solid ${borderColor};
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          background: ${bgColor};
+          font-weight: ${fontWeight};
+          transition: all 0.3s ease;
+        `;
+        
+        dayElement.textContent = day;
+        dayElement.onmouseover = () => {
+          dayElement.style.transform = 'scale(1.1)';
+          dayElement.style.boxShadow = 'var(--shadow-md)';
+        };
+        dayElement.onmouseout = () => {
+          dayElement.style.transform = 'scale(1)';
+          dayElement.style.boxShadow = 'none';
+        };
+        
+        grid.appendChild(dayElement);
+      }
+      
+      // Update predictions
+      updateFertilityPredictions(lastPeriodStart, cycleLength, ovulationDay);
+    }
+    
+    function updateFertilityPredictions(lastPeriod, cycleLength, ovulationDay) {
+      const nextPeriod = new Date(lastPeriod);
+      nextPeriod.setDate(nextPeriod.getDate() + cycleLength);
+      
+      const nextOvulation = new Date(nextPeriod);
+      nextOvulation.setDate(nextOvulation.getDate() - 14);
+      
+      const today = new Date();
+      const daysUntilPeriod = Math.ceil((nextPeriod - today) / (1000 * 60 * 60 * 24));
+      
+      document.getElementById('nextPeriodDate').textContent = nextPeriod.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
+      document.getElementById('nextPeriodDays').textContent = `In ${daysUntilPeriod} days`;
+      
+      document.getElementById('nextOvulDate').textContent = nextOvulation.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
+      
+      // Update pregnancy probability
+      const daysSincePeriod = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
+      const dayOfCycle = (daysSincePeriod % cycleLength) + 1;
+      
+      let probability = 5;
+      if (dayOfCycle === ovulationDay) {
+        probability = 90;
+      } else if (Math.abs(dayOfCycle - ovulationDay) === 1) {
+        probability = 70;
+      } else if (dayOfCycle >= ovulationDay - 5 && dayOfCycle <= ovulationDay + 1) {
+        probability = 40;
+      } else if (dayOfCycle <= 5) {
+        probability = 0;
+      }
+      
+      const indicator = document.getElementById('pregIndicator');
+      indicator.style.left = `${probability}%`;
+      indicator.textContent = `${probability}%`;
+    }
+    
+    function fertPrevMonth() {
+      fertCalMonth.setMonth(fertCalMonth.getMonth() - 1);
+      renderFertilityCalendar();
+    }
+    
+    function fertNextMonth() {
+      fertCalMonth.setMonth(fertCalMonth.getMonth() + 1);
+      renderFertilityCalendar();
+    }
+    
+    function fertToday() {
+      fertCalMonth = new Date();
+      renderFertilityCalendar();
+    }
+
     // Initialize dashboard
     document.addEventListener('DOMContentLoaded', () => {
       window.cherryDashboard = new CherryDashboard();
+      renderFertilityCalendar();
     });
 
     // Close modal on outside click
