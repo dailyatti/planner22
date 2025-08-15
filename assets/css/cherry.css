@@ -175,4 +175,77 @@ body{margin:0;font-family:'Quicksand',system-ui,-apple-system,Segoe UI,Roboto,He
 }
 @media print{body{background:#fff!important}.navbar,.menu,.toast,.backdrop{display:none!important}.container{max-width:100%!important}.planner-grid{grid-template-columns:repeat(2,1fr)!important;gap:14px!important}.card{box-shadow:none!important;border:1px solid #ddd!important}.card::before,.cherry{display:none!important}@page{margin:1cm;size:A4}}
 
+/* ========= Enhanced Cycle Predictions ========= */
+.cycle-predictions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #fff5f7, #ffe7ee);
+  border-radius: 16px;
+  border: 1px solid #ffc6d7;
+}
+
+.prediction-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #ffc6d7;
+  box-shadow: 0 4px 12px rgba(214, 51, 132, 0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.prediction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(214, 51, 132, 0.15);
+}
+
+.prediction-card h4 {
+  margin: 0 0 12px 0;
+  color: #d63384;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.prediction-date {
+  margin: 8px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.prediction-info {
+  margin: 8px 0 0 0;
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+/* ========= Motivation Button ========= */
+.motivation-btn {
+  background: linear-gradient(135deg, #ff6b9d, #ffc0cb) !important;
+  color: white !important;
+  border: none !important;
+  margin-top: 16px;
+  transition: all 0.3s ease;
+}
+
+.motivation-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(214, 51, 132, 0.3);
+}
+
+/* ========= Enhanced Toast ========= */
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
 
