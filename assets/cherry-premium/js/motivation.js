@@ -362,30 +362,40 @@ function formatDate(date) {
  * Add motivation button to existing mood card
  */
 export function addMotivationButton() {
+  // Avoid duplicates globally
+  if (document.querySelector('.motivation-trigger')) return false;
+
+  // Try to find the mood section in different layouts
+  const candidates = [];
   const moodCard = document.querySelector('[aria-labelledby="h-mood"]');
-  if (!moodCard) return false;
-  
-  const moodWrap = moodCard.querySelector('.mood-wrap');
-  if (!moodWrap) return false;
-  
-  // Check if button already exists
-  if (moodCard.querySelector('.motivation-trigger')) return false;
-  
+  if (moodCard) {
+    const moodWrap = moodCard.querySelector('.mood-wrap') || moodCard;
+    candidates.push(moodWrap);
+  }
+  const multi = document.getElementById('moodMultiSliders');
+  if (multi) candidates.push(multi.parentElement || multi);
+  const tracker = document.querySelector('.mood-tracker');
+  if (tracker) candidates.push(tracker);
+  const notes = document.getElementById('moodNotes');
+  if (notes && notes.parentElement) candidates.push(notes.parentElement);
+
+  const container = candidates.find(Boolean);
+  if (!container) return false;
+
   // Create motivation button
   const motivationBtn = document.createElement('button');
   motivationBtn.className = 'cherry-badge motivation-trigger';
   motivationBtn.innerHTML = '💡 Motivation';
   motivationBtn.setAttribute('aria-label', 'Open motivation and tips');
   motivationBtn.addEventListener('click', () => openMotivationModal());
-  
-  // Add button to mood wrap
+
+  // Wrap for spacing
   const buttonContainer = document.createElement('div');
   buttonContainer.style.textAlign = 'center';
   buttonContainer.style.marginTop = '1rem';
   buttonContainer.appendChild(motivationBtn);
-  
-  moodWrap.appendChild(buttonContainer);
-  
+
+  container.appendChild(buttonContainer);
   return true;
 }
 
