@@ -18,10 +18,12 @@ let isInitialized = false;
 export async function initMotivation() {
   try {
     // Load data files
+    // Resolve data paths relative to this module for compatibility with GitHub Pages/Netlify
+    const dataBase = new URL('../data/', import.meta.url).toString();
     const [quotes, psalms, tips] = await Promise.all([
-      loadJSON('/assets/cherry-premium/data/quotes.json'),
-      loadJSON('/assets/cherry-premium/data/psalms.json'), 
-      loadJSON('/assets/cherry-premium/data/tips.json')
+      loadJSON(new URL('quotes.json', dataBase).toString()),
+      loadJSON(new URL('psalms.json', dataBase).toString()), 
+      loadJSON(new URL('tips.json', dataBase).toString())
     ]);
     
     quotesData = quotes || [];

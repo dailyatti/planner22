@@ -73,7 +73,7 @@ function loadPremiumStyles() {
   const link = document.createElement('link');
   link.id = 'cherry-premium-styles';
   link.rel = 'stylesheet';
-  link.href = '/assets/cherry-premium/cherry-theme.css';
+  link.href = new URL('../cherry-theme.css', import.meta.url).toString();
   link.onload = () => console.log('Premium styles loaded');
   link.onerror = () => console.warn('Failed to load premium styles');
   
