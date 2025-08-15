@@ -97,6 +97,7 @@ function saveToStorage(){
     showToast('Saved automatically!');
   }, 250);
 }
+
 function restoreFromStorage(showMsg=false){
   if(!storageAvailable()) { console.warn('Storage disabled - skipping restore'); return; }
   // restore global preferences first
@@ -116,47 +117,188 @@ function restoreFromStorage(showMsg=false){
   }
 }
 
-function updateDayOfWeek(){ const d = new Date($('#plannerDate').value || Date.now()); const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']; $('#dayOfWeek').textContent = days[d.getDay()]; }
+function updateDayOfWeek(){ 
+  const d = new Date($('#plannerDate').value || Date.now()); 
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']; 
+  $('#dayOfWeek').textContent = days[d.getDay()]; 
+}
 
-window.addEventListener('DOMContentLoaded', () => {
-  const navToggle = $('#navToggle'); const menu = $('#menu'); const backdrop = $('#navBackdrop');
-  function closeMenu(){ menu.classList.remove('open'); navToggle.setAttribute('aria-expanded','false'); menu.setAttribute('aria-hidden','true'); backdrop.classList.remove('show'); backdrop.hidden = true; }
-  function openMenu(){ menu.classList.add('open'); navToggle.setAttribute('aria-expanded','true'); menu.setAttribute('aria-hidden','false'); backdrop.hidden = false; backdrop.classList.add('show'); }
-  navToggle.addEventListener('click', () => { menu.classList.contains('open') ? closeMenu() : openMenu(); });
+// Külső könyvtárak betöltésének ellenőrzése
+function waitForLibraries() {
+  return new Promise((resolve) => {
+    const checkLibraries = () => {
+      if (typeof html2canvas !== 'undefined' && typeof window.jspdf !== 'undefined') {
+        resolve();
+      } else {
+        setTimeout(checkLibraries, 100);
+      }
+    };
+    checkLibraries();
+  });
+}
+
+// Biztonságos gomb inicializálás
+function initButtons() {
+  console.log('Initializing buttons...');
+  
+  // Navigation menu toggle
+  const navToggle = $('#navToggle'); 
+  const menu = $('#menu'); 
+  const backdrop = $('#navBackdrop');
+  
+  if (!navToggle || !menu || !backdrop) {
+    console.error('Navigation elements not found');
+    return;
+  }
+  
+  function closeMenu(){ 
+    menu.classList.remove('open'); 
+    navToggle.setAttribute('aria-expanded','false'); 
+    menu.setAttribute('aria-hidden','true'); 
+    backdrop.classList.remove('show'); 
+    backdrop.hidden = true; 
+  }
+  
+  function openMenu(){ 
+    menu.classList.add('open'); 
+    navToggle.setAttribute('aria-expanded','true'); 
+    menu.setAttribute('aria-hidden','false'); 
+    backdrop.hidden = false; 
+    backdrop.classList.add('show'); 
+  }
+  
+  navToggle.addEventListener('click', () => { 
+    menu.classList.contains('open') ? closeMenu() : openMenu(); 
+  });
+  
   backdrop.addEventListener('click', closeMenu);
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMenu(); });
 
-  $('#plannerDate').valueAsDate = new Date();
-  updateDayOfWeek();
+  // Action buttons
+  const buttons = [
+    { id: 'btnPrint', handler: () => window.print() },
+    { id: 'btnSave', handler: saveToStorage },
+    { id: 'btnReset', handler: () => { 
+      localStorage.removeItem(storageKey()); 
+      restoreFromStorage(true); 
+    }},
+    { id: 'btnResetAll', handler: () => {
+      if(!confirm('Reset all saved data? This clears day data and global settings.')) return;
+      const keys = Object.keys(localStorage);
+      keys.forEach(k=>{ 
+        if(k.startsWith('cherryPlanner_')||k==='cherry_globals'||k==='cherry_cycle'||k==='cherry_cycle_log') 
+          localStorage.removeItem(k); 
+      });
+      resetMoods();
+      restoreFromStorage(true);
+      showToast('All data reset');
+    }}
+  ];
 
-  initTodos(saveToStorage);
-  initWater(saveToStorage);
-  initMood(saveToStorage);
-  initNotes(saveToStorage);
-  initCycle(saveToStorage);
+  // Aszinkron gombok (külső könyvtárakat igényelnek)
+  const asyncButtons = [
+    { id: 'btnPng', handler: async () => {
+      try {
+        await waitForLibraries();
+        await saveImage('plannerContent');
+      } catch (error) {
+        console.error('PNG export failed:', error);
+        showToast('PNG export failed. Please try again.');
+      }
+    }},
+    { id: 'btnPdf', handler: async () => {
+      try {
+        await waitForLibraries();
+        await savePDF('plannerContent');
+      } catch (error) {
+        console.error('PDF export failed:', error);
+        showToast('PDF export failed. Please try again.');
+      }
+    }}
+  ];
 
-  restoreFromStorage();
-  if(!storageAvailable()) showToast('Warning: LocalStorage is disabled in this context. Data will not persist.');
-
-  $('#btnPrint').addEventListener('click', () => window.print());
-  $('#btnPng').addEventListener('click', () => saveImage('plannerContent'));
-  $('#btnPdf').addEventListener('click', () => savePDF('plannerContent'));
-  $('#btnSave').addEventListener('click', saveToStorage);
-  $('#btnReset').addEventListener('click', () => { localStorage.removeItem(storageKey()); restoreFromStorage(true); });
-  $('#btnResetAll').addEventListener('click', () => {
-    if(!confirm('Reset all saved data? This clears day data and global settings.')) return;
-    const keys = Object.keys(localStorage);
-    keys.forEach(k=>{ if(k.startsWith('cherryPlanner_')||k==='cherry_globals'||k==='cherry_cycle'||k==='cherry_cycle_log') localStorage.removeItem(k); });
-    // Reset moods to default (5) for current day
-    resetMoods();
-    restoreFromStorage(true);
-    showToast('All data reset');
+  // Szinkron gombok bekötése
+  buttons.forEach(({ id, handler }) => {
+    const btn = $(id);
+    if (btn) {
+      btn.addEventListener('click', handler);
+      console.log(`Button ${id} initialized`);
+    } else {
+      console.warn(`Button ${id} not found`);
+    }
   });
 
-  // Initialize motivation system
-  initMotivationSystem();
+  // Aszinkron gombok bekötése
+  asyncButtons.forEach(({ id, handler }) => {
+    const btn = $(id);
+    if (btn) {
+      btn.addEventListener('click', handler);
+      console.log(`Async button ${id} initialized`);
+    } else {
+      console.warn(`Button ${id} not found`);
+    }
+  });
+}
 
-  $('#plannerDate').addEventListener('change', () => { updateDayOfWeek(); restoreFromStorage(true); });
+// Enhanced DOM ready check
+function domReady(callback) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', callback);
+  } else {
+    // DOM is already ready
+    callback();
+  }
+}
+
+// Main initialization
+domReady(() => {
+  console.log('DOM ready, initializing app...');
+  
+  // Set default date
+  const plannerDate = $('#plannerDate');
+  if (plannerDate) {
+    plannerDate.valueAsDate = new Date();
+    updateDayOfWeek();
+  }
+
+  // Initialize modules
+  try {
+    initTodos(saveToStorage);
+    initWater(saveToStorage);
+    initMood(saveToStorage);
+    initNotes(saveToStorage);
+    initCycle(saveToStorage);
+    console.log('Modules initialized');
+  } catch (error) {
+    console.error('Module initialization failed:', error);
+  }
+
+  // Initialize buttons
+  initButtons();
+
+  // Restore data
+  restoreFromStorage();
+  
+  // Check storage availability
+  if(!storageAvailable()) {
+    showToast('Warning: LocalStorage is disabled in this context. Data will not persist.');
+  }
+
+  // Initialize motivation system
+  try {
+    initMotivationSystem();
+  } catch (error) {
+    console.warn('Motivation system failed to initialize:', error);
+  }
+
+  // Date change listener
+  const plannerDate = $('#plannerDate');
+  if (plannerDate) {
+    plannerDate.addEventListener('change', () => { 
+      updateDayOfWeek(); 
+      restoreFromStorage(true); 
+    });
+  }
 
   // Auto-save for all input fields
   $$('input[data-key], textarea[data-key]').forEach(el => {
@@ -168,6 +310,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const el = $(sel);
     if(el) el.addEventListener('input', debounce(saveToStorage, 250));
   });
+
+  console.log('App initialization complete');
 });
 
 // ========= Motivation System =========
@@ -356,6 +500,11 @@ function showCycleBasedMotivation() {
 
 function showMotivationToast(message, type) {
   const toast = document.getElementById('toast');
+  if (!toast) {
+    console.warn('Toast element not found');
+    return;
+  }
+  
   const icon = type === 'quote' ? '💭' : type === 'psalm' ? '🙏' : '💡';
   toast.textContent = `${icon} ${message}`;
   toast.className = 'toast show';
@@ -366,14 +515,20 @@ function showMotivationToast(message, type) {
 }
 
 function initMotivationSystem() {
-  // Update cycle predictions
-  updateCyclePredictions();
-  
-  // Show motivation on period days
-  setTimeout(showCycleBasedMotivation, 2000);
-  
-  // Make showCycleBasedMotivation globally available
-  window.showCycleBasedMotivation = showCycleBasedMotivation;
+  try {
+    // Update cycle predictions
+    updateCyclePredictions();
+    
+    // Show motivation on period days
+    setTimeout(showCycleBasedMotivation, 2000);
+    
+    // Make showCycleBasedMotivation globally available
+    window.showCycleBasedMotivation = showCycleBasedMotivation;
+    
+    console.log('Motivation system initialized');
+  } catch (error) {
+    console.error('Motivation system initialization failed:', error);
+  }
 }
 
 
