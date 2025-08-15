@@ -1,5 +1,0 @@
-[33m323f9f4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix button functionality - move motivation system to main.js
-[33m91b4bad[m Remove chatbot and add enhanced cycle tracker with motivation system
-[33m32b6b10[m Remove dashboard pages and add simple chatbot assistant for navigation and help
-[33m3e1ac8f[m Integrate fertility tracker directly into dashboard for better Whop iframe compatibility
-[33m5edf9f4[m Add comprehensive fertility tracker with visual calendar, pregnancy probability meter, and cycle predictions
