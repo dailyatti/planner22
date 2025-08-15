@@ -522,9 +522,6 @@ function initMotivationSystem() {
     // Show motivation on period days
     setTimeout(showCycleBasedMotivation, 2000);
     
-    // Make showCycleBasedMotivation globally available
-    window.showCycleBasedMotivation = showCycleBasedMotivation;
-    
     console.log('Motivation system initialized');
   } catch (error) {
     console.error('Motivation system initialization failed:', error);
