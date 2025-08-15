@@ -39,7 +39,7 @@
           <button class="btn" id="btnSave" type="button" aria-label="Save"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
           <button class="btn" id="btnReset" type="button" aria-label="Reset"><i class="fa-solid fa-rotate"></i><span>Reset (today)</span></button>
           <button class="btn" id="btnResetAll" type="button" aria-label="Reset all"><i class="fa-solid fa-broom"></i><span>Reset (all)</span></button>
-          <a href="cherry-planner-dashboard.html" class="btn" style="background: linear-gradient(135deg, #ff6b9d, #ffc0cb); color: white;" target="_blank"><i class="fa-solid fa-chart-line"></i><span>Smart Dashboard</span></a>
+          <button class="btn" id="btnChatbot" type="button" style="background: linear-gradient(135deg, #ff6b9d, #ffc0cb); color: white;" onclick="toggleChatbot()"><i class="fa-solid fa-comments"></i><span>AI Assistant</span></button>
         </div>
       </div>
     </div>
@@ -187,9 +187,241 @@
     </main>
   </div>
 
+  <!-- Simple Chatbot Assistant -->
+  <div id="chatbotContainer" style="display: none; position: fixed; bottom: 20px; right: 20px; width: 380px; height: 600px; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(214, 51, 132, 0.3); z-index: 1000; display: flex; flex-direction: column; overflow: hidden;">
+    <!-- Header -->
+    <div style="background: linear-gradient(135deg, #ff6b9d, #ffc0cb); padding: 20px; color: white; border-radius: 20px 20px 0 0;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h3 style="margin: 0; font-size: 1.2rem;">🍒 Cherry Assistant</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.85rem; opacity: 0.9;">I can help you navigate and set up your planner</p>
+        </div>
+        <button onclick="toggleChatbot()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;">×</button>
+      </div>
+    </div>
+    
+    <!-- API Key Setup (if needed) -->
+    <div id="apiKeySetup" style="padding: 15px; background: #fef6e4; border-bottom: 1px solid #ffc0cb; display: none;">
+      <p style="margin: 0 0 10px 0; font-size: 0.9rem; color: #4a5568;">Connect Perplexity API for AI responses:</p>
+      <div style="display: flex; gap: 10px;">
+        <input type="password" id="apiKeyInput" placeholder="pplx-..." style="flex: 1; padding: 8px 12px; border: 2px solid #ffc0cb; border-radius: 10px; font-size: 0.9rem;">
+        <button onclick="saveApiKey()" style="padding: 8px 16px; background: linear-gradient(135deg, #ff6b9d, #ffc0cb); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600;">Save</button>
+      </div>
+    </div>
+    
+    <!-- Chat Messages -->
+    <div id="chatMessages" style="flex: 1; overflow-y: auto; padding: 20px; background: linear-gradient(180deg, #fef6e4 0%, #ffffff 100%);">
+      <div style="background: #e9d5ff; padding: 12px 16px; border-radius: 18px 18px 18px 4px; margin-bottom: 15px; max-width: 80%;">
+        <p style="margin: 0; font-size: 0.9rem; color: #4a5568;">
+          👋 Hi! I'm your Cherry Assistant. I can help you:
+        </p>
+        <ul style="margin: 10px 0 0 20px; font-size: 0.85rem; color: #4a5568;">
+          <li>Navigate through different sections</li>
+          <li>Set up your cycle tracker</li>
+          <li>Explain how features work</li>
+          <li>Save and export your data</li>
+          <li>Answer questions about the planner</li>
+        </ul>
+        <p style="margin: 10px 0 0 0; font-size: 0.85rem; color: #718096;">
+          Just type your question below or click a quick action!
+        </p>
+      </div>
+      
+      <!-- Quick Actions -->
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px;">
+        <button onclick="sendQuickMessage('How do I track my cycle?')" style="padding: 6px 12px; background: white; border: 1px solid #ffc0cb; border-radius: 15px; font-size: 0.85rem; cursor: pointer; color: #d63384;">Track cycle</button>
+        <button onclick="sendQuickMessage('How to set water goals?')" style="padding: 6px 12px; background: white; border: 1px solid #ffc0cb; border-radius: 15px; font-size: 0.85rem; cursor: pointer; color: #d63384;">Water goals</button>
+        <button onclick="sendQuickMessage('Export my data')" style="padding: 6px 12px; background: white; border: 1px solid #ffc0cb; border-radius: 15px; font-size: 0.85rem; cursor: pointer; color: #d63384;">Export data</button>
+        <button onclick="sendQuickMessage('Reset everything')" style="padding: 6px 12px; background: white; border: 1px solid #ffc0cb; border-radius: 15px; font-size: 0.85rem; cursor: pointer; color: #d63384;">Reset</button>
+      </div>
+    </div>
+    
+    <!-- Input Area -->
+    <div style="padding: 20px; border-top: 1px solid #ffc0cb; background: white; border-radius: 0 0 20px 20px;">
+      <div style="display: flex; gap: 10px;">
+        <input type="text" id="chatInput" placeholder="Ask me anything..." style="flex: 1; padding: 12px 16px; border: 2px solid #ffc0cb; border-radius: 20px; font-size: 0.9rem;" onkeypress="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()" style="width: 45px; height: 45px; background: linear-gradient(135deg, #ff6b9d, #ffc0cb); color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chatbot Toggle Button (when closed) -->
+  <button id="chatbotToggle" onclick="toggleChatbot()" style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b9d, #ffc0cb); color: white; border: none; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3); z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+    <i class="fa-solid fa-comments"></i>
+  </button>
+
   <div id="toast" class="toast" role="status" aria-live="polite">Saved successfully!</div>
 
   <script type="module" src="assets/js/main.js"></script>
+  
+  <!-- Chatbot Functions -->
+  <script>
+    // Toggle chatbot visibility
+    function toggleChatbot() {
+      const container = document.getElementById('chatbotContainer');
+      const toggle = document.getElementById('chatbotToggle');
+      
+      if (container.style.display === 'none' || !container.style.display) {
+        container.style.display = 'flex';
+        toggle.style.display = 'none';
+        
+        // Check for API key
+        const apiKey = localStorage.getItem('cherry::ai::api_key');
+        if (!apiKey) {
+          document.getElementById('apiKeySetup').style.display = 'block';
+        }
+      } else {
+        container.style.display = 'none';
+        toggle.style.display = 'flex';
+      }
+    }
+    
+    // Save API key
+    function saveApiKey() {
+      const input = document.getElementById('apiKeyInput');
+      const apiKey = input.value.trim();
+      
+      if (apiKey && apiKey.startsWith('pplx-')) {
+        localStorage.setItem('cherry::ai::api_key', apiKey);
+        document.getElementById('apiKeySetup').style.display = 'none';
+        addMessage('assistant', '✅ API key saved! I can now provide AI-powered responses.');
+        input.value = '';
+      } else {
+        addMessage('assistant', '❌ Invalid API key. It should start with "pplx-"');
+      }
+    }
+    
+    // Send message
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      
+      if (!message) return;
+      
+      addMessage('user', message);
+      input.value = '';
+      
+      // Process the message
+      processMessage(message);
+    }
+    
+    // Send quick message
+    function sendQuickMessage(message) {
+      addMessage('user', message);
+      processMessage(message);
+    }
+    
+    // Add message to chat
+    function addMessage(type, text) {
+      const messagesDiv = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      
+      if (type === 'user') {
+        messageDiv.style.cssText = 'background: linear-gradient(135deg, #ff6b9d, #ffc0cb); color: white; padding: 12px 16px; border-radius: 18px 18px 4px 18px; margin: 15px 0 15px auto; max-width: 80%; word-wrap: break-word;';
+      } else {
+        messageDiv.style.cssText = 'background: #e9d5ff; padding: 12px 16px; border-radius: 18px 18px 18px 4px; margin: 15px 0; max-width: 80%; word-wrap: break-word;';
+      }
+      
+      messageDiv.innerHTML = `<p style="margin: 0; font-size: 0.9rem; color: ${type === 'user' ? 'white' : '#4a5568'};">${text}</p>`;
+      messagesDiv.appendChild(messageDiv);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+    
+    // Process message and generate response
+    async function processMessage(message) {
+      const lowerMessage = message.toLowerCase();
+      const apiKey = localStorage.getItem('cherry::ai::api_key');
+      
+      // Check for API key for complex queries
+      if (apiKey && apiKey.startsWith('pplx-')) {
+        // Call Perplexity API
+        try {
+          addMessage('assistant', '🤔 Thinking...');
+          
+          const response = await fetch('https://api.perplexity.ai/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${apiKey}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: 'sonar',
+              messages: [
+                {
+                  role: 'system',
+                  content: 'You are Cherry Assistant, a helpful AI for a digital planner app. Help users navigate features, set up their cycle tracker, manage tasks, track moods and water intake. Be friendly, concise, and helpful.'
+                },
+                {
+                  role: 'user',
+                  content: message
+                }
+              ],
+              temperature: 0.7,
+              max_tokens: 300
+            })
+          });
+          
+          // Remove thinking message
+          const messages = document.getElementById('chatMessages');
+          messages.removeChild(messages.lastChild);
+          
+          if (response.ok) {
+            const data = await response.json();
+            const aiResponse = data.choices[0].message.content;
+            addMessage('assistant', aiResponse);
+          } else {
+            throw new Error('API request failed');
+          }
+        } catch (error) {
+          // Remove thinking message if still there
+          const messages = document.getElementById('chatMessages');
+          if (messages.lastChild.textContent.includes('Thinking')) {
+            messages.removeChild(messages.lastChild);
+          }
+          // Fall back to local responses
+          generateLocalResponse(lowerMessage);
+        }
+      } else {
+        // Use local responses
+        generateLocalResponse(lowerMessage);
+      }
+    }
+    
+    // Generate local response without API
+    function generateLocalResponse(message) {
+      let response = '';
+      
+      if (message.includes('cycle') || message.includes('period')) {
+        response = "To track your cycle:\n1. Go to the 'Cycle Tracker' section\n2. Enter your last period start date\n3. Set your average cycle length (usually 28 days)\n4. Set your period duration (usually 3-7 days)\n5. Click 'Save' to store your settings\n\nThe calendar will show your fertile days and predict your next period!";
+      } else if (message.includes('water') || message.includes('hydration')) {
+        response = "To set water goals:\n1. Find the 'Water Tracker' section\n2. Use the +/- buttons to set your daily goal (default is 8 glasses)\n3. Click the glass icons to track each glass you drink\n4. Your progress is automatically saved\n\nTip: Set a realistic goal and increase it gradually!";
+      } else if (message.includes('export') || message.includes('save')) {
+        response = "To export your data:\n1. Click the 'PDF' button to save as PDF\n2. Click 'Image' to save as PNG\n3. Click 'Save' to ensure all data is stored\n\nYour data is automatically saved to your browser's local storage!";
+      } else if (message.includes('reset')) {
+        response = "To reset data:\n• 'Reset (today)' - Clears only today's entries\n• 'Reset (all)' - Clears all saved data\n\n⚠️ Be careful with 'Reset (all)' as it cannot be undone!";
+      } else if (message.includes('mood')) {
+        response = "To track your mood:\n1. Go to the 'Today's Mood' section\n2. Use the sliders to rate each emotion (0-10)\n3. Add notes about your day\n4. Your mood is automatically saved\n\nTracking moods helps you identify patterns!";
+      } else if (message.includes('task') || message.includes('todo')) {
+        response = "To manage tasks:\n1. Find the 'Daily Tasks' section\n2. Type your task and press Enter\n3. Check off completed tasks\n4. Tasks are saved automatically\n\nTip: Break big tasks into smaller, manageable ones!";
+      } else if (message.includes('help')) {
+        response = "I can help you with:\n• Cycle tracking & predictions\n• Water intake goals\n• Mood tracking\n• Daily tasks\n• Saving & exporting data\n• Resetting the planner\n\nJust ask me anything!";
+      } else {
+        response = "I'm here to help! You can ask me about:\n• Cycle tracking\n• Water goals\n• Mood tracking\n• Daily tasks\n• Exporting data\n• Resetting the planner\n\nWhat would you like to know?";
+      }
+      
+      addMessage('assistant', response);
+    }
+    
+    // Initialize chatbot as hidden
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.getElementById('chatbotContainer');
+      if (container) {
+        container.style.display = 'none';
+      }
+    });
+  </script>
   
   <!-- Cherry Premium Features -->
   <script type="module">
