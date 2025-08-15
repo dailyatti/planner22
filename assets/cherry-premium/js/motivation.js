@@ -62,6 +62,11 @@ export function maybeAutoShowQuote(todayDate, moodData = null) {
   
   const settings = getSettings();
   if (!settings.mood.dailyAutoQuote) return false;
+
+  // Only trigger around menstrual period days if cycle indicates so
+  if (!isTodayWithinPeriod(todayDate)) {
+    return false;
+  }
   
   const mood = moodData || getMoodData(todayDate);
   const motivationState = getMotivationState(todayDate);
@@ -490,4 +495,65 @@ function getCurrentMoodFromDOM() {
   }
   
   return mood;
+}
+
+/**
+ * Check if provided date falls within predicted or logged period days
+ * Uses stored `cherry_cycle` configuration and `cherry_cycle_log` from base app
+ */
+function isTodayWithinPeriod(dateStr) {
+  try {
+    const today = new Date(dateStr);
+    const cfg = JSON.parse(localStorage.getItem('cherry_cycle') || '{}');
+    const log = JSON.parse(localStorage.getItem('cherry_cycle_log') || '[]');
+    const periodLen = Number(cfg.period || 5);
+    const baseLen = Number(cfg.len || 28);
+    const luteal = Number(cfg.luteal || 14);
+    const adv = cfg.adv !== false; // default true
+
+    // Helper: parse key like YYYY-M-D
+    const parseKey = (k) => {
+      const [Y, M, D] = String(k).split('-').map(n => parseInt(n, 10));
+      return new Date(Y, (M - 1), D);
+    };
+    const isSameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+
+    // 1) Check logged actual starts
+    const starts = (Array.isArray(log) ? log : []).map(parseKey).sort((a, b) => a - b);
+    for (const s of starts) {
+      const end = new Date(s); end.setDate(end.getDate() + (periodLen - 1));
+      if (today >= s && today <= end) return true;
+    }
+
+    // 2) If no logs, use configured last start to project cycles
+    if (cfg.start) {
+      const startDate = new Date(cfg.start);
+      // Walk cycles around today to see if falls in a projected period window
+      const avgLen = baseLen; // could be enhanced by history; keep simple here
+      // Find the closest cycle start not after today
+      const ref = new Date(startDate);
+      while (ref < today) {
+        ref.setDate(ref.getDate() + avgLen);
+      }
+      // Last cycle start before or equal today
+      ref.setDate(ref.getDate() - avgLen);
+      const perStart = new Date(ref);
+      const perEnd = new Date(ref); perEnd.setDate(perEnd.getDate() + (periodLen - 1));
+      if (today >= perStart && today <= perEnd) return true;
+
+      // Also check previous and next cycle window just in case
+      const prevStart = new Date(ref); prevStart.setDate(prevStart.getDate() - avgLen);
+      const prevEnd = new Date(prevStart); prevEnd.setDate(prevEnd.getDate() + (periodLen - 1));
+      if (today >= prevStart && today <= prevEnd) return true;
+
+      const nextStart = new Date(ref); nextStart.setDate(nextStart.getDate() + avgLen);
+      const nextEnd = new Date(nextStart); nextEnd.setDate(nextEnd.getDate() + (periodLen - 1));
+      if (today >= nextStart && today <= nextEnd) return true;
+    }
+
+    return false;
+  } catch (e) {
+    console.warn('Cycle check failed, skipping period-only condition', e);
+    return false;
+  }
 }

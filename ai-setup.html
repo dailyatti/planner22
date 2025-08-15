@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cherry Planner – AI Coach beállítás</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; padding: 24px; max-width: 900px; margin: auto; }
+    h1 { color: #d63384; }
+    code, kbd { background: #f8f9fa; padding: 2px 6px; border-radius: 6px; }
+    .step { border-left: 4px solid #d63384; padding: 8px 12px; margin: 12px 0; background: #fff; }
+    .note { background: #fff7ed; padding: 10px; border-radius: 8px; border: 1px solid #fde68a; }
+  </style>
+  </head>
+  <body>
+    <h1>🤖 AI Coach – Perplexity Sonar Pro beállítás</h1>
+    <p>Az AI Coach a Perplexity <strong>Sonar Pro</strong> modelljét használja a hangulat, hidratáció és ciklus statisztikáid elemzéséhez. Az integráció <strong>opcionális</strong>. A kulcsod a böngésződ <code>localStorage</code>-ában kerül tárolásra.</p>
+
+    <div class="step">
+      <h3>1) Perplexity API kulcs beszerzése</h3>
+      <ol>
+        <li>Nyisd meg: <a href="https://www.perplexity.ai/settings/api" target="_blank">Perplexity API beállítások</a>.</li>
+        <li>Hozz létre egy új kulcsot (pl. <em>Cherry Planner</em> néven).</li>
+        <li>Másold ki a kulcsot (formátum: <code>pplx-...</code>).</li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h3>2) Kulcs megadása a Plannerben</h3>
+      <p>Nyisd meg a Plannerben a menüben a <strong>🤖 AI Coach</strong> gombot. A felugró ablakban illeszd be az API kulcsot, majd mentsd. A kulcs a böngésződben tárolódik és bármikor törölhető a böngészőadatokkal.</p>
+    </div>
+
+    <div class="step">
+      <h3>3) Elemzés és Chat</h3>
+      <ul>
+        <li>Válassz időtávot (7 nap, 30 nap, egyedi).</li>
+        <li>Írj kérdést (pl. „Miért romlik a hangulatom délutánonként és mit tegyek?”).</li>
+        <li>Kattints az <strong>Elemzés + Válasz</strong> gombra.</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <strong>Megjegyzés:</strong> Az elemzés <em>csak lokális adataidból</em> dolgozik (mood, water, balance). Egészségügyi tanács helyett <em>életmódbeli javaslatokat</em> ad.
+    </div>
+
+    <p>Ha kérdésed van, nyisd meg az AI Coachot és írj: <kbd>open AI Coach</kbd>.</p>
+  </body>
+</html>
+
+

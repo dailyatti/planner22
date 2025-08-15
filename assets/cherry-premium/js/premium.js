@@ -9,6 +9,7 @@ import { initUI, toast } from './ui.js';
 import { initMotivation, addMotivationButton, monitorMoodChanges, maybeAutoShowQuote, ensureMotivationButton } from './motivation.js';
 import { initMoodCoach } from './mood-coach.js';
 import { initStats } from './stats.js';
+import initAI from './ai.js';
 
 let isInitialized = false;
 
@@ -32,7 +33,8 @@ export async function initPremium() {
     await Promise.all([
       initMotivation(),
       initMoodCoach(),
-      initStats()
+      initStats(),
+      initAI()
     ]);
     
     // Add premium UI elements
