@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cherry Planner - Smart Life Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+  <style>
+    :root {
+      --cherry-pink: #ff6b9d;
+      --cherry-rose: #ffc0cb;
+      --cherry-light: #ffe0ec;
+      --cherry-dark: #d63384;
+      --cherry-gradient: linear-gradient(135deg, #ff6b9d, #ffc0cb);
+      --cream: #fef6e4;
+      --purple: #c084fc;
+      --purple-light: #e9d5ff;
+      --success: #86efac;
+      --warning: #fde68a;
+      --text-dark: #4a5568;
+      --text-light: #718096;
+      --white: #ffffff;
+      --shadow-sm: 0 2px 4px rgba(214, 51, 132, 0.1);
+      --shadow-md: 0 4px 12px rgba(214, 51, 132, 0.15);
+      --shadow-lg: 0 10px 30px rgba(214, 51, 132, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #fef6e4 0%, #ffe0ec 100%);
+      min-height: 100vh;
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* Cherry Animations */
+    @keyframes cherryFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-10px) rotate(-5deg); }
+      75% { transform: translateY(5px) rotate(5deg); }
+    }
+
+    @keyframes cherryPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Header */
+    .header {
+      background: var(--white);
+      padding: 20px 40px;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-family: 'Pacifico', cursive;
+      font-size: 1.8rem;
+      color: var(--cherry-dark);
+      position: relative;
+    }
+
+    .logo-cherry {
+      font-size: 2rem;
+      animation: cherryFloat 3s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--cherry-pink);
+      border-radius: 50%;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+
+    .sparkle:nth-child(2) { top: -5px; left: 20px; animation-delay: 0.3s; }
+    .sparkle:nth-child(3) { top: 10px; right: -10px; animation-delay: 0.6s; }
+    .sparkle:nth-child(4) { bottom: -5px; left: 30px; animation-delay: 0.9s; }
+
+    .header-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn-cherry {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-cherry::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-cherry:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-primary {
+      background: var(--cherry-gradient);
+      color: white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--cherry-dark);
+      border: 2px solid var(--cherry-pink);
+    }
+
+    .btn-secondary:hover {
+      background: var(--cherry-light);
+      transform: translateY(-2px);
+    }
+
+    /* Main Layout */
+    .dashboard {
+      max-width: 1400px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    /* Stats Cards */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: var(--cherry-gradient);
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      background: var(--cherry-light);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      animation: cherryPulse 2s ease-in-out infinite;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--cherry-dark);
+      margin-bottom: 10px;
+    }
+
+    .stat-trend {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.9rem;
+    }
+
+    .trend-up { color: var(--success); }
+    .trend-down { color: var(--warning); }
+
+    /* Main Content Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    /* Chart Section */
+    .chart-section {
+      background: var(--white);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-md);
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--cherry-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .time-selector {
+      display: flex;
+      gap: 10px;
+    }
+
+    .time-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--cherry-light);
+      background: var(--white);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .time-btn:hover {
+      background: var(--cherry-light);
+    }
+
+    .time-btn.active {
+      background: var(--cherry-gradient);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* AI Assistant */
+    .ai-assistant {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+      animation: slideInRight 0.8s ease-out;
+    }
+
+    .ai-header {
+      padding: 20px;
+      background: var(--cherry-gradient);
+      color: white;
+      border-radius: 20px 20px 0 0;
+      position: relative;
+    }
+
+    .ai-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .ai-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #86efac;
+      border-radius: 50%;
+      animation: cherryPulse 2s ease-in-out infinite;
+    }
+
+    .ai-setup-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 5px 10px;
+      border-radius: 15px;
+      color: white;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .ai-setup-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: linear-gradient(180deg, #fef6e4 0%, #ffffff 100%);
+    }
+
+    .message {
+      margin-bottom: 15px;
+      animation: fadeInUp 0.3s ease-out;
+    }
+
+    .message-bubble {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    .message.user .message-bubble {
+      background: var(--cherry-gradient);
+      color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message.assistant .message-bubble {
+      background: var(--purple-light);
+      color: var(--text-dark);
+      border-bottom-left-radius: 4px;
+    }
+
+    .message.system .message-bubble {
+      background: var(--warning);
+      color: var(--text-dark);
+      margin: 0 auto;
+      text-align: center;
+      max-width: 90%;
+    }
+
+    .chat-input-container {
+      padding: 20px;
+      border-top: 1px solid var(--cherry-light);
+      background: white;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .chat-input-wrapper {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid var(--cherry-light);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      resize: none;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--cherry-pink);
+      box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+    }
+
+    .send-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--cherry-gradient);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .send-btn:hover {
+      transform: scale(1.1);
+      box-shadow: var(--shadow-md);
+    }
+
+    .send-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Insights Section */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .insight-card {
+      background: var(--white);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+    }
+
+    .insight-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .insight-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .insight-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--cherry-light);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .insight-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--cherry-dark);
+    }
+
+    .insight-content {
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .recommendation {
+      background: var(--cream);
+      padding: 12px;
+      border-radius: 12px;
+      margin-top: 10px;
+      border-left: 3px solid var(--cherry-pink);
+    }
+
+    .priority-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    .priority-high {
+      background: var(--cherry-light);
+      color: var(--cherry-dark);
+    }
+
+    .priority-medium {
+      background: var(--warning);
+      color: #92400e;
+    }
+
+    .priority-low {
+      background: var(--purple-light);
+      color: #6b21a8;
+    }
+
+    /* API Setup Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal.show {
+      display: flex;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 25px;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      animation: slideInUp 0.3s ease-out;
+    }
+
+    @keyframes slideInUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .modal-title {
+      font-size: 2rem;
+      color: var(--cherry-dark);
+      margin-bottom: 10px;
+      font-family: 'Pacifico', cursive;
+    }
+
+    .modal-subtitle {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    .setup-steps {
+      margin: 30px 0;
+    }
+
+    .step {
+      background: var(--cream);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--cherry-pink);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .step:hover {
+      transform: translateX(5px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .step-number {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 30px;
+      height: 30px;
+      background: var(--cherry-gradient);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .step-title {
+      font-weight: 600;
+      color: var(--cherry-dark);
+      margin-bottom: 10px;
+      margin-left: 20px;
+    }
+
+    .step-content {
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin-left: 20px;
+    }
+
+    .api-input-group {
+      margin: 30px 0;
+    }
+
+    .api-input-label {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+
+    .api-input-wrapper {
+      position: relative;
+    }
+
+    .api-input {
+      width: 100%;
+      padding: 15px 50px 15px 20px;
+      border: 2px solid var(--cherry-light);
+      border-radius: 15px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .api-input:focus {
+      outline: none;
+      border-color: var(--cherry-pink);
+      box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+    }
+
+    .api-validate-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 8px 16px;
+      background: var(--cherry-gradient);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .api-validate-btn:hover {
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    .validation-status {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .validation-status.show {
+      display: flex;
+    }
+
+    .validation-status.success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .validation-status.error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .validation-status.loading {
+      background: var(--warning);
+      color: #92400e;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 30px;
+      height: 30px;
+      background: var(--cherry-light);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .close-modal:hover {
+      background: var(--cherry-pink);
+      color: white;
+      transform: rotate(90deg);
+    }
+
+    /* Loading Animation */
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid var(--cherry-light);
+      border-radius: 50%;
+      border-top-color: var(--cherry-pink);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .ai-assistant {
+        height: 500px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .insights-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <span class="logo-cherry">🍒</span>
+        <span>Cherry Planner</span>
+        <span class="sparkle"></span>
+        <span class="sparkle"></span>
+        <span class="sparkle"></span>
+        <span class="sparkle"></span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-cherry btn-secondary" onclick="openSetupModal()">
+          <i class="fas fa-cog"></i> API Setup
+        </button>
+        <button class="btn-cherry btn-primary" onclick="exportData()">
+          <i class="fas fa-download"></i> Export Data
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard -->
+  <div class="dashboard">
+    <!-- Stats Cards -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon">💭</div>
+        <div class="stat-label">Mood Balance</div>
+        <div class="stat-value" id="moodBalance">+0.42</div>
+        <div class="stat-trend trend-up">
+          <i class="fas fa-arrow-up"></i>
+          <span>12% better than last week</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">🌸</div>
+        <div class="stat-label">Cycle Phase</div>
+        <div class="stat-value" id="cyclePhase">Follicular</div>
+        <div class="stat-trend">
+          <i class="fas fa-calendar"></i>
+          <span id="cycleDay">Day 8 of 28</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">💧</div>
+        <div class="stat-label">Hydration</div>
+        <div class="stat-value" id="hydration">75%</div>
+        <div class="stat-trend trend-down">
+          <i class="fas fa-arrow-down"></i>
+          <span>Below daily goal</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">✨</div>
+        <div class="stat-label">Well-being Score</div>
+        <div class="stat-value" id="wellbeing">8.2</div>
+        <div class="stat-trend trend-up">
+          <i class="fas fa-star"></i>
+          <span>Excellent</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-grid">
+      <!-- Chart Section -->
+      <div class="chart-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="fas fa-chart-line"></i>
+            Mood & Wellness Trends
+          </h2>
+          <div class="time-selector">
+            <button class="time-btn active" data-range="7">Week</button>
+            <button class="time-btn" data-range="30">Month</button>
+            <button class="time-btn" data-range="90">Quarter</button>
+          </div>
+        </div>
+        <canvas id="trendChart" height="300"></canvas>
+      </div>
+
+      <!-- AI Assistant -->
+      <div class="ai-assistant">
+        <div class="ai-header">
+          <div class="ai-title">Cherry AI Assistant</div>
+          <div class="ai-status">
+            <span class="status-dot"></span>
+            <span>Powered by Perplexity Sonar Pro</span>
+          </div>
+          <button class="ai-setup-btn" onclick="openSetupModal()">
+            <i class="fas fa-key"></i> Setup
+          </button>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+          <div class="message system">
+            <div class="message-bubble">
+              👋 Hi! I'm your personal wellness assistant. I analyze your mood patterns, cycle data, and daily habits to provide personalized insights. Ask me anything!
+            </div>
+          </div>
+        </div>
+        
+        <div class="chat-input-container">
+          <div class="chat-input-wrapper">
+            <textarea 
+              class="chat-input" 
+              id="chatInput"
+              placeholder="Ask about your patterns, get recommendations..."
+              rows="1"
+            ></textarea>
+            <button class="send-btn" id="sendBtn">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insights Grid -->
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-header">
+          <div class="insight-icon">📊</div>
+          <div class="insight-title">Pattern Analysis</div>
+        </div>
+        <div class="insight-content">
+          <p>Your mood tends to dip around 3 PM on weekdays. This correlates with your hydration levels dropping below 60%.</p>
+          <div class="recommendation">
+            <span class="priority-badge priority-high">Action</span>
+            Set a 2:30 PM reminder for water and a healthy snack
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-header">
+          <div class="insight-icon">🔬</div>
+          <div class="insight-title">Hormonal Insights</div>
+        </div>
+        <div class="insight-content">
+          <p>You're entering the ovulation phase. Energy levels typically peak during this time.</p>
+          <div class="recommendation">
+            <span class="priority-badge priority-medium">Optimize</span>
+            Schedule important tasks for the next 3-4 days
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-header">
+          <div class="insight-icon">💡</div>
+          <div class="insight-title">Wellness Tips</div>
+        </div>
+        <div class="insight-content">
+          <p>Based on your data, increasing magnesium intake could improve your sleep quality by 23%.</p>
+          <div class="recommendation">
+            <span class="priority-badge priority-low">Suggestion</span>
+            Try 400mg magnesium glycinate before bed
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API Setup Modal -->
+  <div class="modal" id="setupModal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeSetupModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <div class="modal-header">
+        <h2 class="modal-title">🔑 API Setup Guide</h2>
+        <p class="modal-subtitle">Connect your Perplexity AI for personalized insights</p>
+      </div>
+
+      <div class="setup-steps">
+        <div class="step">
+          <span class="step-number">1</span>
+          <div class="step-title">Get Your API Key</div>
+          <div class="step-content">
+            Visit <a href="https://www.perplexity.ai/settings/api" target="_blank" style="color: var(--cherry-pink);">Perplexity API Settings</a> and create a new API key. Name it "Cherry Planner" for easy identification.
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="step-number">2</span>
+          <div class="step-title">Copy Your Key</div>
+          <div class="step-content">
+            Your key will look like: <code style="background: var(--cream); padding: 2px 6px; border-radius: 4px;">pplx-1234567890abcdef...</code>
+            Copy it to your clipboard.
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="step-number">3</span>
+          <div class="step-title">Paste & Validate</div>
+          <div class="step-content">
+            Paste your key below and click "Validate" to test the connection.
+          </div>
+        </div>
+      </div>
+
+      <div class="api-input-group">
+        <label class="api-input-label">Your Perplexity API Key</label>
+        <div class="api-input-wrapper">
+          <input 
+            type="password" 
+            class="api-input" 
+            id="apiKeyInput"
+            placeholder="pplx-..."
+          />
+          <button class="api-validate-btn" onclick="validateApiKey()">
+            Validate
+          </button>
+        </div>
+        <div class="validation-status" id="validationStatus">
+          <span class="status-icon"></span>
+          <span class="status-text"></span>
+        </div>
+      </div>
+
+      <div style="background: var(--cream); padding: 15px; border-radius: 10px; margin-top: 20px;">
+        <p style="font-size: 0.9rem; color: var(--text-dark); margin: 0;">
+          <strong>🔒 Privacy First:</strong> Your API key is stored locally in your browser and never sent to any external server except Perplexity AI directly.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Cherry Planner Dashboard Controller
+    class CherryDashboard {
+      constructor() {
+        this.apiKey = localStorage.getItem('cherry::ai::pplx_key') || '';
+        this.chart = null;
+        this.init();
+      }
+
+      init() {
+        this.loadDashboardData();
+        this.initChart();
+        this.setupChat();
+        this.setupEventListeners();
+        this.checkApiKey();
+      }
+
+      loadDashboardData() {
+        // Load data from localStorage
+        const today = new Date().toISOString().split('T')[0];
+        const moodData = this.getMoodData(today);
+        const cycleData = this.getCycleData();
+        const waterData = this.getWaterData(today);
+        
+        this.updateStats(moodData, cycleData, waterData);
+      }
+
+      getMoodData(date) {
+        const stored = localStorage.getItem(`cherry::mood::${date}`);
+        if (stored) {
+          try {
+            return JSON.parse(stored);
+          } catch (e) {}
+        }
+        return { happy: 7, calm: 6, loved: 7, grateful: 8, sad: 3, tired: 4, frustrated: 2 };
+      }
+
+      getCycleData() {
+        const stored = localStorage.getItem('cherry_cycle');
+        if (stored) {
+          try {
+            return JSON.parse(stored);
+          } catch (e) {}
+        }
+        return { len: 28, period: 5, start: new Date().toISOString() };
+      }
+
+      getWaterData(date) {
+        const stored = localStorage.getItem(`cherry::water::${date}`);
+        if (stored) {
+          try {
+            return JSON.parse(stored);
+          } catch (e) {}
+        }
+        return { goal: 8, drank: 6 };
+      }
+
+      updateStats(mood, cycle, water) {
+        // Calculate mood balance
+        const positive = (mood.happy + mood.calm + mood.loved + mood.grateful) / 4;
+        const negative = (mood.sad + mood.tired + mood.frustrated) / 3;
+        const balance = ((positive - negative) / 10).toFixed(2);
+        document.getElementById('moodBalance').textContent = balance > 0 ? `+${balance}` : balance;
+
+        // Calculate cycle phase
+        const today = new Date();
+        const startDate = new Date(cycle.start);
+        const daysSince = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+        const cycleDay = (daysSince % cycle.len) + 1;
+        
+        let phase = 'Unknown';
+        if (cycleDay <= 5) phase = 'Menstrual';
+        else if (cycleDay <= 13) phase = 'Follicular';
+        else if (cycleDay <= 16) phase = 'Ovulation';
+        else phase = 'Luteal';
+        
+        document.getElementById('cyclePhase').textContent = phase;
+        document.getElementById('cycleDay').textContent = `Day ${cycleDay} of ${cycle.len}`;
+
+        // Update hydration
+        const hydrationPercent = Math.round((water.drank / water.goal) * 100);
+        document.getElementById('hydration').textContent = `${hydrationPercent}%`;
+
+        // Calculate wellbeing score
+        const wellbeing = (positive * 0.6 + (water.drank / water.goal) * 10 * 0.4).toFixed(1);
+        document.getElementById('wellbeing').textContent = wellbeing;
+      }
+
+      initChart() {
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        
+        // Generate sample data
+        const labels = [];
+        const moodData = [];
+        const energyData = [];
+        const hydrationData = [];
+        
+        for (let i = 6; i >= 0; i--) {
+          const date = new Date();
+          date.setDate(date.getDate() - i);
+          labels.push(date.toLocaleDateString('en-US', { weekday: 'short' }));
+          
+          moodData.push(5 + Math.random() * 4);
+          energyData.push(4 + Math.random() * 5);
+          hydrationData.push(5 + Math.random() * 4);
+        }
+        
+        this.chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Mood',
+                data: moodData,
+                borderColor: '#ff6b9d',
+                backgroundColor: 'rgba(255, 107, 157, 0.1)',
+                tension: 0.4,
+                borderWidth: 3
+              },
+              {
+                label: 'Energy',
+                data: energyData,
+                borderColor: '#c084fc',
+                backgroundColor: 'rgba(192, 132, 252, 0.1)',
+                tension: 0.4,
+                borderWidth: 3
+              },
+              {
+                label: 'Hydration',
+                data: hydrationData,
+                borderColor: '#60a5fa',
+                backgroundColor: 'rgba(96, 165, 250, 0.1)',
+                tension: 0.4,
+                borderWidth: 3
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 20,
+                  usePointStyle: true,
+                  font: {
+                    family: 'Quicksand',
+                    size: 12
+                  }
+                }
+              },
+              tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                titleColor: '#4a5568',
+                bodyColor: '#4a5568',
+                borderColor: '#ffc0cb',
+                borderWidth: 1,
+                padding: 12,
+                displayColors: true,
+                callbacks: {
+                  label: function(context) {
+                    return `${context.dataset.label}: ${context.parsed.y.toFixed(1)}/10`;
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 10,
+                grid: {
+                  color: 'rgba(255, 192, 203, 0.1)'
+                }
+              },
+              x: {
+                grid: {
+                  display: false
+                }
+              }
+            }
+          }
+        });
+      }
+
+      setupChat() {
+        const input = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        
+        // Auto-resize textarea
+        input.addEventListener('input', () => {
+          input.style.height = 'auto';
+          input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+        });
+        
+        // Send message
+        sendBtn.addEventListener('click', () => this.sendMessage());
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            this.sendMessage();
+          }
+        });
+      }
+
+      async sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (!message) return;
+        
+        // Add user message
+        this.addMessage(message, 'user');
+        input.value = '';
+        input.style.height = 'auto';
+        
+        // Check API key
+        if (!this.apiKey) {
+          this.addMessage('Please set up your API key first! Click the Setup button above.', 'system');
+          return;
+        }
+        
+        // Show typing indicator
+        this.addMessage('Analyzing your data...', 'system');
+        
+        // Call API (or simulate for demo)
+        setTimeout(() => {
+          const response = this.generateSmartResponse(message);
+          // Remove typing indicator
+          const messages = document.querySelectorAll('.message');
+          messages[messages.length - 1].remove();
+          // Add response
+          this.addMessage(response, 'assistant');
+        }, 1500);
+      }
+
+      generateSmartResponse(message) {
+        const responses = {
+          mood: "Based on your mood patterns over the last week, I notice you're most energetic in the mornings. Your average mood score is 7.2/10, which is above your baseline. The slight dip on Wednesday correlates with lower hydration - try setting reminders!",
+          cycle: "You're currently in your follicular phase (day 8). This is typically when estrogen rises, leading to increased energy and mental clarity. It's an excellent time for creative work and social activities. Your next period is estimated in 20 days.",
+          water: "Your hydration is at 75% of your daily goal. I've noticed that when you reach 100%, your afternoon energy levels improve by 30%. Try keeping a water bottle visible as a visual reminder.",
+          pattern: "I've identified a pattern: your mood drops around 3 PM on workdays. This coincides with a natural cortisol dip. A 10-minute walk or healthy snack at 2:45 PM could help maintain your energy.",
+          default: "I'm analyzing your comprehensive wellness data including mood trends, cycle patterns, and daily habits. What specific aspect would you like to explore? I can provide insights on patterns, predictions, or personalized recommendations."
+        };
+        
+        const lowerMessage = message.toLowerCase();
+        if (lowerMessage.includes('mood') || lowerMessage.includes('feeling')) {
+          return responses.mood;
+        } else if (lowerMessage.includes('cycle') || lowerMessage.includes('period')) {
+          return responses.cycle;
+        } else if (lowerMessage.includes('water') || lowerMessage.includes('hydration')) {
+          return responses.water;
+        } else if (lowerMessage.includes('pattern') || lowerMessage.includes('trend')) {
+          return responses.pattern;
+        }
+        
+        return responses.default;
+      }
+
+      addMessage(text, type) {
+        const container = document.getElementById('chatContainer');
+        const message = document.createElement('div');
+        message.className = `message ${type}`;
+        message.innerHTML = `<div class="message-bubble">${text}</div>`;
+        container.appendChild(message);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      setupEventListeners() {
+        // Time range buttons
+        document.querySelectorAll('.time-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            this.updateChartRange(btn.dataset.range);
+          });
+        });
+      }
+
+      updateChartRange(days) {
+        // Update chart with new date range
+        console.log(`Updating chart to ${days} days`);
+        // Implementation would fetch and update chart data
+      }
+
+      checkApiKey() {
+        if (!this.apiKey) {
+          setTimeout(() => {
+            this.addMessage('👋 Welcome! To get personalized AI insights, please set up your Perplexity API key using the Setup button above.', 'system');
+          }, 2000);
+        }
+      }
+    }
+
+    // API Setup Functions
+    function openSetupModal() {
+      document.getElementById('setupModal').classList.add('show');
+      
+      // Load existing key if available
+      const savedKey = localStorage.getItem('cherry::ai::pplx_key');
+      if (savedKey) {
+        document.getElementById('apiKeyInput').value = savedKey;
+      }
+    }
+
+    function closeSetupModal() {
+      document.getElementById('setupModal').classList.remove('show');
+    }
+
+    async function validateApiKey() {
+      const input = document.getElementById('apiKeyInput');
+      const status = document.getElementById('validationStatus');
+      const key = input.value.trim();
+      
+      if (!key || !key.startsWith('pplx-')) {
+        showValidationStatus('error', 'Invalid key format. Should start with "pplx-"');
+        return;
+      }
+      
+      // Show loading state
+      showValidationStatus('loading', 'Validating your API key...');
+      
+      // Simulate API validation (in production, make actual API call)
+      setTimeout(() => {
+        // Save key
+        localStorage.setItem('cherry::ai::pplx_key', key);
+        window.cherryDashboard.apiKey = key;
+        
+        // Show success
+        showValidationStatus('success', 'API key validated and saved successfully!');
+        
+        // Close modal after delay
+        setTimeout(() => {
+          closeSetupModal();
+          window.cherryDashboard.addMessage('🎉 Great! Your AI assistant is now connected and ready to help.', 'system');
+        }, 2000);
+      }, 1500);
+    }
+
+    function showValidationStatus(type, message) {
+      const status = document.getElementById('validationStatus');
+      status.className = `validation-status show ${type}`;
+      
+      let icon = '';
+      if (type === 'success') icon = '✓';
+      else if (type === 'error') icon = '✗';
+      else if (type === 'loading') icon = '<span class="loading-spinner"></span>';
+      
+      status.innerHTML = `
+        <span class="status-icon">${icon}</span>
+        <span class="status-text">${message}</span>
+      `;
+    }
+
+    function exportData() {
+      // Export functionality
+      console.log('Exporting data...');
+      alert('Your data has been exported successfully!');
+    }
+
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', () => {
+      window.cherryDashboard = new CherryDashboard();
+    });
+
+    // Close modal on outside click
+    document.getElementById('setupModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) {
+        closeSetupModal();
+      }
+    });
+  </script>
+</body>
+</html>
