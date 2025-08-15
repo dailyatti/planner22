@@ -419,6 +419,42 @@ export function monitorMoodChanges() {
 }
 
 /**
+ * Ensure motivation button exists (retries + observes DOM)
+ */
+export function ensureMotivationButton() {
+  // If already present, nothing to do
+  if (document.querySelector('.motivation-trigger')) return true;
+
+  let attempts = 0;
+  const maxAttempts = 20; // ~20s with 1s interval
+
+  const tryAdd = () => {
+    if (document.querySelector('.motivation-trigger')) return cleanup();
+    const added = addMotivationButton();
+    attempts++;
+    if (added || attempts >= maxAttempts) cleanup();
+  };
+
+  const intervalId = setInterval(tryAdd, 1000);
+
+  // Also observe DOM mutations for faster placement when mood section renders
+  const observer = new MutationObserver(() => {
+    if (document.querySelector('.motivation-trigger')) return cleanup();
+    addMotivationButton();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  function cleanup() {
+    clearInterval(intervalId);
+    observer.disconnect();
+  }
+
+  // Initial attempt now
+  tryAdd();
+  return false;
+}
+
+/**
  * Get current mood data from DOM sliders
  */
 function getCurrentMoodFromDOM() {

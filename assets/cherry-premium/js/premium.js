@@ -6,7 +6,7 @@
 import { initStorage } from './storage.js';
 import { getSettings } from './config.js';
 import { initUI, toast } from './ui.js';
-import { initMotivation, addMotivationButton, monitorMoodChanges, maybeAutoShowQuote } from './motivation.js';
+import { initMotivation, addMotivationButton, monitorMoodChanges, maybeAutoShowQuote, ensureMotivationButton } from './motivation.js';
 import { initMoodCoach } from './mood-coach.js';
 import { initStats } from './stats.js';
 
@@ -40,6 +40,8 @@ export async function initPremium() {
     
     // Setup mood monitoring for auto-triggers
     monitorMoodChanges();
+    // Ensure the Motivation button appears across all layouts
+    ensureMotivationButton();
     
     // Setup daily mood check
     setupDailyMoodCheck();
