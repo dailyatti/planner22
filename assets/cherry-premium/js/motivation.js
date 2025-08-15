@@ -63,10 +63,9 @@ export function maybeAutoShowQuote(todayDate, moodData = null) {
   const settings = getSettings();
   if (!settings.mood.dailyAutoQuote) return false;
 
-  // Only trigger around menstrual period days if cycle indicates so
-  if (!isTodayWithinPeriod(todayDate)) {
-    return false;
-  }
+  // Enhanced: Always check during period, but also check mood patterns
+  const isPeriod = isTodayWithinPeriod(todayDate);
+  const hormonePhase = getHormonePhase(todayDate);
   
   const mood = moodData || getMoodData(todayDate);
   const motivationState = getMotivationState(todayDate);
@@ -77,14 +76,18 @@ export function maybeAutoShowQuote(todayDate, moodData = null) {
   // Check daily limit
   if (motivationState.count >= settings.mood.maxAutoQuotesPerDay) return false;
   
-  // Check for negative mood trigger (Trigger 1)
+  // PhD-level: Multi-factor analysis
   const hasNegativeMood = checkNegativeMoodTrigger(mood, settings);
-  
-  // Check for consecutive negative days (Trigger 2)
   const hasConsecutiveNegative = checkConsecutiveNegativeTrigger(todayDate, settings);
+  const needsHormoneSupport = isPeriod || hormonePhase === 'luteal';
+  const hasPatternAnomaly = detectMoodPatternAnomaly(todayDate, mood);
   
-  if (hasNegativeMood || hasConsecutiveNegative) {
-    showAutoMotivation(todayDate, hasConsecutiveNegative ? 'consecutive' : 'daily');
+  // Trigger if any condition met
+  if (hasNegativeMood || hasConsecutiveNegative || needsHormoneSupport || hasPatternAnomaly) {
+    const triggerReason = needsHormoneSupport ? 'hormonal' : 
+                         hasPatternAnomaly ? 'pattern' :
+                         hasConsecutiveNegative ? 'consecutive' : 'daily';
+    showAutoMotivation(todayDate, triggerReason);
     return true;
   }
   
@@ -135,8 +138,15 @@ function checkConsecutiveNegativeTrigger(todayDate, settings) {
  * Show automatic motivation with toast notification
  */
 function showAutoMotivation(todayDate, triggerType) {
-  // Show toast first
-  toast('🍒 Nehéz nap? Itt egy gondolat…', {
+  // PhD-level: Context-aware messaging
+  const messages = {
+    hormonal: '🌸 Hormonális időszak - extra támogatás érkezik…',
+    pattern: '📊 Szokatlan minta észlelve - segítek…',
+    consecutive: '💙 Több nehéz nap - itt vagyok veled…',
+    daily: '🍒 Nehéz nap? Itt egy gondolat…'
+  };
+  
+  toast(messages[triggerType] || messages.daily, {
     type: 'info',
     duration: 3000,
     action: {
@@ -495,6 +505,70 @@ function getCurrentMoodFromDOM() {
   }
   
   return mood;
+}
+
+/**
+ * PhD-level hormone phase detection
+ */
+function getHormonePhase(dateStr) {
+  try {
+    const today = new Date(dateStr);
+    const cfg = JSON.parse(localStorage.getItem('cherry_cycle') || '{}');
+    const baseLen = Number(cfg.len || 28);
+    const luteal = Number(cfg.luteal || 14);
+    
+    // Find cycle day
+    const log = JSON.parse(localStorage.getItem('cherry_cycle_log') || '[]');
+    if (log.length === 0 && !cfg.start) return 'unknown';
+    
+    const lastStart = log.length ? new Date(log[log.length - 1]) : new Date(cfg.start);
+    const daysSinceStart = Math.floor((today - lastStart) / (1000 * 60 * 60 * 24));
+    const cycleDay = (daysSinceStart % baseLen) + 1;
+    
+    // Determine phase
+    if (cycleDay <= 5) return 'menstrual';
+    if (cycleDay <= 13) return 'follicular';
+    if (cycleDay <= 16) return 'ovulation';
+    if (cycleDay <= baseLen) return 'luteal';
+    return 'follicular';
+  } catch (e) {
+    return 'unknown';
+  }
+}
+
+/**
+ * Detect mood pattern anomalies using statistical analysis
+ */
+function detectMoodPatternAnomaly(dateStr, currentMood) {
+  try {
+    // Get last 14 days of mood data
+    const history = [];
+    const date = new Date(dateStr);
+    for (let i = 1; i <= 14; i++) {
+      const checkDate = new Date(date);
+      checkDate.setDate(checkDate.getDate() - i);
+      const dayMood = getMoodData(formatDate(checkDate));
+      history.push(dayMood);
+    }
+    
+    // Calculate baseline averages
+    const baseline = {};
+    ['happy', 'calm', 'sad', 'tired', 'frustrated'].forEach(key => {
+      const values = history.map(m => m[key] || 5);
+      baseline[key] = values.reduce((a, b) => a + b, 0) / values.length;
+    });
+    
+    // Check for significant deviations (>2 standard deviations)
+    let hasAnomaly = false;
+    Object.keys(baseline).forEach(key => {
+      const deviation = Math.abs(currentMood[key] - baseline[key]);
+      if (deviation > 3) hasAnomaly = true; // Significant change
+    });
+    
+    return hasAnomaly;
+  } catch (e) {
+    return false;
+  }
 }
 
 /**

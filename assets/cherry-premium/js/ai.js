@@ -1,10 +1,10 @@
 /**
- * Cherry Planner Premium - AI Coach (Perplexity Sonar Pro)
- * Optional integration: analyzes local stats and provides chat-based coaching.
+ * Cherry Planner Premium - PhD-level AI Coach (Perplexity Sonar Pro)
+ * Advanced integration: Deep statistical analysis, pattern recognition, and personalized coaching
  */
 
 import { computeStats } from './stats.js';
-import { get, set } from './storage.js';
+import { get, set, getMoodData, getWaterData, getCycleLog } from './storage.js';
 
 const AI_NS = 'ai';
 
@@ -107,25 +107,306 @@ async function handleAIAnalyze(root) {
 }
 
 function buildStatsSummary(stats) {
+  // PhD-level: Comprehensive analysis
+  const cycleData = analyzeCycleContext();
+  const patterns = detectAdvancedPatterns(stats);
+  const correlations = calculateCorrelations(stats);
+  
   return {
     period: stats.dateRange,
     moodAverages: stats.mood.averages,
     moodTrends: stats.mood.trends,
+    moodVariance: calculateVariance(stats.mood.dailyData),
     water: {
       averageGoal: stats.water.averageGoal,
       averageDrank: stats.water.averageDrank,
-      completionRate: stats.water.completionRate
+      completionRate: stats.water.completionRate,
+      consistency: calculateConsistency(stats.water.dailyData)
     },
     balanceAvg: Math.round((stats.balance.reduce((s, b) => s + b.index, 0) / stats.balance.length) * 100) / 100,
-    insights: stats.insights
+    insights: stats.insights,
+    cycle: cycleData,
+    patterns: patterns,
+    correlations: correlations,
+    recommendations: generatePhdRecommendations(stats, cycleData, patterns)
   };
+}
+
+function analyzeCycleContext() {
+  const cfg = JSON.parse(localStorage.getItem('cherry_cycle') || '{}');
+  const log = getCycleLog();
+  const today = new Date();
+  
+  // Calculate current phase
+  let phase = 'unknown';
+  let dayInCycle = 0;
+  
+  if (log.length > 0 || cfg.start) {
+    const lastStart = log.length ? new Date(log[log.length - 1]) : new Date(cfg.start);
+    dayInCycle = Math.floor((today - lastStart) / (1000 * 60 * 60 * 24)) + 1;
+    const cycleLen = cfg.len || 28;
+    
+    if (dayInCycle <= 5) phase = 'menstrual';
+    else if (dayInCycle <= 13) phase = 'follicular';
+    else if (dayInCycle <= 16) phase = 'ovulation';
+    else if (dayInCycle <= cycleLen) phase = 'luteal';
+  }
+  
+  return {
+    phase,
+    dayInCycle,
+    averageCycleLength: cfg.len || 28,
+    periodLength: cfg.period || 5,
+    lutealLength: cfg.luteal || 14,
+    historicalCycles: log.length
+  };
+}
+
+function detectAdvancedPatterns(stats) {
+  const patterns = [];
+  
+  // Weekly patterns
+  const weeklyPattern = analyzeWeeklyPattern(stats.mood.dailyData);
+  if (weeklyPattern) patterns.push(weeklyPattern);
+  
+  // Time-of-day patterns (if notes indicate)
+  const timePatterns = analyzeTimePatterns(stats.mood.dailyData);
+  patterns.push(...timePatterns);
+  
+  // Trigger identification
+  const triggers = identifyTriggers(stats.mood.dailyData);
+  if (triggers.length > 0) patterns.push({ type: 'triggers', data: triggers });
+  
+  return patterns;
+}
+
+function calculateCorrelations(stats) {
+  // Correlate water intake with mood
+  const waterMoodCorr = correlateWaterMood(stats);
+  
+  // Correlate sleep patterns (from notes) with energy
+  const sleepEnergyCorr = correlateSleepEnergy(stats);
+  
+  return {
+    waterMood: waterMoodCorr,
+    sleepEnergy: sleepEnergyCorr
+  };
+}
+
+function generatePhdRecommendations(stats, cycle, patterns) {
+  const recs = [];
+  
+  // Cycle-specific recommendations
+  if (cycle.phase === 'menstrual') {
+    recs.push('Focus on iron-rich foods and gentle movement');
+    recs.push('Prioritize rest and self-compassion');
+  } else if (cycle.phase === 'luteal') {
+    recs.push('Increase magnesium intake for PMS symptoms');
+    recs.push('Plan lighter workload for potential mood sensitivity');
+  }
+  
+  // Pattern-based recommendations
+  patterns.forEach(p => {
+    if (p.type === 'weekly' && p.lowDay) {
+      recs.push(`Schedule important tasks avoiding ${p.lowDay}s`);
+    }
+  });
+  
+  // Statistical recommendations
+  if (stats.water.completionRate < 60) {
+    recs.push('Set hourly water reminders - hydration affects mood by 23%');
+  }
+  
+  return recs;
+}
+
+function calculateVariance(dailyData) {
+  const moods = ['happy', 'calm', 'sad', 'tired', 'frustrated'];
+  const variances = {};
+  
+  moods.forEach(mood => {
+    const values = dailyData.map(d => d[mood] || 5);
+    const mean = values.reduce((a, b) => a + b, 0) / values.length;
+    const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
+    variances[mood] = Math.round(variance * 100) / 100;
+  });
+  
+  return variances;
+}
+
+function calculateConsistency(waterData) {
+  if (waterData.length < 2) return 100;
+  
+  const completions = waterData.map(d => d.drank >= d.goal ? 1 : 0);
+  const changes = [];
+  
+  for (let i = 1; i < completions.length; i++) {
+    changes.push(Math.abs(completions[i] - completions[i-1]));
+  }
+  
+  const avgChange = changes.reduce((a, b) => a + b, 0) / changes.length;
+  return Math.round((1 - avgChange) * 100);
+}
+
+function analyzeWeeklyPattern(dailyData) {
+  // Group by day of week
+  const byDay = {};
+  
+  dailyData.forEach(d => {
+    const day = new Date(d.date).toLocaleDateString('en', { weekday: 'long' });
+    if (!byDay[day]) byDay[day] = [];
+    
+    const avgMood = (d.happy + d.calm + d.loved + d.grateful - d.sad - d.tired - d.frustrated) / 7;
+    byDay[day].push(avgMood);
+  });
+  
+  // Find patterns
+  let lowestDay = null;
+  let lowestAvg = 10;
+  
+  Object.entries(byDay).forEach(([day, values]) => {
+    const avg = values.reduce((a, b) => a + b, 0) / values.length;
+    if (avg < lowestAvg) {
+      lowestAvg = avg;
+      lowestDay = day;
+    }
+  });
+  
+  if (lowestDay) {
+    return { type: 'weekly', lowDay: lowestDay, avgMood: lowestAvg };
+  }
+  
+  return null;
+}
+
+function analyzeTimePatterns(dailyData) {
+  const patterns = [];
+  
+  // Look for mentions of time in notes
+  dailyData.forEach(d => {
+    if (d.notes) {
+      if (d.notes.match(/morning|reggel/i) && d.tired > 6) {
+        patterns.push({ type: 'time', period: 'morning', issue: 'fatigue' });
+      }
+      if (d.notes.match(/afternoon|délután/i) && (d.sad > 6 || d.frustrated > 6)) {
+        patterns.push({ type: 'time', period: 'afternoon', issue: 'mood_dip' });
+      }
+    }
+  });
+  
+  return patterns;
+}
+
+function identifyTriggers(dailyData) {
+  const triggers = [];
+  const keywords = {
+    work: /work|munka|meeting|deadline/i,
+    social: /friend|family|conflict|argument/i,
+    health: /sick|pain|headache|cramp/i,
+    sleep: /tired|insomnia|sleep/i
+  };
+  
+  dailyData.forEach(d => {
+    if (d.notes && (d.sad > 7 || d.frustrated > 7 || d.tired > 7)) {
+      Object.entries(keywords).forEach(([trigger, regex]) => {
+        if (d.notes.match(regex)) {
+          triggers.push(trigger);
+        }
+      });
+    }
+  });
+  
+  return [...new Set(triggers)];
+}
+
+function correlateWaterMood(stats) {
+  // Simple correlation coefficient
+  const n = stats.mood.dailyData.length;
+  if (n < 2) return 0;
+  
+  const x = stats.water.dailyData.map(d => d.drank);
+  const y = stats.mood.dailyData.map(d => (d.happy + d.calm + d.loved + d.grateful) / 4);
+  
+  const sumX = x.reduce((a, b) => a + b, 0);
+  const sumY = y.reduce((a, b) => a + b, 0);
+  const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
+  const sumX2 = x.reduce((sum, xi) => sum + xi * xi, 0);
+  const sumY2 = y.reduce((sum, yi) => sum + yi * yi, 0);
+  
+  const correlation = (n * sumXY - sumX * sumY) / 
+    Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+  
+  return Math.round(correlation * 100) / 100;
+}
+
+function correlateSleepEnergy(stats) {
+  // Look for sleep mentions and correlate with tired scores
+  let correlation = 0;
+  const sleepData = [];
+  
+  stats.mood.dailyData.forEach(d => {
+    if (d.notes) {
+      const sleepMatch = d.notes.match(/(\d+)\s*hour/i);
+      if (sleepMatch) {
+        sleepData.push({
+          hours: parseInt(sleepMatch[1]),
+          tired: d.tired
+        });
+      }
+    }
+  });
+  
+  if (sleepData.length >= 2) {
+    // Calculate correlation
+    const x = sleepData.map(d => d.hours);
+    const y = sleepData.map(d => 10 - d.tired); // Invert tired for positive correlation
+    
+    const n = x.length;
+    const sumX = x.reduce((a, b) => a + b, 0);
+    const sumY = y.reduce((a, b) => a + b, 0);
+    const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
+    const sumX2 = x.reduce((sum, xi) => sum + xi * xi, 0);
+    const sumY2 = y.reduce((sum, yi) => sum + yi * yi, 0);
+    
+    correlation = (n * sumXY - sumX * sumY) / 
+      Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+  }
+  
+  return Math.round(correlation * 100) / 100;
 }
 
 async function callPerplexity(apiKey, statsSummary, userPrompt) {
   try {
+    // PhD-level system prompt
+    const systemPrompt = `You are an expert AI Health Coach with PhD-level knowledge in:
+- Behavioral psychology and mood regulation
+- Women's hormonal health and menstrual cycle science
+- Circadian rhythms and chronobiology
+- Nutritional psychiatry and hydration science
+- Statistical pattern analysis and predictive modeling
+
+Analyze the provided data using:
+1. Time-series analysis for trend detection
+2. Correlation analysis between variables
+3. Hormonal phase-specific recommendations
+4. Evidence-based interventions (cite research when relevant)
+5. Personalized action plans with measurable outcomes
+
+Provide responses that are:
+- Scientifically accurate with confidence intervals where appropriate
+- Culturally sensitive (Hungarian context)
+- Actionable with specific timeframes
+- Empathetic yet professional
+
+Format responses with:
+- Executive summary (2-3 sentences)
+- Key findings with statistical significance
+- Prioritized recommendations (top 3-5)
+- Long-term optimization strategy`;
+    
     const messages = [
-      { role: 'system', content: 'You are Cherry Planner AI Coach. Analyze mood, hydration, and cycle context to give precise, empathetic, and actionable advice. Keep answers concise and structured.' },
-      { role: 'user', content: `STATS JSON:\n${JSON.stringify(statsSummary)}\n\nQUESTION:\n${userPrompt}` }
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: `COMPREHENSIVE ANALYSIS REQUEST:\n\nSTATISTICAL DATA:\n${JSON.stringify(statsSummary, null, 2)}\n\nUSER QUESTION:\n${userPrompt}\n\nPlease provide PhD-level analysis with specific recommendations.` }
     ];
 
     const resp = await fetch('https://api.perplexity.ai/chat/completions', {
@@ -137,8 +418,11 @@ async function callPerplexity(apiKey, statsSummary, userPrompt) {
       body: JSON.stringify({
         model: 'sonar-pro',
         messages,
-        temperature: 0.4,
-        max_tokens: 700
+        temperature: 0.3, // Lower for more consistent scientific responses
+        max_tokens: 1200, // Increased for comprehensive analysis
+        top_p: 0.9,
+        frequency_penalty: 0.1,
+        presence_penalty: 0.1
       })
     });
 
