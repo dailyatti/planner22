@@ -6,7 +6,7 @@
 import { initStorage } from './storage.js';
 import { getSettings } from './config.js';
 import { initUI, toast } from './ui.js';
-import { initMotivation, addMotivationButton, monitorMoodChanges, maybeAutoShowQuote, ensureMotivationButton } from './motivation.js';
+// import { initMotivation, addMotivationButton, monitorMoodChanges, maybeAutoShowQuote, ensureMotivationButton } from './motivation.js';
 import { initMoodCoach } from './mood-coach.js';
 import { initStats } from './stats.js';
 import initAI from './ai.js';
@@ -29,21 +29,21 @@ export async function initPremium() {
     initStorage();
     initUI();
     
-    // Initialize premium features
+    // Initialize premium features (motivation system moved to main.js)
     await Promise.all([
-      initMotivation(),
+      // initMotivation(), // Commented out - now handled in main.js
       initMoodCoach(),
       initStats(),
       initAI()
     ]);
     
-    // Add premium UI elements
-    addMotivationButton();
+    // Add premium UI elements (motivation button now in index.html)
+    // addMotivationButton(); // Commented out - button already in HTML
     
     // Setup mood monitoring for auto-triggers
-    monitorMoodChanges();
+    // monitorMoodChanges(); // Commented out - now handled in main.js
     // Ensure the Motivation button appears across all layouts
-    ensureMotivationButton();
+    // ensureMotivationButton(); // Commented out - button already in HTML
     
     // Setup daily mood check
     setupDailyMoodCheck();
@@ -301,7 +301,7 @@ function setupDailyMoodCheck() {
                    String(today.getMonth() + 1).padStart(2, '0') + '-' + 
                    String(today.getDate()).padStart(2, '0');
     
-    maybeAutoShowQuote(todayStr);
+    // maybeAutoShowQuote(todayStr); // Commented out - now handled in main.js
   }, 2000); // Delay to ensure everything is loaded
   
   // Setup daily check at midnight
@@ -319,7 +319,7 @@ function setupDailyMoodCheck() {
                      String(today.getMonth() + 1).padStart(2, '0') + '-' + 
                      String(today.getDate()).padStart(2, '0');
       
-      maybeAutoShowQuote(todayStr);
+      // maybeAutoShowQuote(todayStr); // Commented out - now handled in main.js
     }, 24 * 60 * 60 * 1000); // Check every 24 hours
   }, msUntilMidnight);
 }

@@ -531,4 +531,9 @@ function initMotivationSystem() {
   }
 }
 
+// Make functions globally available for HTML onclick handlers
+window.showCycleBasedMotivation = showCycleBasedMotivation;
+window.showMotivationToast = showMotivationToast;
+window.updateCyclePredictions = updateCyclePredictions;
+
 
