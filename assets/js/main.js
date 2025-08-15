@@ -127,9 +127,15 @@ function updateDayOfWeek(){
 function waitForLibraries() {
   return new Promise((resolve) => {
     const checkLibraries = () => {
-      if (typeof html2canvas !== 'undefined' && typeof window.jspdf !== 'undefined') {
+      if (typeof html2canvas !== 'undefined' && window.jspdf && window.jspdf.jsPDF) {
+        console.log('Libraries loaded successfully');
         resolve();
       } else {
+        console.log('Waiting for libraries...', {
+          html2canvas: typeof html2canvas,
+          jspdf: !!window.jspdf,
+          jsPDF: !!(window.jspdf && window.jspdf.jsPDF)
+        });
         setTimeout(checkLibraries, 100);
       }
     };
@@ -176,13 +182,13 @@ function initButtons() {
 
   // Action buttons
   const buttons = [
-    { id: 'btnPrint', handler: () => window.print() },
-    { id: 'btnSave', handler: saveToStorage },
-    { id: 'btnReset', handler: () => { 
+    { id: '#btnPrint', handler: () => window.print() },
+    { id: '#btnSave', handler: saveToStorage },
+    { id: '#btnReset', handler: () => { 
       localStorage.removeItem(storageKey()); 
       restoreFromStorage(true); 
     }},
-    { id: 'btnResetAll', handler: () => {
+    { id: '#btnResetAll', handler: () => {
       if(!confirm('Reset all saved data? This clears day data and global settings.')) return;
       const keys = Object.keys(localStorage);
       keys.forEach(k=>{ 
@@ -197,7 +203,7 @@ function initButtons() {
 
   // Aszinkron gombok (külső könyvtárakat igényelnek)
   const asyncButtons = [
-    { id: 'btnPng', handler: async () => {
+    { id: '#btnPng', handler: async () => {
       try {
         await waitForLibraries();
         await saveImage('plannerContent');
@@ -206,7 +212,7 @@ function initButtons() {
         showToast('PNG export failed. Please try again.');
       }
     }},
-    { id: 'btnPdf', handler: async () => {
+    { id: '#btnPdf', handler: async () => {
       try {
         await waitForLibraries();
         await savePDF('plannerContent');
@@ -291,8 +297,7 @@ domReady(() => {
     console.warn('Motivation system failed to initialize:', error);
   }
 
-  // Date change listener
-  const plannerDate = $('#plannerDate');
+  // Date change listener (using the existing plannerDate variable)
   if (plannerDate) {
     plannerDate.addEventListener('change', () => { 
       updateDayOfWeek(); 

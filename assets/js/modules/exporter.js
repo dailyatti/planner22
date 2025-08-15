@@ -1,6 +1,11 @@
 import { showToast } from './utils.js';
 
 export async function saveImage(nodeId){
+  if (typeof html2canvas === 'undefined') {
+    showToast('Image library not loaded. Please refresh the page.');
+    return;
+  }
+  
   const node = document.getElementById(nodeId);
   const canvas = await html2canvas(node, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
   const link = document.createElement('a');
@@ -12,7 +17,12 @@ export async function saveImage(nodeId){
 }
 
 export async function savePDF(nodeId){
-  const { jsPDF } = window.jspdf;
+  const { jsPDF } = window.jspdf || {};
+  if (!jsPDF) {
+    showToast('PDF library not loaded. Please refresh the page.');
+    return;
+  }
+  
   const node = document.getElementById(nodeId);
   const canvas = await html2canvas(node, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
   const imgData = canvas.toDataURL('image/jpeg', 0.95);
@@ -35,7 +45,7 @@ export async function savePDF(nodeId){
   }
   const date = (document.getElementById('plannerDate')?.value) || 'today';
   pdf.save(`cherry-planner-${date}.pdf`);
-  showToast('Generating PDF…');
+  showToast('PDF saved!');
 }
 
 
