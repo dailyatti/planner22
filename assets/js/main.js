@@ -461,7 +461,7 @@ function getPhaseDescription(today, lastPeriod, cycleLength) {
 }
 
 // Show motivation based on cycle phase
-function showCycleBasedMotivation() {
+export function showCycleBasedMotivation() {
   const cycleData = JSON.parse(localStorage.getItem('cherry::cycle') || '{}');
   if (!cycleData.lastPeriod || !cycleData.cycleLength) {
     // If no cycle data, show random motivation
@@ -533,9 +533,9 @@ function initMotivationSystem() {
   }
 }
 
-// Make functions globally available for HTML onclick handlers
-window.showCycleBasedMotivation = showCycleBasedMotivation;
-window.showMotivationToast = showMotivationToast;
-window.updateCyclePredictions = updateCyclePredictions;
+// Ensure functions exist globally only once
+if (!window.showCycleBasedMotivation) window.showCycleBasedMotivation = showCycleBasedMotivation;
+if (!window.showMotivationToast) window.showMotivationToast = showMotivationToast;
+if (!window.updateCyclePredictions) window.updateCyclePredictions = updateCyclePredictions;
 
 

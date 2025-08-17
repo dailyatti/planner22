@@ -6,7 +6,6 @@
 import { initStorage } from './storage.js';
 import { getSettings } from './config.js';
 import { initUI, toast } from './ui.js';
-// import { initMotivation, addMotivationButton, monitorMoodChanges, maybeAutoShowQuote, ensureMotivationButton } from './motivation.js';
 import { initMoodCoach } from './mood-coach.js';
 import { initStats } from './stats.js';
 import initAI from './ai.js';
@@ -29,7 +28,7 @@ export async function initPremium() {
     initStorage();
     initUI();
     
-    // Initialize premium features (motivation system moved to main.js)
+    // Initialize premium features (motivation system lives in main.js)
     await Promise.all([
       // initMotivation(), // Commented out - now handled in main.js
       initMoodCoach(),
@@ -37,13 +36,7 @@ export async function initPremium() {
       initAI()
     ]);
     
-    // Add premium UI elements (motivation button now in index.html)
-    // addMotivationButton(); // Commented out - button already in HTML
-    
-    // Setup mood monitoring for auto-triggers
-    // monitorMoodChanges(); // Commented out - now handled in main.js
-    // Ensure the Motivation button appears across all layouts
-    // ensureMotivationButton(); // Commented out - button already in HTML
+    // Motivation handled centrally in main.js to avoid duplication
     
     // Setup daily mood check
     setupDailyMoodCheck();
