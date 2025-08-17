@@ -1399,6 +1399,121 @@
       border: 1px solid var(--gray-200);
     }
 
+    /* ========= Calendar Day Editor ========= */
+    .calendar-day.has-note::after {
+      content: '📝';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 0.7rem;
+      opacity: 0.8;
+    }
+
+    .day-editor-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 9998;
+      backdrop-filter: blur(4px);
+    }
+
+    .day-editor-modal.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .day-editor-content {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow: hidden;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    .day-editor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--gray-200);
+      background: linear-gradient(135deg, var(--secondary-50), var(--secondary-100));
+    }
+
+    .day-editor-header h3 {
+      margin: 0;
+      color: var(--secondary-700);
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .day-editor-close {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      color: var(--gray-500);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .day-editor-close:hover {
+      background: var(--gray-100);
+      color: var(--gray-700);
+    }
+
+    .day-editor-body {
+      padding: 24px;
+    }
+
+    .day-editor-date {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 12px;
+      background: var(--gray-50);
+      border-radius: 8px;
+      font-weight: 600;
+      color: var(--gray-700);
+    }
+
+    .day-editor-textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .day-editor-textarea:focus {
+      outline: none;
+      border-color: var(--primary-500);
+    }
+
+    .day-editor-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .day-editor-actions .btn {
+      min-width: 100px;
+    }
+
     .calendar-day.prob-high { box-shadow: inset 0 0 0 2px #16a34a; }
     .calendar-day.prob-medium { box-shadow: inset 0 0 0 2px #f59e0b; }
     .calendar-day.prob-low { box-shadow: inset 0 0 0 2px #9ca3af; }
@@ -1646,6 +1761,9 @@
                   <button class="btn btn-secondary btn-sm" onclick="console.log('Test button clicked'); const modal = document.getElementById('motivationModal'); modal.style.display = 'flex'; modal.style.alignItems = 'center'; modal.style.justifyContent = 'center'; modal.classList.add('show');" style="background: #f59e0b;">
                     <i class="fas fa-bug"></i> Test Modal
                   </button>
+                  <button class="btn btn-secondary btn-sm" onclick="console.log('Test day editor'); const modal = document.getElementById('dayEditorModal'); modal.style.display = 'flex'; modal.style.alignItems = 'center'; modal.style.justifyContent = 'center'; modal.classList.add('show');" style="background: #06b6d4;">
+                    <i class="fas fa-calendar-plus"></i> Test Day Editor
+                  </button>
                 </div>
                 <div class="custom-aff-controls">
                   <input class="input" id="affInput" placeholder="Add your own affirmation..." style="flex:1; min-width: 220px;">
@@ -1785,6 +1903,9 @@
         <p style="color: var(--gray-500); font-size: 0.875rem; margin-top: var(--space-4); text-align: center;">
           <em>Note: This is an estimation tool for educational purposes only. Consult healthcare professionals for medical advice.</em>
         </p>
+        <p style="color: var(--gray-600); font-size: 0.875rem; margin-top: var(--space-2); text-align: center;">
+          <em>💡 Tip: Click to select date • Double-click to add/edit notes • 📝 shows days with notes</em>
+        </p>
       </article>
     </div>
   </main>
@@ -1815,6 +1936,30 @@
     </div>
   </div>
 
+  <!-- Calendar Day Editor Modal -->
+  <div class="day-editor-modal" id="dayEditorModal">
+    <div class="day-editor-content">
+      <div class="day-editor-header">
+        <h3>Edit Day Note</h3>
+        <button class="day-editor-close" id="dayEditorClose" aria-label="Close day editor">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="day-editor-body">
+        <div class="day-editor-date" id="dayEditorDate">January 1, 2025</div>
+        <textarea 
+          class="day-editor-textarea" 
+          id="dayEditorTextarea" 
+          placeholder="Write a note for this day... (e.g., mood, events, reminders)"
+        ></textarea>
+        <div class="day-editor-actions">
+          <button class="btn btn-secondary" id="dayEditorCancel">Cancel</button>
+          <button class="btn btn-primary" id="dayEditorSave">Save Note</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     // ========= Core Application Logic =========
     class DigitalPlanner {
@@ -1828,6 +1973,7 @@
         this.moodData = { emotion: '', rating: 5 };
         this.cycleData = { lastPeriod: null, cycleLength: 28, periodLength: 5 };
         this.currentMotivation = null;
+        this.editingDate = null;
         this.motivation = {
           quoteIndex: 0,
           quotes: [
@@ -1947,12 +2093,24 @@
           if (e.target.id === 'motivationModal') {
             this.hideMotivationModal();
           }
+          if (e.target.id === 'dayEditorModal') {
+            this.hideDayEditor();
+          }
         });
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') {
             this.hideMotivationModal();
+            this.hideDayEditor();
           }
         });
+
+        // Day Editor Modal
+        const dayEditorClose = document.getElementById('dayEditorClose');
+        if (dayEditorClose) dayEditorClose.addEventListener('click', this.hideDayEditor.bind(this));
+        const dayEditorCancel = document.getElementById('dayEditorCancel');
+        if (dayEditorCancel) dayEditorCancel.addEventListener('click', this.hideDayEditor.bind(this));
+        const dayEditorSave = document.getElementById('dayEditorSave');
+        if (dayEditorSave) dayEditorSave.addEventListener('click', this.saveDayNote.bind(this));
 
         // Auto-save on input changes
         document.querySelectorAll('[data-key]').forEach(input => {
@@ -2255,6 +2413,9 @@
           else if (prob.prob === 'medium') dayElement.classList.add('prob-medium');
           else if (prob.prob === 'low') dayElement.classList.add('prob-low');
 
+          // Add day note indicator
+          this.updateDayNoteIndicator(dayElement, currentDate);
+
           // Add click listener
           dayElement.addEventListener('click', () => {
             this.selectedDate = new Date(currentDate);
@@ -2264,6 +2425,11 @@
             this.loadData();
             this.renderCycleForecast();
             this.renderCycleChart();
+          });
+
+          // Add double-click listener for editing notes
+          dayElement.addEventListener('dblclick', () => {
+            this.editDayNote(currentDate);
           });
 
           grid.appendChild(dayElement);
@@ -3267,6 +3433,112 @@
         this.renderCustomAffirmations();
         
         this.showToast('Motivation saved to your affirmations!');
+      }
+
+      // ========= Calendar Day Editor =========
+      editDayNote(date) {
+        const modal = document.getElementById('dayEditorModal');
+        const dateEl = document.getElementById('dayEditorDate');
+        const textarea = document.getElementById('dayEditorTextarea');
+        
+        if (!modal || !dateEl || !textarea) {
+          console.error('Day editor elements not found');
+          return;
+        }
+        
+        console.log('Opening day editor for:', date);
+        
+        // Format date for display
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateEl.textContent = date.toLocaleDateString('en-US', options);
+        
+        // Load existing note if any
+        const dateKey = this.formatDate(date);
+        const existingNote = this.getDayNote(dateKey);
+        textarea.value = existingNote || '';
+        
+        // Store the current date being edited
+        this.editingDate = dateKey;
+        
+        // Show modal with multiple approaches
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        
+        // Force visibility
+        modal.style.visibility = 'visible';
+        modal.style.opacity = '1';
+        
+        // Focus on textarea
+        textarea.focus();
+        console.log('Day editor modal should be visible now');
+      }
+
+      hideDayEditor() {
+        const modal = document.getElementById('dayEditorModal');
+        if (!modal) return;
+        
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+        this.editingDate = null;
+      }
+
+      saveDayNote() {
+        if (!this.editingDate) return;
+        
+        const textarea = document.getElementById('dayEditorTextarea');
+        if (!textarea) return;
+        
+        const note = textarea.value.trim();
+        this.setDayNote(this.editingDate, note);
+        
+        // Update calendar display
+        this.buildCalendar();
+        
+        // Hide modal
+        this.hideDayEditor();
+        
+        // Show success message
+        this.showToast(note ? 'Day note saved!' : 'Day note cleared!');
+      }
+
+      getDayNote(dateKey) {
+        try {
+          const notes = JSON.parse(localStorage.getItem('calendar_day_notes') || '{}');
+          return notes[dateKey] || '';
+        } catch {
+          return '';
+        }
+      }
+
+      setDayNote(dateKey, note) {
+        try {
+          const notes = JSON.parse(localStorage.getItem('calendar_day_notes') || '{}');
+          if (note) {
+            notes[dateKey] = note;
+          } else {
+            delete notes[dateKey];
+          }
+          localStorage.setItem('calendar_day_notes', JSON.stringify(notes));
+        } catch (error) {
+          console.error('Failed to save day note:', error);
+        }
+      }
+
+      updateDayNoteIndicator(dayElement, date) {
+        const dateKey = this.formatDate(date);
+        const note = this.getDayNote(dateKey);
+        
+        if (note) {
+          dayElement.classList.add('has-note');
+          dayElement.title = `Note: ${note.substring(0, 50)}${note.length > 50 ? '...' : ''}`;
+        } else {
+          dayElement.classList.remove('has-note');
+          dayElement.title = 'Double-click to add/edit note';
+        }
       }
     }
 
