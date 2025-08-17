@@ -1882,6 +1882,15 @@
             <input type="number" class="input" id="periodLength" min="1" max="10" value="5" style="width: 80px;">
             <span>days</span>
           </div>
+          <div class="input-group" style="margin-bottom: 0;">
+            <label class="input-label">Luteal Length</label>
+            <input type="number" class="input" id="lutealLength" min="8" max="18" value="14" style="width: 80px;">
+            <span>days</span>
+          </div>
+          <div class="input-group" style="margin-bottom: 0; align-items:center; gap:8px;">
+            <label class="input-label" for="advancedEstimation">Advanced</label>
+            <input type="checkbox" class="input" id="advancedEstimation" checked>
+          </div>
           <button class="btn btn-primary" id="updateCycle">Update Cycle</button>
         </div>
         
@@ -2533,11 +2542,15 @@
         const lastPeriod = document.getElementById('lastPeriod').value;
         const cycleLength = parseInt(document.getElementById('cycleLength').value);
         const periodLength = parseInt(document.getElementById('periodLength').value);
+        const lutealLength = parseInt(document.getElementById('lutealLength')?.value || '14');
+        const advanced = !!document.getElementById('advancedEstimation')?.checked;
 
         this.cycleData = {
           lastPeriod: lastPeriod ? new Date(lastPeriod) : null,
           cycleLength: Math.max(20, Math.min(40, cycleLength || 28)),
-          periodLength: Math.max(1, Math.min(10, periodLength || 5))
+          periodLength: Math.max(1, Math.min(10, periodLength || 5)),
+          lutealLength: Math.max(8, Math.min(18, isNaN(lutealLength) ? 14 : lutealLength)),
+          advancedEstimation: advanced
         };
 
         this.buildCalendar();
@@ -2958,7 +2971,8 @@
       getCycleProbabilityForDate(date) {
         if (!this.cycleData.lastPeriod || !this.cycleData.cycleLength) return { prob: 'low', score: 0 };
         const L = Math.max(20, Math.min(40, parseInt(this.cycleData.cycleLength) || 28));
-        const ov = L - 14; // typical luteal length
+        const luteal = this.cycleData.advancedEstimation ? (this.cycleData.lutealLength || 14) : 14;
+        const ov = L - luteal; // typical or user-defined luteal length
         const day = this.getCycleDay(date);
         if (day === null) return { prob: 'low', score: 0 };
 
@@ -2992,7 +3006,8 @@
         if (!el) return;
         if (!this.cycleData.lastPeriod) { el.textContent = 'Add your last period to see forecast.'; return; }
         const L = this.cycleData.cycleLength || 28;
-        const ovulationDay = L - 14;
+        const luteal = this.cycleData.advancedEstimation ? (this.cycleData.lutealLength || 14) : 14;
+        const ovulationDay = L - luteal;
         const start = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), 1);
         const end = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth()+1, 0);
         // Find next ovulation date after today
